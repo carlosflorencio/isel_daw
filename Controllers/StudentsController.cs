@@ -37,13 +37,13 @@ namespace _1617_2_LI41N_G9.Controllers
 
         // POST api/students
         [HttpPost]
-        public IActionResult Post([FromBody]StudentDTO dto)
+        public async Task<IActionResult> Post([FromBody]StudentDTO dto)
         {
             if(dto == null){
                 return BadRequest();
             }
 
-            _repo.Add(new Student { Name = dto.Name, Email = dto.Email });
+            await _repo.Add(new Student { Name = dto.Name, Email = dto.Email });
             return Ok();
         }
 
