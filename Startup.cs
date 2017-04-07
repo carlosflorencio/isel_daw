@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using _1617_2_LI41N_G9.Data;
 
 namespace _1617_2_LI41N_G9
 {
@@ -29,6 +27,10 @@ namespace _1617_2_LI41N_G9
         {
             // Add framework services.
             services.AddMvc();
+
+            services.AddDbContext<DatabaseContext>(
+                opt => opt.UseNpgsql(Configuration["Data:PostgreConnection:ConnectionString"])
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
