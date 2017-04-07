@@ -7,7 +7,7 @@ namespace _1617_2_LI41N_G9.Models
     {
         [KeyAttribute]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long Key { get; set; }
+        public int Id { get; set; }
 
         [RequiredAttribute]
         public string Name { get; set; }

@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using _1617_2_LI41N_G9.Data;
+using _1617_2_LI41N_G9.Data.Repositories;
+using _1617_2_LI41N_G9.Models;
 
 namespace _1617_2_LI41N_G9
 {
@@ -31,6 +33,12 @@ namespace _1617_2_LI41N_G9
             services.AddDbContext<DatabaseContext>(
                 opt => opt.UseNpgsql(Configuration["Data:PostgreConnection:ConnectionString"])
             );
+
+            // Add scoped => new instance every HTTP request
+            services.AddScoped<IRepository<User>, UserRepository>();
+            services.AddScoped<IRepository<Teacher>, TeacherRepository>();
+            services.AddScoped<IRepository<Student>, StudentRepository>();
+            //Missing somes
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

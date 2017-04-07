@@ -26,7 +26,7 @@ namespace _16172LI41NG9.Migrations
                 name: "Students",
                 columns: table => new
                 {
-                    Key = table.Column<long>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     ClassCourseId = table.Column<int>(nullable: true),
                     ClassSemester = table.Column<string>(nullable: true),
@@ -38,7 +38,7 @@ namespace _16172LI41NG9.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Students", x => x.Key);
+                    table.PrimaryKey("PK_Students", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Students_Groups_GroupClassId_GroupSemester_GroupNumber",
                         columns: x => new { x.GroupClassId, x.GroupSemester, x.GroupNumber },
@@ -51,7 +51,7 @@ namespace _16172LI41NG9.Migrations
                 name: "Teachers",
                 columns: table => new
                 {
-                    Key = table.Column<long>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     ClassCourseId = table.Column<int>(nullable: true),
                     ClassSemester = table.Column<string>(nullable: true),
@@ -60,7 +60,7 @@ namespace _16172LI41NG9.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Teachers", x => x.Key);
+                    table.PrimaryKey("PK_Teachers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -70,17 +70,17 @@ namespace _16172LI41NG9.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     Acronym = table.Column<string>(nullable: false),
-                    CoordinatorKey = table.Column<long>(nullable: true),
+                    CoordinatorId = table.Column<int>(nullable: true),
                     Name = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Courses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Courses_Teachers_CoordinatorKey",
-                        column: x => x.CoordinatorKey,
+                        name: "FK_Courses_Teachers_CoordinatorId",
+                        column: x => x.CoordinatorId,
                         principalTable: "Teachers",
-                        principalColumn: "Key",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -103,9 +103,9 @@ namespace _16172LI41NG9.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Courses_CoordinatorKey",
+                name: "IX_Courses_CoordinatorId",
                 table: "Courses",
-                column: "CoordinatorKey");
+                column: "CoordinatorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Students_ClassCourseId_ClassSemester",

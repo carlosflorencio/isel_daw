@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using _1617_2_LI41N_G9.Models;
 
 namespace _1617_2_LI41N_G9.Data.Repositories
@@ -11,12 +12,6 @@ namespace _1617_2_LI41N_G9.Data.Repositories
         public StudentRepository(DatabaseContext context)
         {
             _context = context;
-
-            if (!_context.Students.Any()) {
-                Add(new Student { Name = "Student1", Email = "gmail.com" });
-                Add(new Student { Name = "Student2", Email = "gmail.com" });
-                Add(new Student { Name = "Student3", Email = "gmail.com" });
-            }
         }
 
         public IEnumerable<Student> GetAll()
@@ -24,28 +19,40 @@ namespace _1617_2_LI41N_G9.Data.Repositories
             return _context.Students.ToList();
         }
 
-        public void Add(Student item)
+        public async Task<bool> Add(Student item)
         {
-            _context.Students.Add(item);
-            _context.SaveChanges();
+            await _context.Students.AddAsync(item);
+            if(await _context.SaveChangesAsync() > 0){
+                return true;
+            }
+            return false;
         }
 
-        public Student Find(long key)
+        public Student Find(int Id)
         {
-            return _context.Students.FirstOrDefault(t => t.Key == key);
+            return _context.Students.FirstOrDefault(t => t.Id == Id);
         }
 
-        public void Remove(long key)
+        public async Task<bool> Remove(int Id)
         {
-            var entity = _context.Students.First(t => t.Key == key);
+            var entity = _context.Students.FirstOrDefault(t => t.Id == Id);
+            if(entity == null){
+                return false;
+            }
             _context.Students.Remove(entity);
-            _context.SaveChanges();
+            if(await _context.SaveChangesAsync() > 0){
+                return true;
+            }
+            return false;
         }
 
-        public void Update(Student item)
+        public async Task<bool> Update(Student item)
         {
             _context.Students.Update(item);
-            _context.SaveChanges();
+            if(await _context.SaveChangesAsync() > 0){
+                return true;
+            }
+            return false;
         }
     }
 }

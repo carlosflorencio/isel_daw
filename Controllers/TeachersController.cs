@@ -1,23 +1,31 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
+using _1617_2_LI41N_G9.Data.Repositories;
+using _1617_2_LI41N_G9.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace _1617_2_LI41N_G9.Controllers
 {
     [Route("api/[controller]")]
-    public class ValuesController : Controller
+    public class TeachersController : Controller
     {
+        private IRepository<Teacher> _repo;
+
+        public TeachersController(IRepository<Teacher> repo)
+        {
+            _repo = repo;
+        }
         // GET api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<Teacher> Get()
         {
-            return new string[] { "value1", "value2" };
+            return null;
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public Teacher Get(int id)
         {
-            return "value";
+            return null;
         }
 
         // POST api/values

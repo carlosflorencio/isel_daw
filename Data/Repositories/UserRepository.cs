@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using _1617_2_LI41N_G9.Models;
 
 namespace _1617_2_LI41N_G9.Data.Repositories
@@ -14,23 +15,24 @@ namespace _1617_2_LI41N_G9.Data.Repositories
             _context = context;
         }
 
-        public void Add(User item) {
+        public Task<bool> Add(User item) {
             throw new NotImplementedException();
         }
 
         public IEnumerable<User> GetAll() {
-            return _context.Students.ToList().Concat<User>(_context.Teachers.ToList());
+            return _context.Students.ToList();
+                //.Concat<User>(_context.Teachers.ToList());
         }
 
-        public User Find(long key) {
+        public User Find(int Id) {
             throw new NotImplementedException();
         }
 
-        public void Remove(long key) {
+        public Task<bool> Remove(int Id) {
             throw new NotImplementedException();
         }
 
-        public void Update(User item) {
+        public Task<bool> Update(User item) {
             throw new NotImplementedException();
         }
     }

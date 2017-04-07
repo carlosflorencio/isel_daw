@@ -8,7 +8,7 @@ using _1617_2_LI41N_G9.Data;
 namespace _16172LI41NG9.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20170407120405_init")]
+    [Migration("20170407145212_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,14 +36,14 @@ namespace _16172LI41NG9.Migrations
                     b.Property<string>("Acronym")
                         .IsRequired();
 
-                    b.Property<long?>("CoordinatorKey");
+                    b.Property<int?>("CoordinatorId");
 
                     b.Property<string>("Name")
                         .IsRequired();
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CoordinatorKey");
+                    b.HasIndex("CoordinatorId");
 
                     b.ToTable("Courses");
                 });
@@ -63,7 +63,7 @@ namespace _16172LI41NG9.Migrations
 
             modelBuilder.Entity("_1617_2_LI41N_G9.Models.Student", b =>
                 {
-                    b.Property<long>("Key")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
 
@@ -83,7 +83,7 @@ namespace _16172LI41NG9.Migrations
                     b.Property<string>("Name")
                         .IsRequired();
 
-                    b.HasKey("Key");
+                    b.HasKey("Id");
 
                     b.HasIndex("ClassCourseId", "ClassSemester");
 
@@ -94,7 +94,7 @@ namespace _16172LI41NG9.Migrations
 
             modelBuilder.Entity("_1617_2_LI41N_G9.Models.Teacher", b =>
                 {
-                    b.Property<long>("Key")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
 
@@ -108,7 +108,7 @@ namespace _16172LI41NG9.Migrations
                     b.Property<string>("Name")
                         .IsRequired();
 
-                    b.HasKey("Key");
+                    b.HasKey("Id");
 
                     b.HasIndex("ClassCourseId", "ClassSemester");
 
@@ -128,7 +128,7 @@ namespace _16172LI41NG9.Migrations
                 {
                     b.HasOne("_1617_2_LI41N_G9.Models.Teacher", "Coordinator")
                         .WithMany()
-                        .HasForeignKey("CoordinatorKey");
+                        .HasForeignKey("CoordinatorId");
                 });
 
             modelBuilder.Entity("_1617_2_LI41N_G9.Models.Group", b =>
