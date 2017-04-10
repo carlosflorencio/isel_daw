@@ -22,6 +22,7 @@ namespace _1617_2_LI41N_G9.Data.Repositories
         public async Task<bool> Add(Teacher item) {
             await _context.Teachers.AddAsync(item);
             if(await _context.SaveChangesAsync() > 0){
+                _context.Entry(item).GetDatabaseValues();
                 return true;
             }
             return false;

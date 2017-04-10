@@ -43,8 +43,12 @@ namespace _1617_2_LI41N_G9.Controllers
                 return BadRequest();
             }
 
-            await _repo.Add(new Student { Name = dto.Name, Email = dto.Email });
-            return Ok();
+            var student = new Student { Name = dto.Name, Email = dto.Email };
+            if(await _repo.Add(student)){
+                return CreatedAtRoute("GetStudent", new { id = student.Id }, student);
+            } else {
+                return StatusCode(500, "Error handling your request");
+            }
         }
 
         // PUT api/students/5
@@ -52,16 +56,20 @@ namespace _1617_2_LI41N_G9.Controllers
         public async Task<IActionResult> Put(int id, [FromBody]StudentDTO dto)
         {
             if(dto != null){
-                var student = new Student { Id = id, Name = dto.Name, Email = dto.Email };
-                if(_repo.Find(id) != null){
-                    if(await _repo.Update(student))
-                        return Ok();
+                // Default transaction level -> Read Committed
+                var entity = _repo.Find(id);
+                if(entity != null){
+                    entity.Name = dto.Name;
+                    entity.Email = dto.Email;
+                    if(await _repo.Update(entity))
+                        return NoContent();
                 } else {
+                    var student = new Student { Id = id, Name = dto.Name, Email = dto.Email };
                     if(await _repo.Add(student))
-                        return Ok();
+                        return CreatedAtRoute("GetStudent", new { id = student.Id }, student);
                 }
             }
-            return StatusCode(500, "Error handling our request");
+            return StatusCode(500, "Error handling your request");
         }
 
         // DELETE api/students/5
@@ -71,7 +79,7 @@ namespace _1617_2_LI41N_G9.Controllers
             if(!await _repo.Remove(id)){
                 return NotFound();  // Bad Shit bro
             }
-            return Ok();
+            return NoContent();
         }
     }
 }

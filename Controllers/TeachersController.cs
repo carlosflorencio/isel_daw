@@ -24,7 +24,7 @@ namespace _1617_2_LI41N_G9.Controllers
         }
 
         // GET api/teachers/5
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name="GetTeacher")]
         public IActionResult Get(int id)
         {
             var entity = _repo.Find(id);
@@ -42,8 +42,12 @@ namespace _1617_2_LI41N_G9.Controllers
                 return BadRequest();
             }
 
-            await _repo.Add(new Teacher { Name = dto.Name, Email = dto.Email });
-            return Ok();
+            var teacher = new Teacher { Name = dto.Name, Email = dto.Email };
+            if(await _repo.Add(teacher)){
+                return CreatedAtRoute("GetTeacher", new {id = teacher.Id}, teacher);
+            } else {
+                return StatusCode(500, "Error handling your request");
+            }
         }
 
         // PUT api/teachers/5
@@ -51,16 +55,20 @@ namespace _1617_2_LI41N_G9.Controllers
         public async Task<IActionResult> Put(int id, [FromBody]TeacherDTO dto)
         {
             if(dto != null){
-                var teacher = new Teacher { Id = id, Name = dto.Name, Email = dto.Email };
-                if(_repo.Find(id) != null){
-                    if(await _repo.Update(teacher))
-                        return Ok();
+                // Default transaction level -> Read Committed
+                var entity = _repo.Find(id);
+                if(entity != null){
+                    entity.Name = dto.Name;
+                    entity.Email = dto.Email;
+                    if(await _repo.Update(entity))
+                        return NoContent();
                 } else {
+                    var teacher = new Teacher { Id = id, Name = dto.Name, Email = dto.Email };
                     if(await _repo.Add(teacher))
-                        return Ok();
+                        return CreatedAtRoute("GetTeacher", new {id = teacher.Id}, teacher);
                 }
             }
-            return StatusCode(500, "Error handling our request");
+            return StatusCode(500, "Error handling your request");
         }
 
         // DELETE api/teachers/5
@@ -70,7 +78,7 @@ namespace _1617_2_LI41N_G9.Controllers
             if(!await _repo.Remove(id)){
                 return NotFound();  // Bad Shit bro
             }
-            return Ok();
+            return NoContent();
         }
     }
 }
