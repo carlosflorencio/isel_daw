@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using _1617_2_LI41N_G9.Models;
 
 namespace _1617_2_LI41N_G9.Data.Repositories
@@ -21,27 +22,30 @@ namespace _1617_2_LI41N_G9.Data.Repositories
                 if (pred == null)
                     pred = u => { return true; };
 
-                return _context.Courses.Where(pred).ToList();
+                return _context.Courses
+                    .Include(c => c.Coordinator)
+                    .Include(c => c.Classes)
+                    .Where(pred)
+                    .ToList();
             });
         }
 
         public async Task<Course> Find(int Id)
         {
-            var entity = await _context.Courses.FindAsync(Id);
-            if(entity != default(Course)){
-                entity.Coordinator = await _context.Teachers.FindAsync(entity.CoordinatorId);
-            }
-
-            return entity;
+            return await _context.Courses
+                .Where(c => c.Id == Id)
+                .Include(c => c.Coordinator)
+                .Include(c => c.Classes)
+                .FirstAsync();
         }
 
         public async Task<bool> Add(Course item)
         {
-            item.Coordinator = await _context.Teachers.FindAsync(item.CoordinatorId);
-            var entity = await _context.Courses.AddAsync(item);
+            var entity = _context.Courses.Add(item);
             if(await _context.SaveChangesAsync() > 0){
-                _context.Entry(item).GetDatabaseValues();
-                //item.Classes = await _context.Classes.
+                //item.Coordinator = await _context.Teachers.FindAsync(item.CoordinatorId);
+                // Do the same for classes
+                item = await this.Find(item.Id);     // Good? I don't think so
                 return true;
             }
             return false;
@@ -58,11 +62,7 @@ namespace _1617_2_LI41N_G9.Data.Repositories
 
         public async Task<bool> Remove(int Id)
         {
-            var entity = _context.Courses.FirstOrDefault(t => t.Id == Id);
-            if(entity == null){
-                return false;
-            }
-            _context.Courses.Remove(entity);
+            _context.Courses.Remove(new Course { Id = Id });
             if(await _context.SaveChangesAsync() > 0){
                 return true;
             }

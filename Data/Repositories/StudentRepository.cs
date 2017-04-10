@@ -25,28 +25,23 @@ namespace _1617_2_LI41N_G9.Data.Repositories
             });
         }
 
-        public async Task<bool> Add(Student item)
-        {
-            var entity = await _context.Students.AddAsync(item);
-            if(await _context.SaveChangesAsync() > 0){
-                await _context.Entry(item).GetDatabaseValuesAsync();
-                return true;
-            }
-            return false;
-        }
-
         public async Task<Student> Find(int Id)
         {
             return await _context.Students.FindAsync(Id);
         }
 
+        public async Task<bool> Add(Student item)
+        {
+            _context.Students.Add(item);       //No access to Database
+            if(await _context.SaveChangesAsync() > 0){
+                return true;
+            }
+            return false;
+        }
+
         public async Task<bool> Remove(int Id)
         {
-            var entity = await _context.Students.FindAsync(Id);
-            if(entity == null){
-                return false;
-            }
-            _context.Students.Remove(entity);   //No access to Database
+            _context.Students.Remove(new Student { Id = Id });   //No access to Database
             if(await _context.SaveChangesAsync() > 0){
                 return true;
             }

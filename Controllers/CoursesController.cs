@@ -49,7 +49,7 @@ namespace _1617_2_LI41N_G9.Controllers
                 return BadRequest();
             }
 
-            var course = new Course { Coordinator = new Teacher { Id = dto.CoordinatorId }, Name = dto.Name, Acronym = dto.Acronym };
+            var course = new Course { Name = dto.Name, Acronym = dto.Acronym, CoordinatorId = dto.CoordinatorId };
 
             if(await _repo.Add(course)){
                 return CreatedAtRoute("GetCourse", new { id = course.Id }, course);

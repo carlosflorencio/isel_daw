@@ -30,20 +30,15 @@ namespace _1617_2_LI41N_G9.Data.Repositories
         }
 
         public async Task<bool> Add(Teacher item) {
-            await _context.Teachers.AddAsync(item);
+            _context.Teachers.Add(item);       //No access to Database
             if(await _context.SaveChangesAsync() > 0){
-                await _context.Entry(item).GetDatabaseValuesAsync();
                 return true;
             }
             return false;
         }
 
         public async Task<bool> Remove(int Id) {
-            var entity = await _context.Teachers.FindAsync(Id);
-            if(entity == null){
-                return false;
-            }
-            _context.Teachers.Remove(entity);   //No access to Database
+            _context.Teachers.Remove(new Teacher { Id = Id });   //No access to Database
             if(await _context.SaveChangesAsync() > 0){
                 return true;
             }
