@@ -38,6 +38,7 @@ namespace _1617_2_LI41N_G9
             services.AddScoped<IRepository<User>, UserRepository>();
             services.AddScoped<IRepository<Teacher>, TeacherRepository>();
             services.AddScoped<IRepository<Student>, StudentRepository>();
+            services.AddScoped<IRepository<Course>, CourseRepository>();
             //Missing somes
         }
 

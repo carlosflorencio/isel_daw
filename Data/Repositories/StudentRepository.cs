@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using _1617_2_LI41N_G9.Models;
@@ -17,6 +18,14 @@ namespace _1617_2_LI41N_G9.Data.Repositories
         public IEnumerable<Student> GetAll()
         {
             return _context.Students.ToList();
+        }
+
+        public IEnumerable<Student> GetAll(Func<Student, bool> pred = default(Func<Student, bool>))
+        {
+            if (pred == null)
+                pred = u => { return true; };
+                
+            return _context.Students.Where(pred).ToList();
         }
 
         public async Task<bool> Add(Student item)

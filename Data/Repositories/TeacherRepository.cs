@@ -19,6 +19,14 @@ namespace _1617_2_LI41N_G9.Data.Repositories
             return _context.Teachers.ToList();
         }
 
+        public IEnumerable<Teacher> GetAll(Func<Teacher, bool> pred = default(Func<Teacher, bool>))
+        {
+            if (pred == null)
+                pred = u => { return true; };
+                
+            return _context.Teachers.Where(pred).ToList();
+        }
+
         public async Task<bool> Add(Teacher item) {
             await _context.Teachers.AddAsync(item);
             if(await _context.SaveChangesAsync() > 0){

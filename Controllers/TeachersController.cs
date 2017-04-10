@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using _1617_2_LI41N_G9.Data.Repositories;
@@ -18,9 +19,13 @@ namespace _1617_2_LI41N_G9.Controllers
         }
         // GET api/teachers
         [HttpGet]
-        public IEnumerable<Teacher> Get()
+        public IEnumerable<Teacher> Get([FromQueryAttribute]string name)
         {
-            return _repo.GetAll();
+            Func<Teacher, bool> func = null;
+            if(name != null){
+                func = t => t.Name.Contains(name);
+            }
+            return _repo.GetAll(func);
         }
 
         // GET api/teachers/5
