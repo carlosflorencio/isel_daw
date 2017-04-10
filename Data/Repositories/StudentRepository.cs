@@ -15,41 +15,38 @@ namespace _1617_2_LI41N_G9.Data.Repositories
             _context = context;
         }
 
-        public IEnumerable<Student> GetAll()
+        public Task<IEnumerable<Student>> GetAll(Func<Student, bool> pred = default(Func<Student, bool>))
         {
-            return _context.Students.ToList();
-        }
-
-        public IEnumerable<Student> GetAll(Func<Student, bool> pred = default(Func<Student, bool>))
-        {
-            if (pred == null)
-                pred = u => { return true; };
-                
-            return _context.Students.Where(pred).ToList();
+            return Task.Factory.StartNew<IEnumerable<Student>>(() => {
+                if (pred == null)
+                    pred = u => { return true; };
+                    
+                return _context.Students.Where(pred).ToList();
+            });
         }
 
         public async Task<bool> Add(Student item)
         {
             var entity = await _context.Students.AddAsync(item);
             if(await _context.SaveChangesAsync() > 0){
-                _context.Entry(item).GetDatabaseValues();
+                await _context.Entry(item).GetDatabaseValuesAsync();
                 return true;
             }
             return false;
         }
 
-        public Student Find(int Id)
+        public async Task<Student> Find(int Id)
         {
-            return _context.Students.FirstOrDefault(t => t.Id == Id);
+            return await _context.Students.FindAsync(Id);
         }
 
         public async Task<bool> Remove(int Id)
         {
-            var entity = _context.Students.FirstOrDefault(t => t.Id == Id);
+            var entity = await _context.Students.FindAsync(Id);
             if(entity == null){
                 return false;
             }
-            _context.Students.Remove(entity);
+            _context.Students.Remove(entity);   //No access to Database
             if(await _context.SaveChangesAsync() > 0){
                 return true;
             }
@@ -58,7 +55,7 @@ namespace _1617_2_LI41N_G9.Data.Repositories
 
         public async Task<bool> Update(Student item)
         {
-            _context.Students.Update(item);
+            _context.Students.Update(item);     //No access to Database
             if(await _context.SaveChangesAsync() > 0){
                 return true;
             }

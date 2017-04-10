@@ -8,9 +8,10 @@ using _1617_2_LI41N_G9.Data;
 namespace _16172LI41NG9.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20170410160308_courseId-serial")]
+    partial class courseIdserial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
@@ -36,7 +37,7 @@ namespace _16172LI41NG9.Migrations
                     b.Property<string>("Acronym")
                         .IsRequired();
 
-                    b.Property<int>("CoordinatorId");
+                    b.Property<int?>("CoordinatorId");
 
                     b.Property<string>("Name")
                         .IsRequired();
@@ -128,8 +129,7 @@ namespace _16172LI41NG9.Migrations
                 {
                     b.HasOne("_1617_2_LI41N_G9.Models.Teacher", "Coordinator")
                         .WithMany()
-                        .HasForeignKey("CoordinatorId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("CoordinatorId");
                 });
 
             modelBuilder.Entity("_1617_2_LI41N_G9.Models.Group", b =>

@@ -15,29 +15,33 @@ namespace _1617_2_LI41N_G9.Data.Repositories
             _context = context;
         }
 
-        public IEnumerable<Course> GetAll()
+        public Task<IEnumerable<Course>> GetAll(Func<Course, bool> pred = default(Func<Course, bool>))
         {
-            return _context.Courses.ToList();
+            return Task.Factory.StartNew<IEnumerable<Course>>(() => {
+                if (pred == null)
+                    pred = u => { return true; };
+
+                return _context.Courses.Where(pred).ToList();
+            });
         }
 
-        public IEnumerable<Course> GetAll(Func<Course, bool> pred = default(Func<Course, bool>))
+        public async Task<Course> Find(int Id)
         {
-            if (pred == null)
-                pred = u => { return true; };
-                
-            return _context.Courses.Where(pred).ToList();
-        }
+            var entity = await _context.Courses.FindAsync(Id);
+            if(entity != default(Course)){
+                entity.Coordinator = await _context.Teachers.FindAsync(entity.CoordinatorId);
+            }
 
-        public Course Find(int Id)
-        {
-            return _context.Courses.FirstOrDefault(t => t.Id == Id);
+            return entity;
         }
 
         public async Task<bool> Add(Course item)
         {
+            item.Coordinator = await _context.Teachers.FindAsync(item.CoordinatorId);
             var entity = await _context.Courses.AddAsync(item);
             if(await _context.SaveChangesAsync() > 0){
                 _context.Entry(item).GetDatabaseValues();
+                //item.Classes = await _context.Classes.
                 return true;
             }
             return false;

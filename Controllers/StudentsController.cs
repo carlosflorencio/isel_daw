@@ -20,20 +20,20 @@ namespace _1617_2_LI41N_G9.Controllers
 
         // GET api/students
         [HttpGet]
-        public IEnumerable<Student> Get([FromQueryAttribute]string name)
+        public async Task<IEnumerable<Student>> Get([FromQueryAttribute]string name)
         {
             Func<Student, bool> func = null;
             if(name != null){
                 func = t => t.Name.Contains(name);
             }
-            return _repo.GetAll(func);
+            return await _repo.GetAll(func);
         }
 
         // GET api/students/5
         [HttpGet("{id}", Name="GetStudent")]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var entity = _repo.Find(id);
+            var entity = await _repo.Find(id);
             if(entity == null){
                 return NotFound();
             }
@@ -62,7 +62,7 @@ namespace _1617_2_LI41N_G9.Controllers
         {
             if(dto != null){
                 // Default transaction level -> Read Committed
-                var entity = _repo.Find(id);
+                var entity = await _repo.Find(id);
                 if(entity != null){
                     entity.Name = dto.Name;
                     entity.Email = dto.Email;

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using _1617_2_LI41N_G9.Data.Repositories;
 using _1617_2_LI41N_G9.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -17,9 +18,9 @@ namespace _1617_2_LI41N_G9.Controllers
 
         // GET api/users
         [HttpGet]
-        public IEnumerable<User> Get()
+        public async Task<IEnumerable<User>> Get()
         {
-            return _repo.GetAll();
+            return await _repo.GetAll();
         }
     }
 }

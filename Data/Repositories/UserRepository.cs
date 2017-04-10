@@ -19,17 +19,19 @@ namespace _1617_2_LI41N_G9.Data.Repositories
             throw new NotImplementedException();
         }
         
-        public IEnumerable<User> GetAll(Func<User, bool> pred = default(Func<User, bool>))
+        public Task<IEnumerable<User>> GetAll(Func<User, bool> pred = default(Func<User, bool>))
         {
-            if (pred == null)
-                pred = u => { return true; };
-                
-            return _context.Students.ToList()
-                .Concat<User>(_context.Teachers.ToList())
-                .Where(pred);
+            return Task.Factory.StartNew<IEnumerable<User>>(() => {
+                if (pred == null)
+                    pred = u => { return true; };
+                    
+                return _context.Students.ToList()
+                    .Concat<User>(_context.Teachers.ToList())
+                    .Where(pred);
+            });
         }
 
-        public User Find(int Id) {
+        public Task<User> Find(int Id) {
             throw new NotImplementedException();
         }
 
