@@ -60,16 +60,36 @@ namespace _1617_2_LI41N_G9.Controllers
 
         // PUT api/courses/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody]string value)
+        public async Task<IActionResult> Put(int id, [FromBody]CourseDTO dto)
         {
-            return null;
+            //TODO: What if coordinator does not exist?
+
+            if(dto != null){
+                // Default transaction level -> Read Committed
+                var entity = await _repo.Find(id);
+                if(entity != null){
+                    entity.Name = dto.Name;
+                    entity.Acronym = dto.Acronym;
+                    entity.CoordinatorId = dto.CoordinatorId;
+                    if(await _repo.Update(entity))
+                        return NoContent();
+                } else {
+                    var course = new Course { Id = id, Name = dto.Name, Acronym = dto.Acronym, CoordinatorId = dto.CoordinatorId };
+                    if(await _repo.Add(course))
+                        return CreatedAtRoute("GetCourse", new { id = id }, course);
+                }
+            }
+            return StatusCode(500, "Error hanlding your request");
         }
 
-        // DELETE api/values/5
+        // DELETE api/courses/5
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            return null;
+            if(!await _repo.Remove(id)){
+                return NotFound();  // Bad Shit bro
+            }
+            return NoContent();
         }
     }
 }

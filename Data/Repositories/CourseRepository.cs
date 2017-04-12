@@ -36,7 +36,7 @@ namespace _1617_2_LI41N_G9.Data.Repositories
                 .Where(c => c.Id == Id)
                 .Include(c => c.Coordinator)
                 .Include(c => c.Classes)
-                .FirstAsync();
+                .FirstOrDefaultAsync();
         }
 
         public async Task<bool> Add(Course item)
@@ -62,6 +62,9 @@ namespace _1617_2_LI41N_G9.Data.Repositories
 
         public async Task<bool> Remove(int Id)
         {
+            if(await Find(Id) == null){
+                return false;
+            }
             _context.Courses.Remove(new Course { Id = Id });
             if(await _context.SaveChangesAsync() > 0){
                 return true;

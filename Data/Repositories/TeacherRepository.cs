@@ -38,6 +38,9 @@ namespace _1617_2_LI41N_G9.Data.Repositories
         }
 
         public async Task<bool> Remove(int Id) {
+            if(await Find(Id) == null){
+                return false;
+            }
             _context.Teachers.Remove(new Teacher { Id = Id });   //No access to Database
             if(await _context.SaveChangesAsync() > 0){
                 return true;
