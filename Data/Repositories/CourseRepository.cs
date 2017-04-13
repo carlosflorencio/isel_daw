@@ -62,10 +62,11 @@ namespace _1617_2_LI41N_G9.Data.Repositories
 
         public async Task<bool> Remove(int Id)
         {
-            if(await Find(Id) == null){
+            var course = await Find(Id);
+            if(course == null){
                 return false;
             }
-            _context.Courses.Remove(new Course { Id = Id });
+            _context.Courses.Remove(course);
             if(await _context.SaveChangesAsync() > 0){
                 return true;
             }

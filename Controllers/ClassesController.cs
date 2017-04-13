@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using _1617_2_LI41N_G9.Models;
+using _1617_2_LI41N_G9.Models.CreationDTO;
 using Microsoft.AspNetCore.Mvc;
 
 namespace _1617_2_LI41N_G9.Controllers
@@ -14,16 +15,29 @@ namespace _1617_2_LI41N_G9.Controllers
             return null;
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public Class Get(int id)
+        // GET api/classes/1617V
+        [HttpGet("{sem}")]
+        public Class GetClassesBySemester(string sem)
         {
             return null;
         }
 
-        // POST api/values
+        // GET api/classes/1617V/courses/1
+        [HttpGet("{sem}/courses/{courseId}")]
+        public Class GetClassesOfCourseBySemester(string sem, int courseId)
+        {
+            return null;
+        }
+
+        // POST api/classes/1617V/courses/1
         [HttpPost]
-        public void Post([FromBody]string value)
+        public void Post([FromBody]ClassCreationDTO dto)
+        {
+        }
+
+        // POST api/classes/1617V/courses/1/teachers/1
+        [HttpPost]
+        public void PostTeacherToClass([FromBody]ClassCreationDTO dto)
         {
         }
 

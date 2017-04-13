@@ -41,10 +41,11 @@ namespace _1617_2_LI41N_G9.Data.Repositories
 
         public async Task<bool> Remove(int Id)
         {
-            if(await Find(Id) == null){
+            var student = await Find(Id);
+            if(student == null){
                 return false;
             }
-            _context.Students.Remove(new Student { Id = Id });   //No access to Database
+            _context.Students.Remove(student);   //No access to Database
             if(await _context.SaveChangesAsync() > 0){
                 return true;
             }

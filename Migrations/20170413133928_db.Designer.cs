@@ -8,8 +8,8 @@ using _1617_2_LI41N_G9.Data;
 namespace _16172LI41NG9.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20170407145212_init")]
-    partial class init
+    [Migration("20170413133928_db")]
+    partial class db
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,8 @@ namespace _16172LI41NG9.Migrations
 
                     b.Property<string>("Semester");
 
+                    b.Property<string>("Name");
+
                     b.HasKey("CourseId", "Semester");
 
                     b.ToTable("Classes");
@@ -31,7 +33,8 @@ namespace _16172LI41NG9.Migrations
             modelBuilder.Entity("_1617_2_LI41N_G9.Models.Course", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
 
                     b.Property<string>("Acronym")
                         .IsRequired();
@@ -83,6 +86,8 @@ namespace _16172LI41NG9.Migrations
                     b.Property<string>("Name")
                         .IsRequired();
 
+                    b.Property<int>("Number");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ClassCourseId", "ClassSemester");
@@ -107,6 +112,8 @@ namespace _16172LI41NG9.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired();
+
+                    b.Property<int>("Number");
 
                     b.HasKey("Id");
 

@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using _1617_2_LI41N_G9.Data.Repositories;
+using _1617_2_LI41N_G9.Mapper;
 using _1617_2_LI41N_G9.Models;
-using _1617_2_LI41N_G9.Models.DTO;
+using _1617_2_LI41N_G9.Models.CreationDTO;
 using Microsoft.AspNetCore.Mvc;
 
 namespace _1617_2_LI41N_G9.Controllers
@@ -43,13 +43,13 @@ namespace _1617_2_LI41N_G9.Controllers
 
         // POST api/courses
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]CourseDTO dto)
+        public async Task<IActionResult> Post([FromBody]CourseCreationDTO dto)
         {
             if(dto == null){
                 return BadRequest();
             }
 
-            var course = new Course { Name = dto.Name, Acronym = dto.Acronym, CoordinatorId = dto.CoordinatorId };
+            var course = CreationToModelMapper.Map(dto);
 
             if(await _repo.Add(course)){
                 return CreatedAtRoute("GetCourse", new { id = course.Id }, course);
@@ -60,7 +60,7 @@ namespace _1617_2_LI41N_G9.Controllers
 
         // PUT api/courses/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody]CourseDTO dto)
+        public async Task<IActionResult> Put(int id, [FromBody]CourseCreationDTO dto)
         {
             //TODO: What if coordinator does not exist?
 
@@ -74,7 +74,8 @@ namespace _1617_2_LI41N_G9.Controllers
                     if(await _repo.Update(entity))
                         return NoContent();
                 } else {
-                    var course = new Course { Id = id, Name = dto.Name, Acronym = dto.Acronym, CoordinatorId = dto.CoordinatorId };
+                    var course = CreationToModelMapper.Map(dto);
+                    course.Id = id;
                     if(await _repo.Add(course))
                         return CreatedAtRoute("GetCourse", new { id = id }, course);
                 }

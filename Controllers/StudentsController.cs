@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using _1617_2_LI41N_G9.Data.Repositories;
+using _1617_2_LI41N_G9.Mapper;
 using _1617_2_LI41N_G9.Models;
-using _1617_2_LI41N_G9.Models.DTO;
+using _1617_2_LI41N_G9.Models.CreationDTO;
 using Microsoft.AspNetCore.Mvc;
 
 namespace _1617_2_LI41N_G9.Controllers
@@ -42,13 +43,13 @@ namespace _1617_2_LI41N_G9.Controllers
 
         // POST api/students
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]StudentDTO dto)
+        public async Task<IActionResult> Post([FromBody]StudentCreationDTO dto)
         {
             if(dto == null){
                 return BadRequest();
             }
 
-            var student = new Student { Name = dto.Name, Email = dto.Email };
+            var student = CreationToModelMapper.Map(dto);
             if(await _repo.Add(student)){
                 return CreatedAtRoute("GetStudent", new { id = student.Id }, student);
             } else {
@@ -58,18 +59,20 @@ namespace _1617_2_LI41N_G9.Controllers
 
         // PUT api/students/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody]StudentDTO dto)
+        public async Task<IActionResult> Put(int id, [FromBody]StudentCreationDTO dto)
         {
             if(dto != null){
                 // Default transaction level -> Read Committed
                 var entity = await _repo.Find(id);
                 if(entity != null){
+                    entity.Number = dto.Number;
                     entity.Name = dto.Name;
                     entity.Email = dto.Email;
                     if(await _repo.Update(entity))
                         return NoContent();
                 } else {
-                    var student = new Student { Id = id, Name = dto.Name, Email = dto.Email };
+                    var student = CreationToModelMapper.Map(dto);
+                    student.Id = id;
                     if(await _repo.Add(student))
                         return CreatedAtRoute("GetStudent", new { id = student.Id }, student);
                 }

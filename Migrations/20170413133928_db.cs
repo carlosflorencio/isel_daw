@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace _16172LI41NG9.Migrations
 {
-    public partial class init : Migration
+    public partial class db : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -34,7 +34,8 @@ namespace _16172LI41NG9.Migrations
                     GroupClassId = table.Column<int>(nullable: true),
                     GroupNumber = table.Column<int>(nullable: true),
                     GroupSemester = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: false)
+                    Name = table.Column<string>(nullable: false),
+                    Number = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -56,7 +57,8 @@ namespace _16172LI41NG9.Migrations
                     ClassCourseId = table.Column<int>(nullable: true),
                     ClassSemester = table.Column<string>(nullable: true),
                     Email = table.Column<string>(nullable: false),
-                    Name = table.Column<string>(nullable: false)
+                    Name = table.Column<string>(nullable: false),
+                    Number = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -89,7 +91,8 @@ namespace _16172LI41NG9.Migrations
                 columns: table => new
                 {
                     CourseId = table.Column<int>(nullable: false),
-                    Semester = table.Column<string>(nullable: false)
+                    Semester = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

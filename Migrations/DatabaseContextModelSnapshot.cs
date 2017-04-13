@@ -22,6 +22,8 @@ namespace _16172LI41NG9.Migrations
 
                     b.Property<string>("Semester");
 
+                    b.Property<string>("Name");
+
                     b.HasKey("CourseId", "Semester");
 
                     b.ToTable("Classes");
@@ -83,6 +85,8 @@ namespace _16172LI41NG9.Migrations
                     b.Property<string>("Name")
                         .IsRequired();
 
+                    b.Property<int>("Number");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ClassCourseId", "ClassSemester");
@@ -107,6 +111,8 @@ namespace _16172LI41NG9.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired();
+
+                    b.Property<int>("Number");
 
                     b.HasKey("Id");
 
