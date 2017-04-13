@@ -1,17 +1,17 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace _1617_2_LI41N_G9.Models
+namespace DAW_API.Models
 {
     public class Group
     {
-        [RequiredAttribute]
+        [Required]
         public int GroupNumber { get; set; }
 
-        [RequiredAttribute]
+        [Required]
         public int ClassId { get; set; }
 
-        [RequiredAttribute]
+        [Required]
         public string Semester { get; set; }
 
         public Class Class { get; set; }

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using _1617_2_LI41N_G9.Data;
+using DAW_API.Data;
 
 namespace _16172LI41NG9.Migrations
 {
