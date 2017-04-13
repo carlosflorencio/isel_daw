@@ -1,7 +1,7 @@
-using _1617_2_LI41N_G9.Models;
-using _1617_2_LI41N_G9.Models.CreationDTO;
+using DAW_API.Models;
+using DAW_API.Models.CreationDTO;
 
-namespace _1617_2_LI41N_G9.Mapper
+namespace DAW_API.Mapper
 {
     public class CreationToModelMapper
     {
