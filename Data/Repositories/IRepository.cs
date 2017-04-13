@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace _1617_2_LI41N_G9.Data.Repositories
+namespace DAW_API.Data.Repositories
 {
     public interface IRepository<T>
     {

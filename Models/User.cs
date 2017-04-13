@@ -1,22 +1,22 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace _1617_2_LI41N_G9.Models
+namespace DAW_API.Models
 {
     public class User
     {
-        [KeyAttribute]
+        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [RequiredAttribute]
+        [Required]
         public int Number { get; set; }
 
-        [RequiredAttribute]
+        [Required]
         public string Name { get; set; }
 
-        [EmailAddressAttribute]
-        [RequiredAttribute]
+        [EmailAddress]
+        [Required]
         public string Email { get; set; }
     }
 }

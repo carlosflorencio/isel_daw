@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DAW_API.Models;
 using Microsoft.EntityFrameworkCore;
-using _1617_2_LI41N_G9.Models;
 
-namespace _1617_2_LI41N_G9.Data.Repositories
+namespace DAW_API.Data.Repositories
 {
     public class CourseRepository : IRepository<Course>
     {

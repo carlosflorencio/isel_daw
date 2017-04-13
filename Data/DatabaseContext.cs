@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using _1617_2_LI41N_G9.Models;
+﻿using DAW_API.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace _1617_2_LI41N_G9.Data
+namespace DAW_API.Data
 {
     public class DatabaseContext : DbContext
     {

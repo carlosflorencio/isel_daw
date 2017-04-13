@@ -1,17 +1,19 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using DAW_API.Data;
+using DAW_API.Data.Repositories;
+using DAW_API.Models;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
-using _1617_2_LI41N_G9.Data;
-using _1617_2_LI41N_G9.Data.Repositories;
-using _1617_2_LI41N_G9.Models;
 
-namespace _1617_2_LI41N_G9
+namespace DAW_API
 {
     public class Startup
     {
+        public IConfigurationRoot Configuration { get; }
+
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -19,10 +21,9 @@ namespace _1617_2_LI41N_G9
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
+
             Configuration = builder.Build();
         }
-
-        public IConfigurationRoot Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -48,7 +49,7 @@ namespace _1617_2_LI41N_G9
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            app.UseMvc();
+            app.UseMvcWithDefaultRoute();
         }
     }
 }
