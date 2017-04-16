@@ -13,9 +13,9 @@ namespace DAW_API.Mapper
             return new Student { Number = dto.Number, Name = dto.Name, Email = dto.Email };
         }
 
-        public static Course Map(CourseCreationDTO dto){
-            return new Course { Name = dto.Name, Acronym = dto.Acronym, CoordinatorId = dto.CoordinatorId };
-        }
+//        public static Course Map(CourseCreationDTO dto){
+//            return new Course { Name = dto.Name, Acronym = dto.Acronym, CoordinatorId = dto.CoordinatorId };
+//        }
 
         public static Class Map(ClassCreationDTO dto){
             return new Class(); //TODO: mapping of class

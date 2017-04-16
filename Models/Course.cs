@@ -6,8 +6,6 @@ namespace DAW_API.Models
 {
     public class Course
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required]
@@ -16,11 +14,11 @@ namespace DAW_API.Models
         [Required]
         public string Acronym { get; set; }
 
-        public int? CoordinatorId { get; set; }
+        public int CoordinatorId { get; set; }
 
         [ForeignKey("CoordinatorId")]
-        public virtual Teacher Coordinator { get; set; }
+        public Teacher Coordinator { get; set; }
 
-        public virtual List<Class> Classes { get; set; }
+        public ICollection<Class> Classes { get; set; }
     }
 }

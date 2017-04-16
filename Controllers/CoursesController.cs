@@ -45,17 +45,19 @@ namespace DAW_API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]CourseCreationDTO dto)
         {
-            if(dto == null){
-                return BadRequest();
-            }
+            //            if(dto == null){
+            //                return BadRequest();
+            //            }
+            //
+            //            var course = CreationToModelMapper.Map(dto);
+            //
+            //            if(await _repo.Add(course)){
+            //                return CreatedAtRoute("GetCourse", new { id = course.Id }, course);
+            //            } else {
+            //                return StatusCode(500, "Error handling your request");
+            //            }
 
-            var course = CreationToModelMapper.Map(dto);
-
-            if(await _repo.Add(course)){
-                return CreatedAtRoute("GetCourse", new { id = course.Id }, course);
-            } else {
-                return StatusCode(500, "Error handling your request");
-            }
+            return StatusCode(500, "Error handling your request");
         }
 
         // PUT api/courses/5
@@ -64,22 +66,22 @@ namespace DAW_API.Controllers
         {
             //TODO: What if coordinator does not exist?
 
-            if(dto != null){
-                // Default transaction level -> Read Committed
-                var entity = await _repo.Find(id);
-                if(entity != null){
-                    entity.Name = dto.Name;
-                    entity.Acronym = dto.Acronym;
-                    entity.CoordinatorId = dto.CoordinatorId;
-                    if(await _repo.Update(entity))
-                        return NoContent();
-                } else {
-                    var course = CreationToModelMapper.Map(dto);
-                    course.Id = id;
-                    if(await _repo.Add(course))
-                        return CreatedAtRoute("GetCourse", new { id = id }, course);
-                }
-            }
+//            if(dto != null){
+//                // Default transaction level -> Read Committed
+//                var entity = await _repo.Find(id);
+//                if(entity != null){
+//                    entity.Name = dto.Name;
+//                    entity.Acronym = dto.Acronym;
+//                    entity.CoordinatorId = dto.CoordinatorId;
+//                    if(await _repo.Update(entity))
+//                        return NoContent();
+//                } else {
+//                    var course = CreationToModelMapper.Map(dto);
+//                    course.Id = id;
+//                    if(await _repo.Add(course))
+//                        return CreatedAtRoute("GetCourse", new { id = id }, course);
+//                }
+//            }
             return StatusCode(500, "Error hanlding your request");
         }
 

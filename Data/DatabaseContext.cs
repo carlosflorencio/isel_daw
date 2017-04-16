@@ -10,36 +10,78 @@ namespace DAW_API.Data
         {
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Class>()
-                .HasOne(c => c.Course)
-                .WithMany(c => c.Classes)
-                .HasForeignKey(c => c.CourseId)
-                .HasConstraintName("ForeignKey_Course_Class");
+        public DbSet<User> Users { get; set; }
+        public DbSet<Student> Students { get; set; }
+        public DbSet<Teacher> Teachers { get; set; }
+        public DbSet<Administrator> Administrators { get; set; }
 
-            modelBuilder.Entity<Group>()
-                .HasOne(g => g.Class)
-                .WithMany(c => c.Groups)
-                .HasForeignKey(g => new { g.ClassId, g.Semester })
-                .HasConstraintName("ForeignKey_Group_Class");
-
-            modelBuilder.Entity<Group>()
-                .HasKey(g => new { g.ClassId, g.Semester, g.GroupNumber });
-
-            modelBuilder.Entity<Class>()
-                .HasKey(c => new { c.CourseId, c.Semester });
-        }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<Semester> Semesters { get; set; }
 
         public DbSet<Class> Classes { get; set; }
 
-        public DbSet<Course> Courses { get; set; }
-
         public DbSet<Group> Groups { get; set; }
 
-        public DbSet<Student> Students { get; set; }
 
-        public DbSet<Teacher> Teachers { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder) {
+
+            // Courses
+            modelBuilder.Entity<Course>()
+                .HasIndex(c => c.Name)
+                .IsUnique();
+
+            modelBuilder.Entity<Course>()
+                .HasIndex(c => c.Acronym)
+                .IsUnique();
+
+            // Relation Class N:N Teacher
+            modelBuilder.Entity<ClassTeacher>()
+                .HasKey(c => new { c.ClassId, c.TeacherId });
+
+            modelBuilder.Entity<ClassTeacher>()
+                .HasOne(c => c.Class)
+                .WithMany(c => c.Teachers)
+                .HasForeignKey(c => c.ClassId);
+
+            modelBuilder.Entity<ClassTeacher>()
+                .HasOne(c => c.Teacher)
+                .WithMany(c => c.Classes)
+                .HasForeignKey(c => c.TeacherId);
+
+            // Relation Class N:N Student
+            modelBuilder.Entity<ClassStudent>()
+                .HasKey(c => new { c.ClassId, c.StudentId });
+
+            modelBuilder.Entity<ClassStudent>()
+                .HasOne(c => c.Class)
+                .WithMany(c => c.Participants)
+                .HasForeignKey(c => c.ClassId);
+
+            modelBuilder.Entity<ClassStudent>()
+                .HasOne(c => c.Student)
+                .WithMany(c => c.Classes)
+                .HasForeignKey(c => c.StudentId);
+
+            // Group
+            modelBuilder.Entity<Group>()
+                .HasKey(c => new { c.ClassId, CustomGroupId = c.Id });
+
+
+            // Relation Group N:N Student
+            modelBuilder.Entity<GroupStudent>()
+                .HasKey(c => new { c.ClassId, c.StudentId, c.GroupId });
+
+            modelBuilder.Entity<GroupStudent>()
+                .HasOne(c => c.Student)
+                .WithMany(c => c.Groups)
+                .HasForeignKey(c => c.GroupId);
+
+            modelBuilder.Entity<GroupStudent>()
+                .HasOne(c => c.Group)
+                .WithMany(c => c.Students)
+                .HasForeignKey(c => new { c.GroupId, c.ClassId });
+
+        }
 
     }
 }

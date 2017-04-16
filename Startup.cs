@@ -1,8 +1,10 @@
-﻿using DAW_API.Data;
+﻿using System;
+using DAW_API.Data;
 using DAW_API.Data.Repositories;
 using DAW_API.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Server.Kestrel.Internal.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -12,7 +14,7 @@ namespace DAW_API
 {
     public class Startup
     {
-        public IConfigurationRoot Configuration { get; }
+        private IConfigurationRoot Configuration { get; }
 
         public Startup(IHostingEnvironment env)
         {
