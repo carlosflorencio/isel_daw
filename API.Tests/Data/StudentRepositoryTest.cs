@@ -11,7 +11,8 @@ using Xunit;
 
 namespace API.Tests.Data
 {
-    public class StudentRepositoryTest : IDisposable {
+    public class StudentRepositoryTest : IDisposable
+    {
 
         private readonly SqliteConnection _connection;
         private readonly DatabaseContext _context;
@@ -19,8 +20,8 @@ namespace API.Tests.Data
 
         // This class is instatiated for each test
         // https://xunit.github.io/docs/shared-context.html
-
-        public StudentRepositoryTest() {
+        public StudentRepositoryTest()
+        {
             // In-memory database only exists while the connection is open
             _connection = new SqliteConnection("DataSource=:memory:");
             _connection.Open();
@@ -33,7 +34,6 @@ namespace API.Tests.Data
             _context.Database.EnsureCreated();
 
             _repo = new StudentRepository(_context);
-
         }
 
         public void Dispose()
@@ -54,7 +54,8 @@ namespace API.Tests.Data
         }
 
         [Fact]
-        public async Task Test_Delete_Student() {
+        public async Task Test_Delete_Student()
+        {
             var stds = GetStudents();
             _context.Students.AddRange(stds);
             _context.SaveChanges();
@@ -106,7 +107,8 @@ namespace API.Tests.Data
         | Utils
         |--------------------------------------------------------------------------
         */
-        private static Student[] GetStudents() {
+        private static Student[] GetStudents()
+        {
             return new[] {
                 new Student
                 {

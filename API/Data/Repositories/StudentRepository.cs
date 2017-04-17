@@ -15,8 +15,8 @@ namespace API.Data.Repositories
         {
         }
 
-        public async Task<Student> GetByIdAsync(int Id) {
-            return await _context.Students.Where(c => c.Id == Id).FirstOrDefaultAsync();
+        public async Task<Student> GetByIdAsync(int id) {
+            return await Context.Students.Where(c => c.Id == id).SingleOrDefaultAsync();
         }
     }
 }

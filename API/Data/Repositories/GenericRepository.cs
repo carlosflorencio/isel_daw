@@ -13,47 +13,47 @@ namespace API.Data.Repositories
         IGenericRepository<T> where T : class where C : DbContext, new()
     {
 
-        protected readonly C _context;
+        protected readonly C Context;
 
         protected GenericRepository(C ctx)
         {
-            _context = ctx;
+            Context = ctx;
         }
 
         public virtual async Task<IEnumerable<T>> GetAllAsync()
         {
-            return await _context.Set<T>().ToListAsync();
+            return await Context.Set<T>().ToListAsync();
         }
 
         public virtual async Task<IEnumerable<T>> FindByAsync(Expression<Func<T, bool>> predicate)
         {
-            return await _context.Set<T>().Where(predicate).ToListAsync();
+            return await Context.Set<T>().Where(predicate).ToListAsync();
         }
 
         public virtual async Task<bool> AddAsync(T entity)
         {
-            await _context.Set<T>().AddAsync(entity);
+            await Context.Set<T>().AddAsync(entity);
 
             return await SaveAsync();
         }
 
         public virtual async Task<bool> DeleteAsync(T entity)
         {
-            _context.Set<T>().Remove(entity);
+            Context.Set<T>().Remove(entity);
 
             return await SaveAsync();
         }
 
         public virtual async Task<bool> EditAsync(T entity)
         {
-            _context.Entry(entity).State = EntityState.Modified;
+            Context.Entry(entity).State = EntityState.Modified;
 
             return await SaveAsync();
         }
 
         public virtual async Task<bool> SaveAsync()
         {
-            return await _context.SaveChangesAsync() > 0;
+            return await Context.SaveChangesAsync() > 0;
         }
     }
 }

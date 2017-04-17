@@ -9,7 +9,7 @@ namespace API.Data.Repositories.Contracts
 {
     public interface IStudentRepository : IGenericRepository<Student> {
 
-        Task<Student> GetByIdAsync(int Id);
+        Task<Student> GetByIdAsync(int id);
 
     }
 }
