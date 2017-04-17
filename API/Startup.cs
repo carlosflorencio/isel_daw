@@ -40,7 +40,7 @@ namespace API
             // Add scoped => new instance every HTTP request
             services.AddScoped<IRepository<User>, UserRepository>();
             services.AddScoped<IRepository<Teacher>, TeacherRepository>();
-            services.AddScoped<IRepository<Student>, StudentRepository>();
+            services.AddScoped<IRepository<Student>, StudentRepository_old>();
             services.AddScoped<IRepository<Course>, CourseRepository>();
             //Missing somes
         }
