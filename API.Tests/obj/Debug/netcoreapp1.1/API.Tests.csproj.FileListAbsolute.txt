@@ -1,0 +1,12 @@
+C:\Projects\DAW_API\API.Tests\bin\Debug\netcoreapp1.1\xunit.runner.visualstudio.dotnetcore.testadapter.dll
+C:\Projects\DAW_API\API.Tests\bin\Debug\netcoreapp1.1\xunit.runner.utility.netstandard15.dll
+C:\Projects\DAW_API\API.Tests\bin\Debug\netcoreapp1.1\xunit.runner.reporters.netstandard15.dll
+C:\Projects\DAW_API\API.Tests\bin\Debug\netcoreapp1.1\API.Tests.deps.json
+C:\Projects\DAW_API\API.Tests\bin\Debug\netcoreapp1.1\API.Tests.runtimeconfig.json
+C:\Projects\DAW_API\API.Tests\bin\Debug\netcoreapp1.1\API.Tests.runtimeconfig.dev.json
+C:\Projects\DAW_API\API.Tests\bin\Debug\netcoreapp1.1\API.Tests.dll
+C:\Projects\DAW_API\API.Tests\bin\Debug\netcoreapp1.1\API.Tests.pdb
+C:\Projects\DAW_API\API.Tests\obj\Debug\netcoreapp1.1\API.Tests.csprojResolveAssemblyReference.cache
+C:\Projects\DAW_API\API.Tests\obj\Debug\netcoreapp1.1\API.Tests.AssemblyInfo.cs
+C:\Projects\DAW_API\API.Tests\obj\Debug\netcoreapp1.1\API.Tests.dll
+C:\Projects\DAW_API\API.Tests\obj\Debug\netcoreapp1.1\API.Tests.pdb
