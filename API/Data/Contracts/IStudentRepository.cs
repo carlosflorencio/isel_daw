@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using API.Models;
 
-namespace API.Data.Repositories.Contracts
+namespace API.Data.Contracts
 {
     public interface IStudentRepository : IGenericRepository<Student> {
 

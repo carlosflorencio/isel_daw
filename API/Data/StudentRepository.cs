@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using API.Data.Repositories.Contracts;
+using API.Data.Contracts;
 using API.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace API.Data.Repositories
+namespace API.Data
 {
     public class StudentRepository : GenericRepository<DatabaseContext, Student>, IStudentRepository
     {

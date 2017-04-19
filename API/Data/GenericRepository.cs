@@ -4,10 +4,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using API.Data.Repositories.Contracts;
+using API.Data.Contracts;
 using Microsoft.EntityFrameworkCore;
 
-namespace API.Data.Repositories
+namespace API.Data
 {
     public abstract class GenericRepository<C, T> :
         IGenericRepository<T> where T : class where C : DbContext, new()
@@ -20,12 +20,12 @@ namespace API.Data.Repositories
             Context = ctx;
         }
 
-        public virtual async Task<IEnumerable<T>> GetAllAsync()
+        public virtual async Task<List<T>> GetAllAsync()
         {
             return await Context.Set<T>().ToListAsync();
         }
 
-        public virtual async Task<IEnumerable<T>> FindByAsync(Expression<Func<T, bool>> predicate)
+        public virtual async Task<List<T>> FindByAsync(Expression<Func<T, bool>> predicate)
         {
             return await Context.Set<T>().Where(predicate).ToListAsync();
         }

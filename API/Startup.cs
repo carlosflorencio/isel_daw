@@ -1,6 +1,7 @@
 ﻿using System;
 using API.Data;
-using API.Data.Repositories;
+using API.Data.Contracts;
+using API.Middlewares;
 using API.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,29 +28,34 @@ namespace API
             Configuration = builder.Build();
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add framework services.
-            services.AddMvc();
-
+            // EF Core
             services.AddDbContext<DatabaseContext>(
                 opt => opt.UseNpgsql(Configuration["Data:PostgreConnection:ConnectionString"])
             );
 
-            // Add scoped => new instance every HTTP request
-            services.AddScoped<IRepository<User>, UserRepository>();
-            services.AddScoped<IRepository<Teacher>, TeacherRepository>();
-            services.AddScoped<IRepository<Student>, StudentRepository_old>();
-            services.AddScoped<IRepository<Course>, CourseRepository>();
-            //Missing somes
+            // MVC
+            services.AddMvc();
+
+            // Custom Services
+            // AddTransient -> services are created each time they are requested.
+            // AddScoped    -> services are created once per request.
+            // AddSingleton -> services are created only the first time.
+            services.AddScoped<IStudentRepository, StudentRepository>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+//            if (env.IsDevelopment()) {
+//                app.UseDeveloperExceptionPage();
+//            }
+
+            app.UseStatusCodePagesWithReExecute("/error/{0}");
+            app.UseMiddleware(typeof(ErrorHandlingMiddleware));
 
             app.UseMvcWithDefaultRoute();
         }
