@@ -83,6 +83,5 @@ namespace API.Data
                 .HasForeignKey(c => new { c.GroupId, c.ClassId });
 
         }
-
     }
 }

@@ -14,6 +14,5 @@ namespace API.Data.Contracts
         Task<bool> AddAsync(T entity);
         Task<bool> DeleteAsync(T entity);
         Task<bool> EditAsync(T entity);
-        Task<bool> SaveAsync();
     }
 }

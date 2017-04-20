@@ -15,8 +15,8 @@ namespace API.Data
         {
         }
 
-        public async Task<Student> GetByIdAsync(int id) {
-            return await Context.Students.Where(c => c.Id == id).SingleOrDefaultAsync();
+        public Task<Student> GetByIdAsync(int id) {
+            return Context.Students.Where(c => c.Id == id).SingleOrDefaultAsync();
         }
     }
 }

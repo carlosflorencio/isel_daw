@@ -20,40 +20,44 @@ namespace API.Data
             Context = ctx;
         }
 
-        public virtual async Task<List<T>> GetAllAsync()
+        public virtual Task<List<T>> GetAllAsync()
         {
-            return await Context.Set<T>().ToListAsync();
+            return Context.Set<T>().ToListAsync();
         }
 
-        public virtual async Task<List<T>> FindByAsync(Expression<Func<T, bool>> predicate)
+        public virtual Task<List<T>> FindByAsync(Expression<Func<T, bool>> predicate)
         {
-            return await Context.Set<T>().Where(predicate).ToListAsync();
+            return Context.Set<T>().Where(predicate).ToListAsync();
         }
 
-        public virtual async Task<bool> AddAsync(T entity)
+        public virtual Task<bool> AddAsync(T entity)
         {
-            await Context.Set<T>().AddAsync(entity);
-
-            return await SaveAsync();
+            return Context
+                .Set<T>()
+                .AddAsync(entity)
+                .ContinueWith(antecendent => SaveAsync())
+                .Unwrap();
         }
 
-        public virtual async Task<bool> DeleteAsync(T entity)
+        public virtual Task<bool> DeleteAsync(T entity)
         {
             Context.Set<T>().Remove(entity);
 
-            return await SaveAsync();
+            return SaveAsync();
         }
 
-        public virtual async Task<bool> EditAsync(T entity)
+        public virtual Task<bool> EditAsync(T entity)
         {
             Context.Entry(entity).State = EntityState.Modified;
 
-            return await SaveAsync();
+            return SaveAsync();
         }
 
-        public virtual async Task<bool> SaveAsync()
+        protected Task<bool> SaveAsync()
         {
-            return await Context.SaveChangesAsync() > 0;
+            return Context
+                .SaveChangesAsync()
+                .ContinueWith(antecedent => antecedent.Result > 0);
         }
     }
 }
