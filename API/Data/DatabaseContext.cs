@@ -1,4 +1,5 @@
-﻿using API.Models;
+﻿using System.Diagnostics.Contracts;
+using API.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Data
@@ -14,10 +15,8 @@ namespace API.Data
 
         }
 
-        public DbSet<User> Users { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
-        public DbSet<Administrator> Administrators { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<Semester> Semesters { get; set; }
         public DbSet<Class> Classes { get; set; }
@@ -51,7 +50,7 @@ namespace API.Data
 
             // Relation Class N:N Student
             modelBuilder.Entity<ClassStudent>()
-                .HasKey(c => new { c.ClassId, c.StudentId });
+                .HasKey(c => new { c.ClassId, c.StudentNumberId });
 
             modelBuilder.Entity<ClassStudent>()
                 .HasOne(c => c.Class)
@@ -61,26 +60,26 @@ namespace API.Data
             modelBuilder.Entity<ClassStudent>()
                 .HasOne(c => c.Student)
                 .WithMany(c => c.Classes)
-                .HasForeignKey(c => c.StudentId);
+                .HasForeignKey(c => c.StudentNumberId);
 
             // Group
             modelBuilder.Entity<Group>()
-                .HasKey(c => new { c.ClassId, CustomGroupId = c.Id });
+                .HasKey(c => new { c.ClassId, c.Id });
 
 
             // Relation Group N:N Student
             modelBuilder.Entity<GroupStudent>()
-                .HasKey(c => new { c.ClassId, c.StudentId, c.GroupId });
+                .HasKey(c => new { c.ClassId, c.StudentNumber, c.GroupId });
 
             modelBuilder.Entity<GroupStudent>()
                 .HasOne(c => c.Student)
                 .WithMany(c => c.Groups)
-                .HasForeignKey(c => c.GroupId);
+                .HasForeignKey(c => c.StudentNumber);
 
             modelBuilder.Entity<GroupStudent>()
                 .HasOne(c => c.Group)
                 .WithMany(c => c.Students)
-                .HasForeignKey(c => new { c.GroupId, c.ClassId });
+                .HasForeignKey(c => new { c.ClassId, c.GroupId });
 
         }
     }

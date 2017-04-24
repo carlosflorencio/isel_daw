@@ -66,7 +66,7 @@ namespace API.Tests.Data
 
             Assert.Equal(stds.Length - 1, (await _repo.GetAllAsync()).Count());
 
-            var first = await _repo.GetByIdAsync(1);
+            var first = await _repo.GetByNumberAsync(stds[0].Number);
             Assert.Null(first);
         }
 
@@ -77,15 +77,15 @@ namespace API.Tests.Data
             _context.Students.Add(studentOriginal);
             _context.SaveChanges();
 
-            var student = await _repo.GetByIdAsync(studentOriginal.Id);
+            var student = await _repo.GetByNumberAsync(studentOriginal.Number);
             student.Name = "My new Name!";
             var ok = await _repo.EditAsync(student);
 
             Assert.True(ok);
 
-            var studentEdited = await _repo.GetByIdAsync(studentOriginal.Id);
+            var studentEdited = await _repo.GetByNumberAsync(studentOriginal.Number);
 
-            Assert.Equal(1, studentEdited.Id);
+            Assert.Equal(studentOriginal.Number, studentEdited.Number);
             Assert.Equal(studentOriginal.Email, studentEdited.Email);
             Assert.Equal("My new Name!", studentEdited.Name);
         }

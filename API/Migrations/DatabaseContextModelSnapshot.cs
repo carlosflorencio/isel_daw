@@ -1,9 +1,9 @@
 ﻿using System;
-using API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using API.Data;
 using API.Models;
 
 namespace API.Migrations
@@ -17,10 +17,12 @@ namespace API.Migrations
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
                 .HasAnnotation("ProductVersion", "1.1.1");
 
-            modelBuilder.Entity("DAW_API.Models.Class", b =>
+            modelBuilder.Entity("API.Models.Class", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("AutoEnrollment");
 
                     b.Property<int>("CourseId");
 
@@ -40,20 +42,20 @@ namespace API.Migrations
                     b.ToTable("Classes");
                 });
 
-            modelBuilder.Entity("DAW_API.Models.ClassStudent", b =>
+            modelBuilder.Entity("API.Models.ClassStudent", b =>
                 {
                     b.Property<int>("ClassId");
 
-                    b.Property<int>("StudentId");
+                    b.Property<int>("StudentNumberId");
 
-                    b.HasKey("ClassId", "StudentId");
+                    b.HasKey("ClassId", "StudentNumberId");
 
-                    b.HasIndex("StudentId");
+                    b.HasIndex("StudentNumberId");
 
                     b.ToTable("ClassStudent");
                 });
 
-            modelBuilder.Entity("DAW_API.Models.ClassTeacher", b =>
+            modelBuilder.Entity("API.Models.ClassTeacher", b =>
                 {
                     b.Property<int>("ClassId");
 
@@ -66,7 +68,7 @@ namespace API.Migrations
                     b.ToTable("ClassTeacher");
                 });
 
-            modelBuilder.Entity("DAW_API.Models.Course", b =>
+            modelBuilder.Entity("API.Models.Course", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -92,13 +94,11 @@ namespace API.Migrations
                     b.ToTable("Courses");
                 });
 
-            modelBuilder.Entity("DAW_API.Models.Group", b =>
+            modelBuilder.Entity("API.Models.Group", b =>
                 {
                     b.Property<int>("ClassId");
 
-                    b.Property<int>("Id");
-
-                    b.Property<int>("Number")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
 
@@ -107,22 +107,24 @@ namespace API.Migrations
                     b.ToTable("Groups");
                 });
 
-            modelBuilder.Entity("DAW_API.Models.GroupStudent", b =>
+            modelBuilder.Entity("API.Models.GroupStudent", b =>
                 {
                     b.Property<int>("ClassId");
 
-                    b.Property<int>("StudentId");
+                    b.Property<int>("StudentNumber");
 
                     b.Property<int>("GroupId");
 
-                    b.HasKey("ClassId", "StudentId", "GroupId");
+                    b.HasKey("ClassId", "StudentNumber", "GroupId");
 
-                    b.HasIndex("GroupId", "ClassId");
+                    b.HasIndex("StudentNumber");
+
+                    b.HasIndex("ClassId", "GroupId");
 
                     b.ToTable("GroupStudent");
                 });
 
-            modelBuilder.Entity("DAW_API.Models.Semester", b =>
+            modelBuilder.Entity("API.Models.Semester", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -136,13 +138,10 @@ namespace API.Migrations
                     b.ToTable("Semesters");
                 });
 
-            modelBuilder.Entity("DAW_API.Models.User", b =>
+            modelBuilder.Entity("API.Models.Student", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("Number")
                         .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired();
 
                     b.Property<string>("Email")
                         .IsRequired();
@@ -150,115 +149,105 @@ namespace API.Migrations
                     b.Property<string>("Name")
                         .IsRequired();
 
-                    b.HasKey("Id");
+                    b.Property<string>("Password")
+                        .IsRequired();
 
-                    b.ToTable("Users");
+                    b.HasKey("Number");
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("User");
+                    b.ToTable("Students");
                 });
 
-            modelBuilder.Entity("DAW_API.Models.Administrator", b =>
+            modelBuilder.Entity("API.Models.Teacher", b =>
                 {
-                    b.HasBaseType("DAW_API.Models.User");
+                    b.Property<int>("Number")
+                        .ValueGeneratedOnAdd();
 
+                    b.Property<string>("Email")
+                        .IsRequired();
 
-                    b.ToTable("Administrator");
+                    b.Property<bool>("IsAdmin");
 
-                    b.HasDiscriminator().HasValue("Administrator");
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.Property<string>("Password")
+                        .IsRequired();
+
+                    b.HasKey("Number");
+
+                    b.ToTable("Teachers");
                 });
 
-            modelBuilder.Entity("DAW_API.Models.Student", b =>
+            modelBuilder.Entity("API.Models.Class", b =>
                 {
-                    b.HasBaseType("DAW_API.Models.User");
-
-                    b.Property<int>("Number");
-
-                    b.ToTable("Student");
-
-                    b.HasDiscriminator().HasValue("Student");
-                });
-
-            modelBuilder.Entity("DAW_API.Models.Teacher", b =>
-                {
-                    b.HasBaseType("DAW_API.Models.User");
-
-                    b.Property<int>("Number");
-
-                    b.ToTable("Teacher");
-
-                    b.HasDiscriminator().HasValue("Teacher");
-                });
-
-            modelBuilder.Entity("DAW_API.Models.Class", b =>
-                {
-                    b.HasOne("DAW_API.Models.Course", "Course")
+                    b.HasOne("API.Models.Course", "Course")
                         .WithMany("Classes")
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("DAW_API.Models.Semester", "Semester")
+                    b.HasOne("API.Models.Semester", "Semester")
                         .WithMany()
                         .HasForeignKey("SemesterId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("DAW_API.Models.ClassStudent", b =>
+            modelBuilder.Entity("API.Models.ClassStudent", b =>
                 {
-                    b.HasOne("DAW_API.Models.Class", "Class")
+                    b.HasOne("API.Models.Class", "Class")
                         .WithMany("Participants")
                         .HasForeignKey("ClassId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("DAW_API.Models.Student", "Student")
+                    b.HasOne("API.Models.Student", "Student")
                         .WithMany("Classes")
-                        .HasForeignKey("StudentId")
+                        .HasForeignKey("StudentNumberId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("DAW_API.Models.ClassTeacher", b =>
+            modelBuilder.Entity("API.Models.ClassTeacher", b =>
                 {
-                    b.HasOne("DAW_API.Models.Class", "Class")
+                    b.HasOne("API.Models.Class", "Class")
                         .WithMany("Teachers")
                         .HasForeignKey("ClassId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("DAW_API.Models.Teacher", "Teacher")
+                    b.HasOne("API.Models.Teacher", "Teacher")
                         .WithMany("Classes")
                         .HasForeignKey("TeacherId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("DAW_API.Models.Course", b =>
+            modelBuilder.Entity("API.Models.Course", b =>
                 {
-                    b.HasOne("DAW_API.Models.Teacher", "Coordinator")
+                    b.HasOne("API.Models.Teacher", "Coordinator")
                         .WithMany()
                         .HasForeignKey("CoordinatorId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("DAW_API.Models.Group", b =>
+            modelBuilder.Entity("API.Models.Group", b =>
                 {
-                    b.HasOne("DAW_API.Models.Class", "Class")
+                    b.HasOne("API.Models.Class", "Class")
                         .WithMany("Groups")
                         .HasForeignKey("ClassId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("DAW_API.Models.GroupStudent", b =>
+            modelBuilder.Entity("API.Models.GroupStudent", b =>
                 {
-                    b.HasOne("DAW_API.Models.Class", "Class")
+                    b.HasOne("API.Models.Class", "Class")
                         .WithMany()
                         .HasForeignKey("ClassId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("DAW_API.Models.Student", "Student")
+                    b.HasOne("API.Models.Student", "Student")
                         .WithMany("Groups")
-                        .HasForeignKey("GroupId")
+                        .HasForeignKey("StudentNumber")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("DAW_API.Models.Group", "Group")
+                    b.HasOne("API.Models.Group", "Group")
                         .WithMany("Students")
-                        .HasForeignKey("GroupId", "ClassId")
+                        .HasForeignKey("ClassId", "GroupId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }

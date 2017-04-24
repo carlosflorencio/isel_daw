@@ -19,12 +19,13 @@ namespace API.Models
         public int CourseId { get; set; }
         public Course Course { get; set; }
 
+        public bool AutoEnrollment { get; set; }
 
         public ICollection<ClassTeacher> Teachers { get; set; }
 
         public ICollection<ClassStudent> Participants { get; set; }
 
-        public ICollection<Group> Groups { get; set; }
+        public List<Group> Groups { get; set; }
     }
 
     /*
@@ -47,7 +48,7 @@ namespace API.Models
         public int ClassId { get; set; }
         public Class Class { get; set; }
 
-        public int StudentId { get; set; }
+        public int StudentNumberId { get; set; }
         public Student Student { get; set; }
     }
 }

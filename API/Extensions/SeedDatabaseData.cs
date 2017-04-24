@@ -12,53 +12,85 @@ namespace API.Extensions
     public static class SeedDatabaseData
     {
 
-        public static async Task EnsureSeedDataForContext(this DatabaseContext context) {
+        public static void EnsureSeedDataForContext(this DatabaseContext context) {
 
-            var teachers = new[] {
-                new Teacher() {
-                    Name = "Pedro Félix",
-                    Email = "pfelix@gmail.com",
-                    Number = 1456
-                },
-                new Teacher() {
-                    Name = "Freitas",
-                    Email = "freitas@gmail.com",
-                    Number = 3512
+            //            context.Database.EnsureDeleted();
+            //            context.Database.EnsureCreated();
+
+            ClearDb(context);
+
+            var teachers = AddTeachers(context);
+
+            var students = AddStudents(context);
+
+            var courses = AddCourses(context, teachers);
+
+            var semesters = AddSemesters(context);
+
+            var classes = AddClasses(context, courses, semesters);
+
+            context.SaveChanges(); // fill the entities with the ID from the DB
+
+            classes[0].Participants = new List<ClassStudent>() {
+                new ClassStudent() {
+                    Student = students[0],
+                    Class = classes[0]
                 }
             };
-            context.Teachers.AddRange(teachers);
 
-            var students = new[] {
-                new Student
-                {
-                    Email = "carlos@gmail.com",
-                    Name = "Carlos Florencio",
-                    Number = 39250
-                },
-                new Student
-                {
-                    Email = "nuno@gmail.com",
-                    Name = "Nuno Reis",
-                    Number = 35248
-                },
-                new Student
-                {
-                    Email = "teste@gmail.com",
-                    Name = "Teste Maricas",
-                    Number = 35564
-                },
-            };
-            context.Students.AddRange(students);
-
-            var courses = new[] {
-                new Course() {
-                    Acronym = "LS",
-                    Name = "Laboratorio de Software",
-                    Coordinator = teachers[0],
+            classes[0].Groups = new List<Group>() {
+                new Group() {
+                    Class = classes[0],
                 }
             };
-            context.Courses.AddRange(courses);
 
+            // Persist all data
+            context.SaveChanges();
+
+            classes[0].Groups[0].Students = new List<GroupStudent>() {
+                new GroupStudent() {
+                    Student = students[0],
+                    Class = classes[0]
+                }
+            };
+
+            context.SaveChanges();
+        }
+
+        private static void ClearDb(DatabaseContext context) {
+            context.Database.ExecuteSqlCommand("DELETE FROM \"ClassStudent\"");
+            context.Database.ExecuteSqlCommand("DELETE FROM \"ClassTeacher\"");
+            context.Database.ExecuteSqlCommand("DELETE FROM \"GroupStudent\"");
+            context.Database.ExecuteSqlCommand("DELETE FROM \"Classes\"");
+            context.Database.ExecuteSqlCommand("DELETE FROM \"Groups\"");
+            context.Database.ExecuteSqlCommand("DELETE FROM \"Students\"");
+            context.Database.ExecuteSqlCommand("DELETE FROM \"Teachers\"");
+            context.Database.ExecuteSqlCommand("DELETE FROM \"Courses\"");
+            context.Database.ExecuteSqlCommand("DELETE FROM \"Semesters\"");
+        }
+
+        private static Class[] AddClasses(DatabaseContext context, Course[] courses, Semester[] semesters) {
+            var classes = new[] {
+                new Class() {
+                    Name = "D1",
+                    Course = courses[0],
+                    MaxGroupSize = 3,
+                    Semester = semesters[0]
+                },
+                new Class() {
+                    Name = "N1",
+                    Course = courses[0],
+                    MaxGroupSize = 3,
+                    Semester = semesters[0]
+                }
+            };
+
+            context.Classes.AddRange(classes);
+
+            return classes;
+        }
+
+        private static Semester[] AddSemesters(DatabaseContext context) {
             var semesters = new[] {
                 new Semester() {
                     Term = Term.Winter,
@@ -70,8 +102,78 @@ namespace API.Extensions
                 }
             };
             context.Semesters.AddRange(semesters);
+            return semesters;
+        }
 
-            await context.SaveChangesAsync();
+        private static Course[] AddCourses(DatabaseContext context, Teacher[] teachers) {
+            var courses = new[] {
+                new Course() {
+                    Acronym = "LS",
+                    Name = "Laboratorio de Software",
+                    Coordinator = teachers[0],
+                }
+            };
+            context.Courses.AddRange(courses);
+            return courses;
+        }
+
+        private static Student[] AddStudents(DatabaseContext context) {
+            var students = new[] {
+                new Student {
+                    Email = "carlos@gmail.com",
+                    Name = "Carlos Florencio",
+                    Number = 39250,
+                    Password = "123456"
+                },
+                new Student {
+                    Email = "nuno@gmail.com",
+                    Name = "Nuno Reis",
+                    Number = 35248,
+                    Password = "123456"
+                },
+                new Student {
+                    Email = "teste@gmail.com",
+                    Name = "Teste Maricas",
+                    Number = 35564,
+                    Password = "123456"
+                }
+            };
+            context.Students.AddRange(students);
+
+            var randomStudents = new LinkedList<Student>();
+            var rnd = new Random();
+            for (int i = 0; i < 50; i++) {
+                randomStudents.AddLast(new Student() {
+                    Number = rnd.Next(1, 9999),
+                    Email = rnd.Next() + "@gmail.com",
+                    Name = rnd.Next() + " Name",
+                    Password = "123456"
+                });
+            }
+
+            context.Students.AddRange(randomStudents);
+
+            return students;
+        }
+
+        private static Teacher[] AddTeachers(DatabaseContext context) {
+            var teachers = new[] {
+                new Teacher() {
+                    Name = "Pedro Félix",
+                    Email = "pfelix@gmail.com",
+                    Number = 1456,
+                    Password = "123456"
+                },
+                new Teacher() {
+                    Name = "Freitas",
+                    Email = "freitas@gmail.com",
+                    Number = 3512,
+                    Password = "123456"
+                }
+            };
+
+            context.Teachers.AddRange(teachers);
+            return teachers;
         }
     }
 }

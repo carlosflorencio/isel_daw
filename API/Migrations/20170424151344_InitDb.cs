@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace API.Migrations
 {
-    public partial class InitialDb : Migration
+    public partial class InitDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -24,19 +24,34 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "Students",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Number = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    Discriminator = table.Column<string>(nullable: false),
                     Email = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: false),
-                    Number = table.Column<int>(nullable: true)
+                    Password = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_Students", x => x.Number);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Teachers",
+                columns: table => new
+                {
+                    Number = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    Email = table.Column<string>(nullable: false),
+                    IsAdmin = table.Column<bool>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
+                    Password = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Teachers", x => x.Number);
                 });
 
             migrationBuilder.CreateTable(
@@ -53,10 +68,10 @@ namespace API.Migrations
                 {
                     table.PrimaryKey("PK_Courses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Courses_Users_CoordinatorId",
+                        name: "FK_Courses_Teachers_CoordinatorId",
                         column: x => x.CoordinatorId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
+                        principalTable: "Teachers",
+                        principalColumn: "Number",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -66,6 +81,7 @@ namespace API.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    AutoEnrollment = table.Column<bool>(nullable: false),
                     CourseId = table.Column<int>(nullable: false),
                     MaxGroupSize = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: false),
@@ -93,11 +109,11 @@ namespace API.Migrations
                 columns: table => new
                 {
                     ClassId = table.Column<int>(nullable: false),
-                    StudentId = table.Column<int>(nullable: false)
+                    StudentNumberId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClassStudent", x => new { x.ClassId, x.StudentId });
+                    table.PrimaryKey("PK_ClassStudent", x => new { x.ClassId, x.StudentNumberId });
                     table.ForeignKey(
                         name: "FK_ClassStudent_Classes_ClassId",
                         column: x => x.ClassId,
@@ -105,10 +121,10 @@ namespace API.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ClassStudent_Users_StudentId",
-                        column: x => x.StudentId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
+                        name: "FK_ClassStudent_Students_StudentNumberId",
+                        column: x => x.StudentNumberId,
+                        principalTable: "Students",
+                        principalColumn: "Number",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -129,10 +145,10 @@ namespace API.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ClassTeacher_Users_TeacherId",
+                        name: "FK_ClassTeacher_Teachers_TeacherId",
                         column: x => x.TeacherId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
+                        principalTable: "Teachers",
+                        principalColumn: "Number",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -141,8 +157,7 @@ namespace API.Migrations
                 columns: table => new
                 {
                     ClassId = table.Column<int>(nullable: false),
-                    Id = table.Column<int>(nullable: false),
-                    Number = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn)
                 },
                 constraints: table =>
@@ -161,12 +176,12 @@ namespace API.Migrations
                 columns: table => new
                 {
                     ClassId = table.Column<int>(nullable: false),
-                    StudentId = table.Column<int>(nullable: false),
+                    StudentNumber = table.Column<int>(nullable: false),
                     GroupId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GroupStudent", x => new { x.ClassId, x.StudentId, x.GroupId });
+                    table.PrimaryKey("PK_GroupStudent", x => new { x.ClassId, x.StudentNumber, x.GroupId });
                     table.ForeignKey(
                         name: "FK_GroupStudent_Classes_ClassId",
                         column: x => x.ClassId,
@@ -174,14 +189,14 @@ namespace API.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_GroupStudent_Users_GroupId",
-                        column: x => x.GroupId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
+                        name: "FK_GroupStudent_Students_StudentNumber",
+                        column: x => x.StudentNumber,
+                        principalTable: "Students",
+                        principalColumn: "Number",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_GroupStudent_Groups_GroupId_ClassId",
-                        columns: x => new { x.GroupId, x.ClassId },
+                        name: "FK_GroupStudent_Groups_ClassId_GroupId",
+                        columns: x => new { x.ClassId, x.GroupId },
                         principalTable: "Groups",
                         principalColumns: new[] { "ClassId", "Id" },
                         onDelete: ReferentialAction.Cascade);
@@ -198,9 +213,9 @@ namespace API.Migrations
                 column: "SemesterId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClassStudent_StudentId",
+                name: "IX_ClassStudent_StudentNumberId",
                 table: "ClassStudent",
-                column: "StudentId");
+                column: "StudentNumberId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ClassTeacher_TeacherId",
@@ -225,9 +240,14 @@ namespace API.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_GroupStudent_GroupId_ClassId",
+                name: "IX_GroupStudent_StudentNumber",
                 table: "GroupStudent",
-                columns: new[] { "GroupId", "ClassId" });
+                column: "StudentNumber");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GroupStudent_ClassId_GroupId",
+                table: "GroupStudent",
+                columns: new[] { "ClassId", "GroupId" });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -242,6 +262,9 @@ namespace API.Migrations
                 name: "GroupStudent");
 
             migrationBuilder.DropTable(
+                name: "Students");
+
+            migrationBuilder.DropTable(
                 name: "Groups");
 
             migrationBuilder.DropTable(
@@ -254,7 +277,7 @@ namespace API.Migrations
                 name: "Semesters");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Teachers");
         }
     }
 }

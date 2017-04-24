@@ -12,6 +12,7 @@ using MyTested.AspNetCore.Mvc;
 using MyTested.AspNetCore.Mvc.Builders.Contracts.Data;
 using Xunit;
 using API.Extensions;
+using FluentSiren.Models;
 
 namespace API.Tests.Controllers
 {
@@ -19,21 +20,23 @@ namespace API.Tests.Controllers
     public class StudentsControllerTest : MyController<StudentsController>
     {
 
-        public StudentsControllerTest() {
-            this.WithDbContext(dbContext => dbContext.WithEntities(ctx => {
+        public StudentsControllerTest()
+        {
+            this.WithDbContext(dbContext => dbContext.WithEntities(ctx =>
+            {
                 var db = ctx as DatabaseContext;
-                db.EnsureSeedDataForContext().Wait();
+                db.EnsureSeedDataForContext();
             }));
         }
 
         [Fact]
         public void Test_GetAll()
         {
-            Calling(c => c.Get())
+            Calling(c => c.List(null))
             .ShouldReturn()
             .Ok()
-            .WithModelOfType<List<Student>>()
-            .Passing(model => model.Count == 3);
+            .WithModelOfType<Entity>()
+            .Passing(model => model.Entities.Count > 0);
 
         }
 
