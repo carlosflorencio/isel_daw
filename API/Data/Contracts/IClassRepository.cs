@@ -12,5 +12,7 @@ namespace API.Data.Contracts
         Task<PagedList<Class>> GetAllPaginatedAsync(ListQueryStringDto p);
 
         Task<PagedList<Group>> GetClassGroups(int id, ListQueryStringDto p);
+        
+        Task<bool> AddParticipantTo(Class c, int studentNumberId);
     }
 }

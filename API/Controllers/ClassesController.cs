@@ -123,5 +123,24 @@ namespace API.Controllers
 
             return Ok(_representation.ClassGroupsCollection(groups, query));
         }
+
+        [HttpPost("{id}/student", Name=Routes.ClassParticipantAdd)]
+        public async Task<IActionResult> AddParticipant(int Id, [FromBody]StudentDTO dto)
+        {
+            if(!ModelState.IsValid){
+                return BadRequest(ModelState);
+            }
+
+            Class c = await _repo.GetByIdAsync(Id);
+            if(c == null){
+                return NotFound();
+            }
+
+            if(await _repo.AddParticipantTo(c, dto.Number)){
+                return Ok();    //TODO: What to return...
+            }
+
+            throw new Exception("Unable to add participant " + dto.Number);
+        }
     }
 }

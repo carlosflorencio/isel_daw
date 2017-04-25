@@ -21,6 +21,7 @@ namespace API.Data
                 .Where(c => c.Id == Id)
                 .Include(c => c.Semester)
                 .Include(c => c.Course)
+                .Include(c => c.Participants)
                 .FirstOrDefaultAsync();
         }
 
@@ -61,6 +62,21 @@ namespace API.Data
                 .Where(g => g.ClassId == id);
 
             return PagedList<Group>.Create(classGroups, p.Page, p.Limit);
+        }
+
+        public Task<bool> AddParticipantTo(Class c, int studentNumberId)
+        {
+            Context.Add<ClassStudent>(new ClassStudent{
+                ClassId = c.Id,
+                StudentNumberId = studentNumberId
+            });
+            
+            // c.Participants.Add(new ClassStudent{
+            //     Class = c,
+            //     StudentNumberId = studentNumberId
+            // });
+
+            return SaveAsync();
         }
     }
 }
