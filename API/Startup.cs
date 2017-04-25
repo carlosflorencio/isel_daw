@@ -94,6 +94,7 @@ namespace API
             // Seed data if there is none
             if (env.IsDevelopment() && !context.Semesters.Any())
             {
+                context.ClearAllData();
                 context.EnsureSeedDataForContext();
             }
 

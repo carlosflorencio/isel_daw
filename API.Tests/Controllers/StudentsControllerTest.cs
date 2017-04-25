@@ -12,6 +12,7 @@ using MyTested.AspNetCore.Mvc;
 using MyTested.AspNetCore.Mvc.Builders.Contracts.Data;
 using Xunit;
 using API.Extensions;
+using API.TransferModels.InputModels;
 using FluentSiren.Models;
 
 namespace API.Tests.Controllers
@@ -30,13 +31,15 @@ namespace API.Tests.Controllers
         }
 
         [Fact]
-        public void Test_GetAll()
+        public void GetAllStudentsWithAction()
         {
-            Calling(c => c.List(null))
+            this.WithRouteData()
+             .WithAuthenticatedUser(u => u.InRole(Roles.Admin))
+            .Calling(c => c.List(new ListQueryStringDto() {}))
             .ShouldReturn()
             .Ok()
             .WithModelOfType<Entity>()
-            .Passing(model => model.Entities.Count > 0);
+            .Passing(model => model.Entities.Count > 0 && model.Actions.Count == 1);
 
         }
 

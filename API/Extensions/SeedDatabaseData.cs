@@ -16,9 +16,6 @@ namespace API.Extensions
 
             //            context.Database.EnsureDeleted();
             //            context.Database.EnsureCreated();
-
-            ClearDb(context);
-
             var teachers = AddTeachers(context);
 
             var students = AddStudents(context);
@@ -57,7 +54,8 @@ namespace API.Extensions
             context.SaveChanges();
         }
 
-        private static void ClearDb(DatabaseContext context) {
+        public static void ClearAllData(this DatabaseContext context)
+        {
             context.Database.ExecuteSqlCommand("DELETE FROM \"ClassStudent\"");
             context.Database.ExecuteSqlCommand("DELETE FROM \"ClassTeacher\"");
             context.Database.ExecuteSqlCommand("DELETE FROM \"GroupStudent\"");
@@ -141,12 +139,13 @@ namespace API.Extensions
             context.Students.AddRange(students);
 
             var randomStudents = new LinkedList<Student>();
-            var rnd = new Random();
             for (int i = 0; i < 50; i++) {
+                var num = 200 + i;
+
                 randomStudents.AddLast(new Student() {
-                    Number = rnd.Next(1, 9999),
-                    Email = rnd.Next() + "@gmail.com",
-                    Name = rnd.Next() + " Name",
+                    Number = num,
+                    Email = num + "@gmail.com",
+                    Name = num + " Name",
                     Password = "123456"
                 });
             }
