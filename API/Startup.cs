@@ -71,11 +71,13 @@ namespace API
             // AddScoped    -> services are created once per request.
             // AddSingleton -> services are created only the first time.
             services.AddScoped<IStudentRepository, StudentRepository>();
+            services.AddScoped<ITeacherRepository, TeacherRepository>();
 
             // needed to inject IUrlHelper
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
             services.AddScoped<StudentsSirenHto>();
+            services.AddScoped<TeachersSirenHto>();
         }
 
         public void Configure(IApplicationBuilder app,
