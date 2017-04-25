@@ -10,5 +10,7 @@ namespace API.Data.Contracts
         Task<Class> GetByIdAsync(int Id);
 
         Task<PagedList<Class>> GetAllPaginatedAsync(ListQueryStringDto p);
+
+        Task<PagedList<Group>> GetClassGroups(int id, ListQueryStringDto p);
     }
 }

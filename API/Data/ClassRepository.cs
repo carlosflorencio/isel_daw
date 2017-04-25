@@ -54,5 +54,13 @@ namespace API.Data
 
             return PagedList<Class>.Create(classes, p.Page, p.Limit);
         }
+
+        public Task<PagedList<Group>> GetClassGroups(int id, ListQueryStringDto p)
+        {
+            IQueryable<Group> classGroups = Context.Groups
+                .Where(g => g.ClassId == id);
+
+            return PagedList<Group>.Create(classGroups, p.Page, p.Limit);
+        }
     }
 }

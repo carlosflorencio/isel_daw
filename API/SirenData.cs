@@ -14,5 +14,10 @@ namespace API
         public static string REL_TEACHERS_CLASSES = "/relations#teacher-classes";
 
         public static string REL_CLASS_SEMESTER = "/relations#class-semester";
+
+        public static string REL_CLASS_GROUPS = "/relations#class-groups";
+
+        public static string REL_GROUP_CLASS = "/relations#group-class";
+        public static string REL_GROUP_STUDENTS = "/relations#group-students";
     }
 }
