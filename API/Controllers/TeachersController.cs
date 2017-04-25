@@ -38,6 +38,10 @@ namespace API.Controllers
         {
             var teacher = await _repo.GetByNumberAsync(Number);
 
+            if(teacher == null){
+                return NotFound();
+            }
+
             return Ok(_representation.Entity(teacher));
         }
 

@@ -41,6 +41,10 @@ namespace API.Controllers
         public async Task<IActionResult> Get(int number) {
             var student = await _repo.GetByNumberAsync(number);
 
+            if(student == null){
+                return NotFound();
+            }
+
             return Ok(_representation.Entity(student));
         }
 

@@ -32,5 +32,10 @@ namespace API
         // ClassesController
         public const string ClassEntry = nameof(ClassEntry);
         public const string ClassCreate = nameof(ClassCreate);
+        public const string ClassEdit = nameof(ClassEdit);
+        public const string ClassDelete = nameof(ClassDelete);
+
+        // SemesterController
+        public const string SemesterEntry = nameof(SemesterEntry);
     }
 }
