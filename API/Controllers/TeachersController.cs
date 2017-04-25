@@ -1,10 +1,11 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using API.Data.Repositories;
-using API.Mapper;
+using API.Data.Contracts;
 using API.Models;
-using API.Models.CreationDTO;
+using API.Services;
+using API.TransferModels.InputModels;
+using API.TransferModels.ResponseModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -12,81 +13,125 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class TeachersController : Controller
     {
-        private IRepository<Teacher> _repo;
+        private ITeacherRepository _repo;
 
-        public TeachersController(IRepository<Teacher> repo)
+        private readonly TeachersSirenHto _representation;
+
+        public TeachersController(ITeacherRepository repo, TeachersSirenHto representation)
         {
             _repo = repo;
-        }
-        // GET api/teachers
-        [HttpGet]
-        public async Task<IEnumerable<Teacher>> Get([FromQuery]string name)
-        {
-            Func<Teacher, bool> func = null;
-            if(name != null){
-                func = t => t.Name.Contains(name);
-            }
-            return await _repo.GetAll(func);
+            _representation = representation;
         }
 
-        // GET api/teachers/5
-        [HttpGet("{id}", Name="GetTeacher")]
-        public async Task<IActionResult> Get(int id)
+        [HttpGet("", Name=Routes.TeacherList)]
+        public async Task<IActionResult> GetAll([FromQuery]ListQueryStringDto query)
         {
-            var entity = await _repo.Find(id);
-            if(entity == null){
+            var teachers = await _repo.GetAllPaginatedAsync(query);
+
+            var result = _representation.Collection(teachers, query);
+
+            return Ok(result);
+        }
+
+        [HttpGet("{number}", Name=Routes.TeacherEntry)]
+        public async Task<IActionResult> Get(int Number)
+        {
+            var teacher = await _repo.GetByNumberAsync(Number);
+
+            if(teacher == null){
                 return NotFound();
             }
-            return new ObjectResult(entity);
+
+            return Ok(_representation.Entity(teacher));
         }
 
-        // POST api/teachers
-        [HttpPost]
-        public async Task<IActionResult> Post([FromBody]TeacherCreationDTO dto)
+        [HttpPost("", Name=Routes.TeacherCreate)]
+        [Authorize(Roles = Roles.Admin)]
+        public async Task<IActionResult> Post([FromBody]TeacherDTO dto)
         {
-            if(dto == null){
-                return BadRequest();
+            if(!ModelState.IsValid){
+                return BadRequest(ModelState);
             }
 
-            var teacher = CreationToModelMapper.Map(dto);
-            if(await _repo.Add(teacher)){
-                return CreatedAtRoute("GetTeacher", new {id = teacher.Id}, teacher);
-            } else {
-                return StatusCode(500, "Error handling your request");
+            //TODO: AutoMapper
+            Teacher teacher = new Teacher{
+                Number = dto.Number,
+                Name = dto.Name,
+                Email = dto.Email,
+                Password = dto.Password,
+                IsAdmin = dto.IsAdmin
+            };
+
+            if(!await _repo.AddAsync(teacher)){
+                throw new Exception("Unable to add teacher");
             }
+
+            return CreatedAtRoute(
+                Routes.TeacherEntry,
+                new {number = teacher.Number},
+                _representation.Entity(teacher)
+            );
         }
 
-        // PUT api/teachers/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody]TeacherCreationDTO dto)
+        [HttpPut("{number}", Name=Routes.TeacherEdit)]
+        [Authorize(Roles = Roles.Admin)]
+        public async Task<IActionResult> Put(int Number, [FromBody]TeacherDTO dto)
         {
-            if(dto != null){
-                // Default transaction level -> Read Committed
-                var entity = await _repo.Find(id);
-                if(entity != null){
-                    entity.Number = dto.Number;
-                    entity.Name = dto.Name;
-                    entity.Email = dto.Email;
-                    if(await _repo.Update(entity))
-                        return NoContent();
-                } else {
-                    var teacher = CreationToModelMapper.Map(dto);
-                    teacher.Id = id;
-                    if(await _repo.Add(teacher))
-                        return CreatedAtRoute("GetTeacher", new {id = teacher.Id}, teacher);
-                }
+            if(!ModelState.IsValid){
+                return BadRequest(ModelState);
             }
-            return StatusCode(500, "Error handling your request");
+
+            Teacher teacher = await _repo.GetByNumberAsync(Number);
+            if(teacher == null){
+                return NotFound();
+            }
+
+            //TODO: AutoMapper
+            teacher.Number = dto.Number;
+            teacher.Name = dto.Name;
+            teacher.Email = dto.Email;
+            teacher.Password = dto.Password;
+            teacher.IsAdmin = dto.IsAdmin;
+
+            if(!await _repo.EditAsync(teacher)){
+                throw new Exception("Unable to edit teacher " + Number);
+            }
+            
+            return Ok(_representation.Entity(teacher));
+            //return NoContent();
         }
 
-        // DELETE api/teachers/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("{number}", Name=Routes.TeacherDelete)]
+        [Authorize(Roles = Roles.Admin)]
+        public async Task<IActionResult> Delete(int Number)
         {
-            if(!await _repo.Remove(id)){
-                return NotFound();  // Bad Shit bro
+            Teacher teacher = await _repo.GetByNumberAsync(Number);
+
+            if(teacher == null){
+                return NotFound();
             }
-            return NoContent();
+
+            if(await _repo.DeleteAsync(teacher))
+            {
+                return NoContent();
+            }
+            
+            throw new Exception("Unable to delete teacher " + Number);
+        }
+
+        [HttpGet("{number}/classes", Name = Routes.TeacherClassList)]
+        public async Task<IActionResult> TeacherClasses(int number, [FromQuery] ListQueryStringDto query)
+        {
+            // PagedList<Class> classes = await _repo.GetPaginatedTeacherClassesAsync(number);
+
+            // if(classes == null){
+            //     return NotFound();
+            // }
+
+            // var result = _representation.ClassesCollection(classes, query);
+
+            // return Ok(result);
+            return StatusCode(501, "Not Implemented");
         }
     }
 }

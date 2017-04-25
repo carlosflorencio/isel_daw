@@ -1,93 +1,139 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using API.Data.Repositories;
-using API.Mapper;
+using API.Data.Contracts;
 using API.Models;
-using API.Models.CreationDTO;
+using API.TransferModels.InputModels;
+using API.TransferModels.ResponseModels;
+using FluentSiren.Builders;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     public class StudentsController : Controller
     {
-        private IRepository<Student> _repo;
+        private readonly IStudentRepository _repo;
+        private readonly StudentsSirenHto _representation;
 
-        public StudentsController(IRepository<Student> repo)
+        public StudentsController(IStudentRepository repo, StudentsSirenHto representation)
         {
             _repo = repo;
+            _representation = representation;
         }
 
-        // GET api/students
-        [HttpGet]
-        public async Task<IEnumerable<Student>> Get([FromQuery]string name)
+        // GET: api/students
+        [HttpGet("", Name = Routes.StudentList)]
+        public async Task<IActionResult> List([FromQuery] ListQueryStringDto query)
         {
-            Func<Student, bool> func = null;
-            if(name != null){
-                func = t => t.Name.Contains(name);
-            }
-            return await _repo.GetAll(func);
+            var students = await _repo.GetAllPaginatedAsync(query);
+
+            var result = _representation.Collection(students, query);
+
+            return Ok(result);
         }
 
-        // GET api/students/5
-        [HttpGet("{id}", Name="GetStudent")]
-        public async Task<IActionResult> Get(int id)
-        {
-            var entity = await _repo.Find(id);
-            if(entity == null){
+        // GET api/students/39250
+        [HttpGet("{number:int}", Name = Routes.StudentEntry)]
+        public async Task<IActionResult> Get(int number) {
+            var student = await _repo.GetByNumberAsync(number);
+
+            if(student == null){
                 return NotFound();
             }
-            return new ObjectResult(entity);
+
+            return Ok(_representation.Entity(student));
         }
 
-        // POST api/students
-        [HttpPost]
-        public async Task<IActionResult> Post([FromBody]StudentCreationDTO dto)
+        
+        [HttpPost("", Name = Routes.StudentCreate)]
+        [Authorize(Roles = Roles.Admin)]
+        public async Task<IActionResult> Post([FromBody]StudentDTO dto)
         {
-            if(dto == null){
-                return BadRequest();
+            if(!ModelState.IsValid){
+                return BadRequest(ModelState);
             }
 
-            var student = CreationToModelMapper.Map(dto);
-            if(await _repo.Add(student)){
-                return CreatedAtRoute("GetStudent", new { id = student.Id }, student);
-            } else {
-                return StatusCode(500, "Error handling your request");
+            //TODO: AutoMapper
+            Student student = new Student{
+                Number = dto.Number,
+                Name = dto.Name,
+                Email = dto.Email,
+                Password = dto.Password
+            };
+
+            if(!await _repo.AddAsync(student)){
+                throw new Exception("Unable to add student");
             }
+
+            return CreatedAtRoute(
+                Routes.StudentEntry,
+                new {number = student.Number},
+                _representation.Entity(student)
+            );
         }
 
-        // PUT api/students/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody]StudentCreationDTO dto)
+        [HttpPut("{number:int}", Name = Routes.StudentEdit)]
+        [Authorize(Roles = Roles.Admin)]
+        public async Task<IActionResult> Put(int Number, [FromBody]StudentDTO dto)
         {
-            if(dto != null){
-                // Default transaction level -> Read Committed
-                var entity = await _repo.Find(id);
-                if(entity != null){
-                    entity.Number = dto.Number;
-                    entity.Name = dto.Name;
-                    entity.Email = dto.Email;
-                    if(await _repo.Update(entity))
-                        return NoContent();
-                } else {
-                    var student = CreationToModelMapper.Map(dto);
-                    student.Id = id;
-                    if(await _repo.Add(student))
-                        return CreatedAtRoute("GetStudent", new { id = student.Id }, student);
-                }
+            if(!ModelState.IsValid){
+                return BadRequest(ModelState);
             }
-            return StatusCode(500, "Error handling your request");
+
+            Student student = await _repo.GetByNumberAsync(Number);
+            if(student == null){
+                return NotFound();
+            }
+
+            //TODO: AutoMapper
+            student.Number = dto.Number;
+            student.Name = dto.Name;
+            student.Email = dto.Email;
+            student.Password = dto.Password;
+
+            if(!await _repo.EditAsync(student)){
+                throw new Exception("Unable to edit student " + Number);
+            }
+            
+            return Ok(_representation.Entity(student));
+            //return NoContent();
         }
 
-        // DELETE api/students/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("{number:int}", Name = Routes.StudentDelete)]
+        [Authorize(Roles = Roles.Admin)]
+        public async Task<IActionResult> Delete(int Number)
         {
-            if(!await _repo.Remove(id)){
-                return NotFound();  // Bad Shit bro
+            Student student = await _repo.GetByNumberAsync(Number);
+
+            if(student == null){
+                return NotFound();
             }
-            return NoContent();
+
+            if(await _repo.DeleteAsync(student))
+            {
+                return NoContent();
+            }
+            
+            throw new Exception("Unable to delete student " + Number);
+        }
+
+
+        // GET: api/students/{number}/classes
+        [HttpGet("{number:int}/classes", Name = Routes.StudentClassList)]
+        public string Classes(int number, [FromQuery] ListQueryStringDto query)
+        {
+            return "value";
+        }
+
+        // GET: api/students/{number}/groups
+        [HttpGet("{number:int}/groups", Name = Routes.StudentGroupList)]
+        public string Groups(int number, [FromQuery] ListQueryStringDto query)
+        {
+            return "value";
         }
     }
 }
