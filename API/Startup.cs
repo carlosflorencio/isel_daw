@@ -48,6 +48,9 @@ namespace API
                 opt => opt.UseNpgsql(Configuration["Data:PostgreConnection:ConnectionString"])
             );
 
+            // Authorization
+            services.AddAuthorization();
+
             // MVC
             services.AddMvc(options =>
             {
@@ -84,7 +87,7 @@ namespace API
             IHostingEnvironment env,
             ILoggerFactory loggerFactory,
             DatabaseContext context,
-            IStudentRepository studentRepo)
+            IStudentRepository studentRepo, ITeacherRepository teacherRepo)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug(LogLevel.Debug);
@@ -104,7 +107,7 @@ namespace API
                 new BasicAuthenticationOptions
                 {
                     Realm = "This Api needs auth",
-                    Events = new BasicAuthActions(studentRepo)
+                    Events = new BasicAuthActions(studentRepo, teacherRepo)
                 });
 
             app.UseMvcWithDefaultRoute();

@@ -19,4 +19,5 @@ namespace API.Data.Contracts
         Task<Teacher> GetByEmailAndPasswordAsync(string email, string password);
 
     }
+    
 }
