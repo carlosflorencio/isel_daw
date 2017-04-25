@@ -11,16 +11,10 @@ using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace API.TransferModels.ResponseModels
 {
-    public class StudentsSirenHto
+    public class StudentsSirenHto : SirenHto
     {
-        private readonly IUrlHelper _url;
-        private readonly ActionContext _context;
-
-        public StudentsSirenHto(IUrlHelperFactory urlHelperFactory,
-            IActionContextAccessor actionContextAccessor)
+        public StudentsSirenHto(IUrlHelperFactory urlHelperFactory, IActionContextAccessor actionContextAccessor) : base(urlHelperFactory, actionContextAccessor)
         {
-            _context = actionContextAccessor.ActionContext;
-            _url = urlHelperFactory.GetUrlHelper(_context);
         }
 
         public Entity Collection(PagedList<Student> items, ListQueryStringDto query)

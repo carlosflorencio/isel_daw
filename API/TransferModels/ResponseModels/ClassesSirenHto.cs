@@ -4,16 +4,10 @@ using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace API.TransferModels.ResponseModels
 {
-    public class ClassesSirenHto
+    public class ClassesSirenHto : SirenHto
     {
-        private readonly IUrlHelper _url;
-        private readonly ActionContext _context;
-
-        public ClassesSirenHto(IUrlHelperFactory urlHelperFactory,
-            IActionContextAccessor actionContextAccessor)
+        public ClassesSirenHto(IUrlHelperFactory urlHelperFactory, IActionContextAccessor actionContextAccessor) : base(urlHelperFactory, actionContextAccessor)
         {
-            _context = actionContextAccessor.ActionContext;
-            _url = urlHelperFactory.GetUrlHelper(_context);
         }
     }
 }
