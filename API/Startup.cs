@@ -48,6 +48,9 @@ namespace API
                 opt => opt.UseNpgsql(Configuration["Data:PostgreConnection:ConnectionString"])
             );
 
+            // Authorization
+            services.AddAuthorization();
+
             // MVC
             services.AddMvc(options =>
             {
@@ -71,6 +74,7 @@ namespace API
             // AddScoped    -> services are created once per request.
             // AddSingleton -> services are created only the first time.
             services.AddScoped<IStudentRepository, StudentRepository>();
+            services.AddScoped<ITeacherRepository, TeacherRepository>();
 
             // needed to inject IUrlHelper
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
@@ -82,7 +86,7 @@ namespace API
             IHostingEnvironment env,
             ILoggerFactory loggerFactory,
             DatabaseContext context,
-            IStudentRepository studentRepo)
+            IStudentRepository studentRepo, ITeacherRepository teacherRepo)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug(LogLevel.Debug);
@@ -102,7 +106,7 @@ namespace API
                 new BasicAuthenticationOptions
                 {
                     Realm = "This Api needs auth",
-                    Events = new BasicAuthActions(studentRepo)
+                    Events = new BasicAuthActions(studentRepo, teacherRepo)
                 });
 
             app.UseMvcWithDefaultRoute();

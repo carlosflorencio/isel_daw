@@ -15,11 +15,6 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class StudentsController : Controller
     {
-        public enum Actions
-        {
-            All
-        }
-
         private readonly IStudentRepository _repo;
         private readonly StudentsSirenHto _representation;
 
@@ -41,10 +36,11 @@ namespace API.Controllers
         }
 
         // GET api/students/39250
-        [HttpGet("{number}", Name = Routes.StudentEntry)]
-        public string Get(int number)
-        {
-            return "value";
+        [HttpGet("{number:int}", Name = Routes.StudentEntry)]
+        public async Task<IActionResult> Get(int number) {
+            var student = await _repo.GetByNumberAsync(number);
+
+            return Ok(_representation.Entity(student));
         }
 
         // POST api/students
@@ -54,27 +50,27 @@ namespace API.Controllers
         }
 
         // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        [HttpPut("{number:int}", Name = Routes.StudentEdit)]
+        public void Put(int number, [FromBody]string value)
         {
         }
 
         // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{number:int}", Name = Routes.StudentDelete)]
+        public void Delete(int number)
         {
         }
 
 
         // GET: api/students/{number}/classes
-        [HttpGet("{number}/classes", Name = Routes.StudentClassList)]
+        [HttpGet("{number:int}/classes", Name = Routes.StudentClassList)]
         public string Classes(int number, [FromQuery] ListQueryStringDto query)
         {
             return "value";
         }
 
         // GET: api/students/{number}/groups
-        [HttpGet("{number}/groups", Name = Routes.StudentGroupList)]
+        [HttpGet("{number:int}/groups", Name = Routes.StudentGroupList)]
         public string Groups(int number, [FromQuery] ListQueryStringDto query)
         {
             return "value";

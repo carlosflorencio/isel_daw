@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using API.Controllers;
@@ -31,16 +32,67 @@ namespace API.Tests.Controllers
         }
 
         [Fact]
-        public void GetAllStudentsWithAction()
+        public void Get_All_Students_With_Admin_Role()
         {
+            // the action to add a student should be returned
             this.WithRouteData()
-             .WithAuthenticatedUser(u => u.InRole(Roles.Admin))
-            .Calling(c => c.List(new ListQueryStringDto() {}))
+            .WithAuthenticatedUser(u => u.InRole(Roles.Admin))
+            .Calling(c => c.List(new ListQueryStringDto() { }))
             .ShouldReturn()
             .Ok()
             .WithModelOfType<Entity>()
-            .Passing(model => model.Entities.Count > 0 && model.Actions.Count == 1);
+            .Passing(
+                model =>
+                    model.Entities.Count > 0 &&
+                    model.Actions.Count == 1);
+        }
 
+        [Fact]
+        public void Get_All_Students_With_Student_Role()
+        {
+            // the action to add a student should not be returned
+            this.WithRouteData()
+            .WithAuthenticatedUser(u => u.InRole(Roles.Student))
+            .Calling(c => c.List(new ListQueryStringDto() { }))
+            .ShouldReturn()
+            .Ok()
+            .WithModelOfType<Entity>()
+            .Passing(
+                model =>
+                    model.Entities.Count > 0 &&
+                    model.Actions == null);
+        }
+
+        [Fact]
+        public void Get_Student_With_Student_Role()
+        {
+            // the action to add a student should not be returned
+            this.WithRouteData()
+            .WithAuthenticatedUser(u => u.InRole(Roles.Student))
+            .Calling(c => c.Get(39250))
+            .ShouldReturn()
+            .Ok()
+            .WithModelOfType<Entity>()
+            .Passing(
+                model =>
+                    model.Properties["email"].Equals("carlos@gmail.com") &&
+                    model.Actions == null);
+        }
+
+        [Fact]
+        public void Get_Student_With_Admin_Role()
+        {
+            // the action to add a student should not be returned
+            this.WithRouteData()
+            .WithAuthenticatedUser(u => u.InRole(Roles.Admin))
+            .Calling(c => c.Get(39250))
+            .ShouldReturn()
+            .Ok()
+            .WithModelOfType<Entity>()
+            .Passing(
+                model =>
+                    model.Properties["email"].Equals("carlos@gmail.com") &&
+                    model.Actions.Count > 0);
         }
 
     }

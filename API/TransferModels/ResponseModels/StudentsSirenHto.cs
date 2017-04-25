@@ -95,5 +95,59 @@ namespace API.TransferModels.ResponseModels
 
             return entity.Build();
         }
+
+        public Entity Entity(Student student) {
+            var entity = new EntityBuilder()
+                .WithClass("student")
+                .WithProperty("number", student.Number)
+                .WithProperty("name", student.Name)
+                .WithProperty("email", student.Email)
+                .WithLink(new LinkBuilder()
+                    .WithRel("self")
+                    .WithHref(_url.AbsoluteRouteUrl(Routes.StudentEntry,
+                                                    new { number = student.Number })))
+                .WithLink(new LinkBuilder()
+                    .WithRel(SirenData.REL_STUDENTS_CLASSES)
+                    .WithHref(_url.AbsoluteRouteUrl(Routes.StudentClassList,
+                                                    new { number = student.Number })))
+                .WithLink(new LinkBuilder()
+                    .WithRel(SirenData.REL_STUDENTS_GROUPS)
+                    .WithHref(_url.AbsoluteRouteUrl(Routes.StudentGroupList,
+                                                    new { number = student.Number })));
+
+
+            if (_context.HttpContext.User.IsInRole(Roles.Admin)) {
+                entity
+                    .WithAction(
+                        new ActionBuilder()
+                            .WithName("edit-student")
+                            .WithTitle("Edit Student")
+                            .WithMethod("PUT")
+                            .WithHref(_url.AbsoluteRouteUrl(Routes.StudentEdit,
+                                                            new { number = student.Number }))
+                            .WithType("application/json")
+                            .WithField(
+                                new FieldBuilder()
+                                    .WithName("name")
+                                    .WithType("text")
+                                    .WithValue(student.Name))
+                            .WithField(
+                                new FieldBuilder()
+                                    .WithName("email")
+                                    .WithType("email")
+                                    .WithValue(student.Email)))
+                    .WithAction(
+                        new ActionBuilder()
+                            .WithName("delete-student")
+                            .WithTitle("Delete Student")
+                            .WithMethod("DELETE")
+                            .WithHref(_url.AbsoluteRouteUrl(Routes.StudentDelete,
+                                                            new { number = student.Number }))
+                            );
+            }
+
+            return entity.Build();
+        }
+
     }
 }

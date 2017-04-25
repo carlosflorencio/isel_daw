@@ -12,12 +12,6 @@ namespace API.Controllers
     [AllowAnonymous]
     public class HomeController : Controller {
 
-        public enum Actions
-        {
-            Index,
-            Error
-        }
-
         [HttpGet("/", Name = "Index")]
         public IActionResult Index() {
             return Ok("Home!");
