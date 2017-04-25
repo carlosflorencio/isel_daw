@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,5 +18,7 @@ namespace API.Data.Contracts
 
         Task<Teacher> GetByEmailAndPasswordAsync(string email, string password);
 
+        Task<PagedList<Class>> GetPaginatedTeacherClassesAsync(int number);
     }
+    
 }

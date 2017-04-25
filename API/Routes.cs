@@ -21,5 +21,21 @@ namespace API
         public const string StudentEdit = nameof(StudentEdit);
         public const string StudentDelete = nameof(StudentDelete);
 
+        // TeachersController
+        public const string TeacherList = nameof(TeacherList);
+        public const string TeacherEntry = nameof(TeacherEntry);
+        public const string TeacherCreate = nameof(TeacherCreate);
+        public const string TeacherEdit = nameof(TeacherEdit);
+        public const string TeacherDelete = nameof(TeacherDelete);
+        public const string TeacherClassList = nameof(TeacherClassList);
+
+        // ClassesController
+        public const string ClassEntry = nameof(ClassEntry);
+        public const string ClassCreate = nameof(ClassCreate);
+        public const string ClassEdit = nameof(ClassEdit);
+        public const string ClassDelete = nameof(ClassDelete);
+
+        // SemesterController
+        public const string SemesterEntry = nameof(SemesterEntry);
     }
 }

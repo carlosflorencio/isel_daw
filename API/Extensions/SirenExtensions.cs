@@ -19,14 +19,14 @@ namespace API.Extensions
                 entity
                     .WithLink(new LinkBuilder()
                         .WithRel("next")
-                        .WithHref(GenerateLinkToListPage(url, Routes.StudentList, query, 1)));
+                        .WithHref(GenerateLinkToListPage(url, route, query, 1)));
             }
 
             if (query.Page > 1) {
                 entity
                     .WithLink(new LinkBuilder()
                     .WithRel("prev")
-                    .WithHref(GenerateLinkToListPage(url, Routes.StudentList, query, -1)));
+                    .WithHref(GenerateLinkToListPage(url, route, query, -1)));
             }
 
             return entity;

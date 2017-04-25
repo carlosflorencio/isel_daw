@@ -1,7 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using API.Data.Contracts;
 using API.Models;
@@ -11,7 +10,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Data
 {
-    // TODO: refactor this! this is a copy paste of student repo
     public class TeacherRepository : GenericRepository<DatabaseContext, Teacher>, ITeacherRepository
     {
         public TeacherRepository(DatabaseContext ctx) : base(ctx)
@@ -21,12 +19,13 @@ namespace API.Data
         public override Task<List<Teacher>> GetAllAsync()
         {
             return Context.Teachers
+                .Include(s => s.Classes)
                 .ToListAsync();
         }
 
         public Task<PagedList<Teacher>> GetAllPaginatedAsync(ListQueryStringDto p)
         {
-            IQueryable<Teacher> stds = Context.Teachers.OrderBy(s => s.Number);
+            IQueryable<Teacher> teachers = Context.Teachers.OrderBy(s => s.Number);
 
             if (!string.IsNullOrEmpty(p.Search))
             {
@@ -43,7 +42,7 @@ namespace API.Data
                     // we dont want to search by number then..
                 }
 
-                stds = stds.Where(
+                teachers = teachers.Where(
                     s =>
                         s.Email.Contains(query) ||
                         s.Name.Contains(query)  ||
@@ -51,24 +50,30 @@ namespace API.Data
                 );
             }
 
-            return PagedList<Teacher>.Create(stds, p.Page, p.Limit);
+            return PagedList<Teacher>.Create(teachers, p.Page, p.Limit);
         }
 
-        public Task<Teacher> GetByEmailAndPasswordAsync(string email, string password) {
-
+        public Task<Teacher> GetByEmailAndPasswordAsync(string email, string password)
+        {
             return Context.Teachers
                 .Where(s => s.Email == email && s.Password == password)
                 .SingleOrDefaultAsync();
-
         }
 
-        public Task<Teacher> GetByNumberAsync(int id)
+        public Task<Teacher> GetByNumberAsync(int number)
         {
             return Context.Teachers
-                .Where(c => c.Number == id)
+                .Where(c => c.Number == number)
                 .Include(c => c.Classes)
                 .SingleOrDefaultAsync();
         }
 
+        public async Task<PagedList<Class>> GetPaginatedTeacherClassesAsync(int number)
+        {
+            List<Teacher> teachers = await Context.Teachers
+                .Include(c => c.Classes.Where(ct => ct.TeacherId == number)).ToListAsync();
+
+            return null;
+        }
     }
 }
