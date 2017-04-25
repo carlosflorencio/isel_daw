@@ -28,6 +28,10 @@ namespace API.TransferModels.ResponseModels
                     .WithRel("self")
                     .WithHref(_url.AbsoluteRouteUrl(Routes.ClassEntry,
                                                     new { id = c.Id })))
+                .WithLink(new LinkBuilder()
+                    .WithRel(SirenData.REL_CLASS_GROUPS)
+                    .WithHref(_url.AbsoluteRouteUrl(Routes.ClassGroupsList,
+                                                    new { id = c.Id })))                              
                 .WithSubEntity(new EmbeddedRepresentationBuilder()
                     .WithClass("semester")
                     .WithRel(SirenData.REL_CLASS_SEMESTER)

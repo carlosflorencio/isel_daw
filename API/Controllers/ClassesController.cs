@@ -6,6 +6,7 @@ using API.Models;
 using API.Services;
 using API.TransferModels.InputModels;
 using API.TransferModels.ResponseModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -45,7 +46,7 @@ namespace API.Controllers
         }
 
         [HttpPost("", Name=Routes.ClassCreate)]
-        //[Authorize(Roles = Roles.Admin)] //TODO: Authorization only for admins
+        [Authorize(Roles = Roles.Admin)]
         public async Task<IActionResult> Post([FromBody]ClassDTO dto)
         {
             if(!ModelState.IsValid){
@@ -72,7 +73,7 @@ namespace API.Controllers
         }
 
         [HttpPut("{id}", Name=Routes.ClassEdit)]
-        //[Authorize(Roles = Roles.Admin)] //TODO: Authorization only for admins
+        [Authorize(Roles = Roles.Admin)]
         public async Task<IActionResult> Put(int Id, [FromBody]ClassDTO dto)
         {
             if(!ModelState.IsValid){
@@ -100,7 +101,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}", Name=Routes.ClassDelete)]
-        //[Authorize(Roles = Roles.Admin)] //TODO: Authorization only for admins
+        [Authorize(Roles = Roles.Admin)]
         public async Task<IActionResult> Delete(int Id)
         {
             Class c = await _repo.GetByIdAsync(Id);
@@ -124,7 +125,19 @@ namespace API.Controllers
             return Ok(_representation.ClassGroupsCollection(groups, query));
         }
 
-        [HttpPost("{id}/student", Name=Routes.ClassParticipantAdd)]
+        [HttpGet("{id}/students", Name=Routes.ClassParticipantsList)]
+        public async Task<IActionResult> ClassParticipants(int Id, [FromQuery]ListQueryStringDto query)
+        {
+            // List<Group> groups = await _repo.GetClassParticipants(Id);
+
+            // return Ok(_representation.ClassGroupsCollection(groups, query));
+
+            //TODO: Implement GET ClassParticipants
+            return StatusCode(501, "Not Implemented");
+        }
+
+        [HttpPost("{id}/students", Name=Routes.ClassParticipantAdd)]
+        [Authorize(Roles = Roles.Admin)]
         public async Task<IActionResult> AddParticipant(int Id, [FromBody]StudentDTO dto)
         {
             if(!ModelState.IsValid){
@@ -141,6 +154,26 @@ namespace API.Controllers
             }
 
             throw new Exception("Unable to add participant " + dto.Number);
+        }
+
+        [HttpPost("{id}/group", Name=Routes.ClassGroupAdd)]
+        [Authorize(Roles = Roles.Admin)]
+        public async Task<IActionResult> AddGroup(int Id)
+        {
+            if(!ModelState.IsValid){
+                return BadRequest(ModelState);
+            }
+
+            Class c = await _repo.GetByIdAsync(Id);
+            if(c == null){
+                return NotFound();
+            }
+
+            if(await _repo.AddGroupTo(c)){
+                return Ok();    //TODO: What to return...
+            }
+
+            throw new Exception("Unable to add group to class" + Id);
         }
     }
 }

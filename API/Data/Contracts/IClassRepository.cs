@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using API.Models;
 using API.Services;
@@ -14,5 +15,9 @@ namespace API.Data.Contracts
         Task<PagedList<Group>> GetClassGroups(int id, ListQueryStringDto p);
         
         Task<bool> AddParticipantTo(Class c, int studentNumberId);
+
+        Task<bool> AddGroupTo(Class c);
+
+        Task<List<Student>> GetClassParticipants(int id);
     }
 }

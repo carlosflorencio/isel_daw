@@ -46,7 +46,7 @@ namespace API.Controllers
         }
 
         [HttpPost("", Name=Routes.TeacherCreate)]
-        //[Authorize(Roles = Roles.Admin)] //TODO: Authorization only for admins
+        [Authorize(Roles = Roles.Admin)]
         public async Task<IActionResult> Post([FromBody]TeacherDTO dto)
         {
             if(!ModelState.IsValid){
@@ -74,7 +74,7 @@ namespace API.Controllers
         }
 
         [HttpPut("{number}", Name=Routes.TeacherEdit)]
-        //[Authorize(Roles = Roles.Admin)] //TODO: Authorization only for admins
+        [Authorize(Roles = Roles.Admin)]
         public async Task<IActionResult> Put(int Number, [FromBody]TeacherDTO dto)
         {
             if(!ModelState.IsValid){
@@ -102,7 +102,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("{number}", Name=Routes.TeacherDelete)]
-        //[Authorize(Roles = Roles.Admin)] //TODO: Authorization only for admins
+        [Authorize(Roles = Roles.Admin)]
         public async Task<IActionResult> Delete(int Number)
         {
             Teacher teacher = await _repo.GetByNumberAsync(Number);

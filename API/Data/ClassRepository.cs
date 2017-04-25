@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Data.Contracts;
@@ -22,6 +23,7 @@ namespace API.Data
                 .Include(c => c.Semester)
                 .Include(c => c.Course)
                 .Include(c => c.Participants)
+                .Include(c => c.Groups)
                 .FirstOrDefaultAsync();
         }
 
@@ -77,6 +79,20 @@ namespace API.Data
             // });
 
             return SaveAsync();
+        }
+
+        public Task<bool> AddGroupTo(Class c)
+        {
+            c.Groups.Add(new Group{
+                ClassId = c.Id
+            });
+
+            return SaveAsync();
+        }
+
+        public Task<List<Student>> GetClassParticipants(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }
