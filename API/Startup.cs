@@ -15,8 +15,6 @@ using Microsoft.EntityFrameworkCore;
 using API.Extensions;
 using API.TransferModels.ResponseModels;
 using FluentSiren.AspNetCore.Mvc.Formatters;
-using idunno.Authentication;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -95,6 +93,8 @@ namespace API
             loggerFactory.AddDebug(LogLevel.Debug);
 
 
+            app.UseMiddleware<BasicAuthMiddleware>();
+
             //app.UseMiddleware(typeof(ErrorHandlingMiddleware));
             app.UseStatusCodePagesWithReExecute("/error/{0}");
 
@@ -104,13 +104,6 @@ namespace API
                 context.ClearAllData();
                 context.EnsureSeedDataForContext();
             }
-
-            app.UseBasicAuthentication(
-                new BasicAuthenticationOptions
-                {
-                    Realm = "This Api needs auth",
-                    Events = new BasicAuthActions(studentRepo, teacherRepo)
-                });
 
             app.UseMvcWithDefaultRoute();
         }

@@ -38,7 +38,7 @@ namespace API.TransferModels.ResponseModels
                         .WithHref(_url.AbsoluteRouteUrl(Routes.SemesterEntry,
                                                     new { id = c.SemesterId }))));
             //TODO: what to do with course?
-            
+
             if (_context.HttpContext.User.IsInRole(Roles.Admin)) {
                 entity
                     .WithAction(
@@ -58,7 +58,7 @@ namespace API.TransferModels.ResponseModels
                                 new FieldBuilder()
                                     .WithName("autoEnrollment")
                                     .WithType("checkbox")
-                                    .WithValue(c.AutoEnrollment.ToString()))                                    
+                                    .WithValue(c.AutoEnrollment.ToString()))
                             .WithField(
                                 new FieldBuilder()
                                     .WithName("maxGroupSize")
@@ -160,7 +160,7 @@ namespace API.TransferModels.ResponseModels
                     .WithRel("index")
                     .WithHref(_url.AbsoluteRouteUrl(Routes.Index)))
                 .WithNavigationLinks(_url, Routes.ClassList, items.TotalPages, query);
-                
+
             return entity.Build();
         }
 
