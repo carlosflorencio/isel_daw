@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Data.Contracts;
+using API.Models;
 using API.TransferModels.InputModels;
 using API.TransferModels.ResponseModels;
 using FluentSiren.Builders;
@@ -43,22 +44,77 @@ namespace API.Controllers
             return Ok(_representation.Entity(student));
         }
 
-        // POST api/students
+        
         [HttpPost("", Name = Routes.StudentCreate)]
-        public void Post([FromBody]string value)
+        //[Authorize(Roles = Roles.Admin)] //TODO: Authorization only for admins
+        public async Task<IActionResult> Post([FromBody]StudentDTO dto)
         {
+            if(!ModelState.IsValid){
+                return BadRequest(ModelState);
+            }
+
+            //TODO: AutoMapper
+            Student student = new Student{
+                Number = dto.Number,
+                Name = dto.Name,
+                Email = dto.Email,
+                Password = dto.Password
+            };
+
+            if(!await _repo.AddAsync(student)){
+                throw new Exception("Unable to add student");
+            }
+
+            return CreatedAtRoute(
+                Routes.StudentEntry,
+                new {number = student.Number},
+                _representation.Entity(student)
+            );
         }
 
-        // PUT api/values/5
         [HttpPut("{number:int}", Name = Routes.StudentEdit)]
-        public void Put(int number, [FromBody]string value)
+        //[Authorize(Roles = Roles.Admin)] //TODO: Authorization only for admins
+        public async Task<IActionResult> Put(int Number, [FromBody]StudentDTO dto)
         {
+            if(!ModelState.IsValid){
+                return BadRequest(ModelState);
+            }
+
+            Student student = await _repo.GetByNumberAsync(Number);
+            if(student == null){
+                return NotFound();
+            }
+
+            //TODO: AutoMapper
+            student.Number = dto.Number;
+            student.Name = dto.Name;
+            student.Email = dto.Email;
+            student.Password = dto.Password;
+
+            if(!await _repo.EditAsync(student)){
+                throw new Exception("Unable to edit student " + Number);
+            }
+            
+            return Ok(_representation.Entity(student));
+            //return NoContent();
         }
 
-        // DELETE api/values/5
         [HttpDelete("{number:int}", Name = Routes.StudentDelete)]
-        public void Delete(int number)
+        //[Authorize(Roles = Roles.Admin)] //TODO: Authorization only for admins
+        public async Task<IActionResult> Delete(int Number)
         {
+            Student student = await _repo.GetByNumberAsync(Number);
+
+            if(student == null){
+                return NotFound();
+            }
+
+            if(await _repo.DeleteAsync(student))
+            {
+                return NoContent();
+            }
+            
+            throw new Exception("Unable to delete student " + Number);
         }
 
 

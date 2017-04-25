@@ -5,6 +5,7 @@ using API.Models;
 using API.Services;
 using API.TransferModels.InputModels;
 using API.TransferModels.ResponseModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -40,10 +41,14 @@ namespace API.Controllers
             return Ok(_representation.Entity(teacher));
         }
 
-        //TODO: Authorization only for admins
         [HttpPost("", Name=Routes.TeacherCreate)]
+        //[Authorize(Roles = Roles.Admin)] //TODO: Authorization only for admins
         public async Task<IActionResult> Post([FromBody]TeacherDTO dto)
         {
+            if(!ModelState.IsValid){
+                return BadRequest(ModelState);
+            }
+
             //TODO: AutoMapper
             Teacher teacher = new Teacher{
                 Number = dto.Number,
@@ -54,7 +59,7 @@ namespace API.Controllers
             };
 
             if(!await _repo.AddAsync(teacher)){
-                return StatusCode(500, "Internal Server Error");
+                throw new Exception("Unable to add teacher");
             }
 
             return CreatedAtRoute(
@@ -64,10 +69,14 @@ namespace API.Controllers
             );
         }
 
-        //TODO: Authorization only for admins
         [HttpPut("{number}", Name=Routes.TeacherEdit)]
+        //[Authorize(Roles = Roles.Admin)] //TODO: Authorization only for admins
         public async Task<IActionResult> Put(int Number, [FromBody]TeacherDTO dto)
         {
+            if(!ModelState.IsValid){
+                return BadRequest(ModelState);
+            }
+
             Teacher teacher = await _repo.GetByNumberAsync(Number);
             if(teacher == null){
                 return NotFound();
@@ -88,8 +97,8 @@ namespace API.Controllers
             //return NoContent();
         }
 
-        //TODO: Authorization only for admins
         [HttpDelete("{number}", Name=Routes.TeacherDelete)]
+        //[Authorize(Roles = Roles.Admin)] //TODO: Authorization only for admins
         public async Task<IActionResult> Delete(int Number)
         {
             Teacher teacher = await _repo.GetByNumberAsync(Number);
