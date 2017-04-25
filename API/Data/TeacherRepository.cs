@@ -67,5 +67,13 @@ namespace API.Data
                 .Include(c => c.Classes)
                 .SingleOrDefaultAsync();
         }
+
+        public async Task<PagedList<Class>> GetPaginatedTeacherClassesAsync(int number)
+        {
+            List<Teacher> teachers = await Context.Teachers
+                .Include(c => c.Classes.Where(ct => ct.TeacherId == number)).ToListAsync();
+
+            return null;
+        }
     }
 }

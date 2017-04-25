@@ -1,5 +1,8 @@
+using System;
 using System.Threading.Tasks;
 using API.Data.Contracts;
+using API.Models;
+using API.Services;
 using API.TransferModels.InputModels;
 using API.TransferModels.ResponseModels;
 using Microsoft.AspNetCore.Mvc;
@@ -32,35 +35,90 @@ namespace API.Controllers
         [HttpGet("{number}", Name=Routes.TeacherEntry)]
         public async Task<IActionResult> Get(int Number)
         {
-            //TODO: Implement
-            return StatusCode(501, "Not Implemented");
+            var teacher = await _repo.GetByNumberAsync(Number);
+
+            return Ok(_representation.Entity(teacher));
         }
 
+        //TODO: Authorization only for admins
         [HttpPost("", Name=Routes.TeacherCreate)]
-        public async Task<IActionResult> Post([FromBody]string dto)
+        public async Task<IActionResult> Post([FromBody]TeacherDTO dto)
         {
-            //TODO: Implement
-            return StatusCode(501, "Not Implemented");
+            //TODO: AutoMapper
+            Teacher teacher = new Teacher{
+                Number = dto.Number,
+                Name = dto.Name,
+                Email = dto.Email,
+                Password = dto.Password,
+                IsAdmin = dto.IsAdmin
+            };
+
+            if(!await _repo.AddAsync(teacher)){
+                return StatusCode(500, "Internal Server Error");
+            }
+
+            return CreatedAtRoute(
+                Routes.TeacherEntry,
+                new {number = teacher.Number},
+                _representation.Entity(teacher)
+            );
         }
 
-        [HttpPut("{id}", Name=Routes.TeacherEdit)]
-        public async Task<IActionResult> Put(int id, [FromBody]string value)
+        //TODO: Authorization only for admins
+        [HttpPut("{number}", Name=Routes.TeacherEdit)]
+        public async Task<IActionResult> Put(int Number, [FromBody]TeacherDTO dto)
         {
-            //TODO: Implement
-            return StatusCode(501, "Not Implemented");
+            Teacher teacher = await _repo.GetByNumberAsync(Number);
+            if(teacher == null){
+                return NotFound();
+            }
+
+            //TODO: AutoMapper
+            teacher.Number = dto.Number;
+            teacher.Name = dto.Name;
+            teacher.Email = dto.Email;
+            teacher.Password = dto.Password;
+            teacher.IsAdmin = dto.IsAdmin;
+
+            if(!await _repo.EditAsync(teacher)){
+                throw new Exception("Unable to edit teacher " + Number);
+            }
+            
+            return Ok(_representation.Entity(teacher));
+            //return NoContent();
         }
 
-        [HttpDelete("{id}", Name=Routes.TeacherDelete)]
-        public async Task<IActionResult> Delete(int id)
+        //TODO: Authorization only for admins
+        [HttpDelete("{number}", Name=Routes.TeacherDelete)]
+        public async Task<IActionResult> Delete(int Number)
         {
-            //TODO: Implement
-            return StatusCode(501, "Not Implemented");
+            Teacher teacher = await _repo.GetByNumberAsync(Number);
+
+            if(teacher == null){
+                return NotFound();
+            }
+
+            if(await _repo.DeleteAsync(teacher))
+            {
+                return NoContent();
+            }
+            
+            throw new Exception("Unable to delete teacher " + Number);
         }
 
         [HttpGet("{number}/classes", Name = Routes.TeacherClassList)]
-        public string TeacherClasses(int number, [FromQuery] ListQueryStringDto query)
+        public async Task<IActionResult> TeacherClasses(int number, [FromQuery] ListQueryStringDto query)
         {
-            return "value";
+            // PagedList<Class> classes = await _repo.GetPaginatedTeacherClassesAsync(number);
+
+            // if(classes == null){
+            //     return NotFound();
+            // }
+
+            // var result = _representation.ClassesCollection(classes, query);
+
+            // return Ok(result);
+            return StatusCode(501, "Not Implemented");
         }
     }
 }

@@ -161,7 +161,8 @@ namespace API.Extensions
                     Name = "Pedro Félix",
                     Email = "pfelix@gmail.com",
                     Number = 1456,
-                    Password = "123456"
+                    Password = "123456",
+                    IsAdmin = true
                 },
                 new Teacher() {
                     Name = "Freitas",
