@@ -189,7 +189,7 @@ namespace API.TransferModels.ResponseModels
                     .WithProperty("number", group.Id)   //TODO: change this
                     .WithLink(new LinkBuilder()
                         .WithRel("self")
-                        .WithHref(_url.AbsoluteRouteUrl(Routes.ClassEntry,
+                        .WithHref(_url.AbsoluteRouteUrl(Routes.GroupEntry,
                         new { id = group.Id })))
                     .WithLink(new LinkBuilder()
                         .WithRel(SirenData.REL_GROUP_CLASS)
@@ -200,6 +200,42 @@ namespace API.TransferModels.ResponseModels
                         .WithHref(_url.AbsoluteRouteUrl(Routes.GroupStudentsList,
                         new { id = group.Id }))));
             }
+
+            if (_context.HttpContext.User.IsInRole(Roles.Admin)) {
+                entity
+                    .WithAction(new ActionBuilder()
+                        .WithName("add-class")
+                        .WithTitle("Add Class")
+                        .WithMethod("POST")
+                        .WithHref(_url.AbsoluteRouteUrl(Routes.ClassCreate))
+                        .WithType("application/json")
+                        .WithField(new FieldBuilder()
+                                        .WithName("name")
+                                        .WithType("text"))
+                        .WithField(new FieldBuilder()
+                                        .WithName("maxGroupSize")
+                                        .WithType("number"))
+                        .WithField(new FieldBuilder()
+                                        .WithName("autoEnrollment")
+                                        .WithType("checkbox"))
+                        .WithField(new FieldBuilder()
+                                        .WithName("semesterId")
+                                        .WithType("number"))
+                        .WithField(new FieldBuilder()
+                                        .WithName("courseId")
+                                        .WithType("number")));
+            }
+
+            entity
+                .WithLink(new LinkBuilder()
+                    .WithRel("self")
+                    .WithHref(_url.AbsoluteRouteUrl(Routes.ClassGroupsList)))
+                .WithLink(new LinkBuilder()
+                    .WithRel("index")
+                    .WithHref(_url.AbsoluteRouteUrl(Routes.Index)))
+                .WithNavigationLinks(_url, Routes.ClassGroupsList, groups.TotalPages, query);
+
+            return entity.Build();
         }
     }
 }

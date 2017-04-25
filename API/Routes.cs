@@ -41,6 +41,7 @@ namespace API
         public const string SemesterEntry = nameof(SemesterEntry);
 
         // GroupsController
-        public static string GroupStudentsList = nameof(GroupStudentsList);
+        public const string GroupStudentsList = nameof(GroupStudentsList);
+        public const string GroupEntry = nameof(GroupEntry);
     }
 }
