@@ -59,6 +59,12 @@ namespace API.Middlewares
             finally
             {
                 DetachAuthenticationhandler(handler);
+
+                if (context.Response.ContentType == null &&
+                    context.Response.StatusCode == 404 &&
+                    context.User.Identity.IsAuthenticated) {
+                    context.Response.StatusCode = 403;
+                }
             }
         }
 

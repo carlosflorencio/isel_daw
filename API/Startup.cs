@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using API.Data;
 using API.Data.Contracts;
 using API.Middlewares;
@@ -46,9 +48,6 @@ namespace API
                 opt => opt.UseNpgsql(Configuration["Data:PostgreConnection:ConnectionString"])
             );
 
-            // Authorization
-            services.AddAuthorization();
-
             // MVC
             services.AddMvc(options =>
             {
@@ -81,6 +80,7 @@ namespace API
             services.AddScoped<StudentsSirenHto>();
             services.AddScoped<TeachersSirenHto>();
             services.AddScoped<ClassesSirenHto>();
+
         }
 
         public void Configure(IApplicationBuilder app,
@@ -91,7 +91,6 @@ namespace API
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug(LogLevel.Debug);
-
 
             app.UseMiddleware<BasicAuthMiddleware>();
 
