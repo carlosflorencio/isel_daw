@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.3
+VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{FED3722E-DA44-4188-8C43-6E2400E3BF9D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API.Tests", "API.Tests\API.Tests.csproj", "{C1342027-4F3C-49E4-9C03-831B5195B6FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentSiren", "FluentSiren\FluentSiren.csproj", "{871DCF3A-3CBC-427D-8A63-AF581C595AC0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{C1342027-4F3C-49E4-9C03-831B5195B6FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1342027-4F3C-49E4-9C03-831B5195B6FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1342027-4F3C-49E4-9C03-831B5195B6FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{871DCF3A-3CBC-427D-8A63-AF581C595AC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{871DCF3A-3CBC-427D-8A63-AF581C595AC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{871DCF3A-3CBC-427D-8A63-AF581C595AC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{871DCF3A-3CBC-427D-8A63-AF581C595AC0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
