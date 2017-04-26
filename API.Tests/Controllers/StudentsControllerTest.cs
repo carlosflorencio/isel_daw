@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using API.Controllers;
 using API.Data;
-using API.Models;
-using Microsoft.CodeAnalysis;
-using Microsoft.EntityFrameworkCore;
 using MyTested.AspNetCore.Mvc;
-using MyTested.AspNetCore.Mvc.Builders.Contracts.Data;
 using Xunit;
 using API.Extensions;
 using API.TransferModels.InputModels;
 using FluentSiren.Models;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.TestHost;
 
 namespace API.Tests.Controllers
 {
@@ -24,11 +17,32 @@ namespace API.Tests.Controllers
 
         public StudentsControllerTest()
         {
+            // Seed DB data for all tests
             this.WithDbContext(dbContext => dbContext.WithEntities(ctx =>
             {
                 var db = ctx as DatabaseContext;
                 db.EnsureSeedDataForContext();
             }));
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | List
+        |--------------------------------------------------------------------------
+        */
+
+        [Fact]
+        public async Task Test_Get_Students_Without_Auth()
+        {
+            // Arrange
+            var server = new TestServer(new WebHostBuilder().UseStartup<TestStartup>());
+            var client = server.CreateClient();
+
+            // Act
+            var response = await client.GetAsync("api/students");
+
+            // Assert
+            Assert.Equal(System.Net.HttpStatusCode.Unauthorized, response.StatusCode);
         }
 
         [Fact]
@@ -40,7 +54,7 @@ namespace API.Tests.Controllers
             .Calling(c => c.List(new ListQueryStringDto() { }))
             .ShouldReturn()
             .Ok()
-            .WithModelOfType<Entity>()
+            .WithModelOfType<SirenEntity>()
             .Passing(
                 model =>
                     model.Entities.Count > 0 &&
@@ -56,12 +70,18 @@ namespace API.Tests.Controllers
             .Calling(c => c.List(new ListQueryStringDto() { }))
             .ShouldReturn()
             .Ok()
-            .WithModelOfType<Entity>()
+            .WithModelOfType<SirenEntity>()
             .Passing(
                 model =>
                     model.Entities.Count > 0 &&
                     model.Actions == null);
         }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Item
+        |--------------------------------------------------------------------------
+        */
 
         [Fact]
         public void Get_Student_With_Student_Role()
@@ -72,7 +92,7 @@ namespace API.Tests.Controllers
             .Calling(c => c.Get(39250))
             .ShouldReturn()
             .Ok()
-            .WithModelOfType<Entity>()
+            .WithModelOfType<SirenEntity>()
             .Passing(
                 model =>
                     model.Properties["email"].Equals("carlos@gmail.com") &&
@@ -88,7 +108,7 @@ namespace API.Tests.Controllers
             .Calling(c => c.Get(39250))
             .ShouldReturn()
             .Ok()
-            .WithModelOfType<Entity>()
+            .WithModelOfType<SirenEntity>()
             .Passing(
                 model =>
                     model.Properties["email"].Equals("carlos@gmail.com") &&

@@ -48,7 +48,6 @@ namespace API.Controllers
             return Ok(_representation.Entity(student));
         }
 
-        
         [HttpPost("", Name = Routes.StudentCreate)]
         [Authorize(Roles = Roles.Admin)]
         public async Task<IActionResult> Post([FromBody]StudentDTO dto)
@@ -98,7 +97,7 @@ namespace API.Controllers
             if(!await _repo.EditAsync(student)){
                 throw new Exception("Unable to edit student " + Number);
             }
-            
+
             return Ok(_representation.Entity(student));
             //return NoContent();
         }
@@ -117,7 +116,7 @@ namespace API.Controllers
             {
                 return NoContent();
             }
-            
+
             throw new Exception("Unable to delete student " + Number);
         }
 
