@@ -1,22 +1,17 @@
-﻿using System;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Linq;
 using API.Data;
 using API.Data.Contracts;
 using API.Middlewares;
-using API.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Server.Kestrel.Internal.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using API.Extensions;
+using API.Formatters;
 using API.TransferModels.ResponseModels;
-using FluentSiren.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Routing;
@@ -45,9 +40,6 @@ namespace API
             services.AddDbContext<DatabaseContext>(
                 opt => opt.UseNpgsql(Configuration["Data:PostgreConnection:ConnectionString"])
             );
-
-            // Authorization
-            services.AddAuthorization();
 
             // MVC
             services.AddMvc(options =>
@@ -79,8 +71,9 @@ namespace API
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
             services.AddScoped<StudentsSirenHto>();
-            services.AddScoped<TeachersSirenHto>();
-            services.AddScoped<ClassesSirenHto>();
+//            services.AddScoped<TeachersSirenHto>();
+//            services.AddScoped<ClassesSirenHto>();
+
         }
 
         public void Configure(IApplicationBuilder app,
@@ -91,7 +84,6 @@ namespace API
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug(LogLevel.Debug);
-
 
             app.UseMiddleware<BasicAuthMiddleware>();
 
