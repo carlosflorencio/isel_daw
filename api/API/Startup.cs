@@ -66,12 +66,14 @@ namespace API
             services.AddScoped<IStudentRepository, StudentRepository>();
             services.AddScoped<ITeacherRepository, TeacherRepository>();
             services.AddScoped<IClassRepository, ClassRepository>();
+            services.AddScoped<ICourseRepository, CourseRepository>();
 
             // needed to inject IUrlHelper
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
             services.AddScoped<StudentsSirenHto>();
-//            services.AddScoped<TeachersSirenHto>();
+            services.AddScoped<TeachersSirenHto>();
+            services.AddScoped<CoursesSirenHto>();
 //            services.AddScoped<ClassesSirenHto>();
 
         }

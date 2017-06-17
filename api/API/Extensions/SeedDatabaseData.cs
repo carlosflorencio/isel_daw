@@ -11,11 +11,24 @@ namespace API.Extensions
 {
     public static class SeedDatabaseData
     {
+        public static void ClearAllData(this DatabaseContext context)
+        {
+            context.Database.ExecuteSqlCommand("DELETE FROM \"ClassStudent\"");
+            context.Database.ExecuteSqlCommand("DELETE FROM \"ClassTeacher\"");
+            context.Database.ExecuteSqlCommand("DELETE FROM \"GroupStudent\"");
+            context.Database.ExecuteSqlCommand("DELETE FROM \"Classes\"");
+            context.Database.ExecuteSqlCommand("ALTER SEQUENCE \"Classes_Id_seq\" RESTART WITH 1");
+            context.Database.ExecuteSqlCommand("DELETE FROM \"Groups\"");
+            context.Database.ExecuteSqlCommand("ALTER SEQUENCE \"Groups_Id_seq\" RESTART WITH 1");
+            context.Database.ExecuteSqlCommand("DELETE FROM \"Students\"");
+            context.Database.ExecuteSqlCommand("DELETE FROM \"Teachers\"");
+            context.Database.ExecuteSqlCommand("DELETE FROM \"Courses\"");
+            context.Database.ExecuteSqlCommand("ALTER SEQUENCE \"Courses_Id_seq\" RESTART WITH 1");
+            context.Database.ExecuteSqlCommand("DELETE FROM \"Semesters\"");
+            context.Database.ExecuteSqlCommand("ALTER SEQUENCE \"Semesters_Id_seq\" RESTART WITH 1");
+        }
 
         public static void EnsureSeedDataForContext(this DatabaseContext context) {
-
-            //            context.Database.EnsureDeleted();
-            //            context.Database.EnsureCreated();
             var teachers = AddTeachers(context);
 
             var students = AddStudents(context);
@@ -54,65 +67,43 @@ namespace API.Extensions
             context.SaveChanges();
         }
 
-        public static void ClearAllData(this DatabaseContext context)
-        {
-            context.Database.ExecuteSqlCommand("DELETE FROM \"ClassStudent\"");
-            context.Database.ExecuteSqlCommand("DELETE FROM \"ClassTeacher\"");
-            context.Database.ExecuteSqlCommand("DELETE FROM \"GroupStudent\"");
-            context.Database.ExecuteSqlCommand("DELETE FROM \"Classes\"");
-            context.Database.ExecuteSqlCommand("DELETE FROM \"Groups\"");
-            context.Database.ExecuteSqlCommand("DELETE FROM \"Students\"");
-            context.Database.ExecuteSqlCommand("DELETE FROM \"Teachers\"");
-            context.Database.ExecuteSqlCommand("DELETE FROM \"Courses\"");
-            context.Database.ExecuteSqlCommand("DELETE FROM \"Semesters\"");
-        }
-
-        private static Class[] AddClasses(DatabaseContext context, Course[] courses, Semester[] semesters) {
-            var classes = new[] {
-                new Class() {
-                    Name = "D1",
-                    Course = courses[0],
-                    MaxGroupSize = 3,
-                    Semester = semesters[0]
+        private static Teacher[] AddTeachers(DatabaseContext context) {
+            var teachers = new[] {
+                new Teacher() {
+                    Name = "Pedro Félix",
+                    Email = "pfelix@gmail.com",
+                    Number = 1456,
+                    Password = "123456",
+                    IsAdmin = true
                 },
-                new Class() {
-                    Name = "N1",
-                    Course = courses[0],
-                    MaxGroupSize = 3,
-                    Semester = semesters[0]
-                }
-            };
-
-            context.Classes.AddRange(classes);
-
-            return classes;
-        }
-
-        private static Semester[] AddSemesters(DatabaseContext context) {
-            var semesters = new[] {
-                new Semester() {
-                    Term = Term.Winter,
-                    Year = 2016
+                new Teacher() {
+                    Name = "Fernando Sousa",
+                    Email = "sousa@gmail.com",
+                    Number = 7890,
+                    Password = "123456"
                 },
-                new Semester() {
-                    Term = Term.Spring,
-                    Year = 2017
+                new Teacher() {
+                    Name = "Miguel Gamboa Carvalho",
+                    Email = "gamboa@gmail.com",
+                    Number = 3512,
+                    Password = "123456"
+                },
+                new Teacher() {
+                    Name = "Vitor Almeida",
+                    Email = "almeida@gmail.com",
+                    Number = 3909,
+                    Password = "123456"
+                },
+                new Teacher() {
+                    Name = "José Simão",
+                    Email = "simao@gmail.com",
+                    Number = 1233,
+                    Password = "123456"
                 }
             };
-            context.Semesters.AddRange(semesters);
-            return semesters;
-        }
 
-        private static Course[] AddCourses(DatabaseContext context, Teacher[] teachers) {
-            var courses = new[] {
-                new Course() {
-                    Acronym = "LS",
-                    Name = "Laboratorio de Software",
-                    Coordinator = teachers[0],
-                }
-            };
-            context.Courses.AddRange(courses);
-            return courses;
+            context.Teachers.AddRange(teachers);
+            return teachers;
         }
 
         private static Student[] AddStudents(DatabaseContext context) {
@@ -131,7 +122,7 @@ namespace API.Extensions
                 },
                 new Student {
                     Email = "teste@gmail.com",
-                    Name = "Teste Maricas",
+                    Name = "Teste",
                     Number = 35564,
                     Password = "123456"
                 }
@@ -155,25 +146,117 @@ namespace API.Extensions
             return students;
         }
 
-        private static Teacher[] AddTeachers(DatabaseContext context) {
-            var teachers = new[] {
-                new Teacher() {
-                    Name = "Pedro Félix",
-                    Email = "pfelix@gmail.com",
-                    Number = 1456,
-                    Password = "123456",
-                    IsAdmin = true
+        private static Course[] AddCourses(DatabaseContext context, Teacher[] teachers) {
+            var courses = new[] {
+                new Course() {
+                    Acronym = "LS",
+                    Name = "Laboratorio de Software",
+                    Coordinator = teachers[0],
                 },
-                new Teacher() {
-                    Name = "Freitas",
-                    Email = "freitas@gmail.com",
-                    Number = 3512,
-                    Password = "123456"
+                new Course() {
+                    Acronym = "DAW",
+                    Name = "Desenvolvimento de Aplicações Web",
+                    Coordinator = teachers[0],
+                },
+                new Course() {
+                    Acronym = "PS",
+                    Name = "Projeto e Seminário",
+                    Coordinator = teachers[1],
+                },
+                new Course() {
+                    Acronym = "PC",
+                    Name = "Programação Concorrente",
+                    Coordinator = teachers[0],
+                },
+                new Course() {
+                    Acronym = "PI",
+                    Name = "Programação na Internet",
+                    Coordinator = teachers[2],
+                },
+                new Course() {
+                    Acronym = "RI",
+                    Name = "Redes de Internet",
+                    Coordinator = teachers[3],
+                }
+            };
+            context.Courses.AddRange(courses);
+            return courses;
+        }
+        
+        private static Semester[] AddSemesters(DatabaseContext context) {
+            var semesters = new[] {
+                new Semester() {
+                    Term = Term.Winter,
+                    Year = 2016
+                },
+                new Semester() {
+                    Term = Term.Spring,
+                    Year = 2017
+                }
+            };
+            context.Semesters.AddRange(semesters);
+            return semesters;
+        }
+
+        private static Class[] AddClasses(DatabaseContext context, Course[] courses, Semester[] semesters) {
+            var classes = new[] {
+                new Class() {
+                    Name = "1N",
+                    Course = courses[1],    //DAW
+                    MaxGroupSize = 3,
+                    Semester = semesters[1]
+                },
+                new Class() {
+                    Name = "1D",
+                    Course = courses[0],    //LS
+                    MaxGroupSize = 3,
+                    Semester = semesters[0]
+                },
+                new Class() {
+                    Name = "1D",
+                    Course = courses[2],    //PS
+                    MaxGroupSize = 3,
+                    Semester = semesters[1]
+                },
+                new Class() {
+                    Name = "1N",
+                    Course = courses[2],    //PS
+                    MaxGroupSize = 3,
+                    Semester = semesters[1]
+                },
+                new Class() {
+                    Name = "1D",
+                    Course = courses[3],    //PC
+                    MaxGroupSize = 3,
+                    Semester = semesters[0]
+                },
+                new Class() {
+                    Name = "1N",
+                    Course = courses[3],    //PC
+                    MaxGroupSize = 3,
+                    Semester = semesters[0]
+                },
+                new Class() {
+                    Name = "1D",
+                    Course = courses[4],    //PI
+                    MaxGroupSize = 3,
+                    Semester = semesters[0]
+                },
+                new Class() {
+                    Name = "1N",
+                    Course = courses[4],    //PI
+                    MaxGroupSize = 3,
+                    Semester = semesters[0]
                 }
             };
 
-            context.Teachers.AddRange(teachers);
-            return teachers;
+            context.Classes.AddRange(classes);
+
+            return classes;
+        }
+
+        private static Group[] AddGroups(DatabaseContext context, Class[] classes, Student[] students){
+            return null;
         }
     }
 }
