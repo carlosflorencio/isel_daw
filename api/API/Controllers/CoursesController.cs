@@ -13,34 +13,54 @@ namespace API.Controllers
     {
         private ICourseRepository _repo;
 
-        private readonly CoursesSirenHto _representation;
+        private readonly CoursesSirenHto _coursesRep;
+        private readonly ClassesSirenHto _classesRep;
 
-        public CoursesController(ICourseRepository repo, CoursesSirenHto representation)
+        public CoursesController(
+            ICourseRepository repo,
+            CoursesSirenHto coursesRepresentation,
+            ClassesSirenHto classesRepresentation)
         {
             _repo = repo;
-            _representation = representation;
+            _coursesRep = coursesRepresentation;
+            _classesRep = classesRepresentation;
         }
 
-        [HttpGet("", Name=Routes.CourseList)]
+        [HttpGet("", Name = Routes.CourseList)]
         public async Task<IActionResult> GetAll([FromQuery] ListQueryStringDto query)
         {
             PagedList<Course> courses = await _repo.GetAllPaginatedAsync(query);
 
-            return Ok(_representation.Collection(courses, query));
+            return Ok(_coursesRep.Collection(courses, query));
         }
 
-        [HttpGet("{id}", Name=Routes.CourseEntry)]
+        [HttpGet("{id}", Name = Routes.CourseEntry)]
         public async Task<IActionResult> Get(int Id)
         {
-
             Course course = await _repo.GetByIdAsync(Id);
 
-            if(course == null){
+            if (course == null)
+            {
                 return NotFound();
             }
 
-            return Ok(_representation.Entity(course));
+            return Ok(_coursesRep.Entity(course));
         }
-        
+
+        [HttpGet("{id}/classes", Name = Routes.CourseClasses)]
+        public async Task<IActionResult> GetCourseClasses(int Id, [FromQuery] ListQueryStringDto query)
+        {
+            Course course = await _repo.GetByIdAsync(Id);
+
+            if (course == null)
+            {
+                return NotFound();
+            }
+
+            PagedList<Class> classes = await _repo.GetCourseClassesAsync(Id, query);
+
+            return Ok(_classesRep.Collection(classes, query));
+        }
+
     }
 }

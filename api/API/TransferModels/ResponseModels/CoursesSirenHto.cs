@@ -71,7 +71,10 @@ namespace API.TransferModels.ResponseModels
             return entity
                 .WithLink(new LinkBuilder()
                     .WithRel("self")
-                    .WithHref(UrlToCourse(Routes.CourseEntry, item.Id)));
+                    .WithHref(UrlToCourse(Routes.CourseEntry, item.Id)))
+                .WithLink(new LinkBuilder()
+                    .WithRel(SirenData.REL_COURSE_CLASSES)
+                    .WithHref(UrlToCourse(Routes.CourseClasses, item.Id)));
         }
 
         protected override SirenEntityBuilder AddEntityProperties(SirenEntityBuilder entity, Course item)

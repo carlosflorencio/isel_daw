@@ -39,5 +39,17 @@ namespace API.Data
                 .Include(c => c.Classes)
                 .FirstOrDefaultAsync();
         }
+
+        public Task<PagedList<Class>> GetCourseClassesAsync(int id, ListQueryStringDto query)
+        {
+            IQueryable<Class> classes = Context.Classes
+                .Where(c => c.CourseId == id)
+                .Include(c => c.Course)
+                .Include(c => c.Semester)
+                .Include(c => c.Groups)
+                .OrderBy(c => c.Semester);
+
+            return PagedList<Class>.Create(classes, query.Page, query.Limit);
+        }
     }
 }

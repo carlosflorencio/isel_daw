@@ -24,14 +24,6 @@ namespace API.Controllers
             _representation = representation;
         }
 
-        [HttpGet("", Name=Routes.ClassList)]
-        public async Task<IActionResult> GetAll([FromQuery] ListQueryStringDto query)
-        {
-            PagedList<Class> classes = await _repo.GetAllPaginatedAsync(query);
-
-            return Ok(_representation.Collection(classes, query));
-        }
-
         [HttpGet("{id}", Name=Routes.ClassEntry)]
         public async Task<IActionResult> Get(int Id)
         {

@@ -74,7 +74,7 @@ namespace API
             services.AddScoped<StudentsSirenHto>();
             services.AddScoped<TeachersSirenHto>();
             services.AddScoped<CoursesSirenHto>();
-//            services.AddScoped<ClassesSirenHto>();
+            services.AddScoped<ClassesSirenHto>();
 
         }
 
@@ -93,7 +93,7 @@ namespace API
             app.UseStatusCodePagesWithReExecute("/error/{0}");
 
             // Seed data if there is none
-            if (env.IsDevelopment() && !context.Semesters.Any())
+            if (env.IsDevelopment())
             {
                 context.ClearAllData();
                 context.EnsureSeedDataForContext();
