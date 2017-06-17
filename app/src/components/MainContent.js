@@ -1,16 +1,18 @@
 import React, { Component } from 'react'
-
 import { connect } from 'react-redux'
-
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom'
-import PrivateRoute from './PrivateRoute'
+import { Container } from 'semantic-ui-react'
 
-import Navbar from './Navbar'
-import Home from '../home/Home'
-import Login from '../login/Login'
-import PageNotFound from './PageNotFound'
-import Unauthorized from './Unauthorized'
-import privateRoutes from '../../routes'
+import PrivateRoute from './shared/PrivateRoute'
+
+import Navbar from './navbar/NavbarContainer'
+import Home from './home/HomeContainer'
+import Course from './courses/Course'
+import CourseList from './courses/CourseList'
+import Login from './login/Login'
+import PageNotFound from './shared/PageNotFound'
+import Unauthorized from './shared/Unauthorized'
+import privateRoutes from '../routes'
 
 class MainContent extends Component {
     constructor(props) {
@@ -21,11 +23,13 @@ class MainContent extends Component {
 
     render() {
         return (
-            <div>
+            <Container fluid>
                 <Navbar />
                 <Router>
                     <Switch>
                         <Route exact path='/' component={Home} />
+                        <Route exact path='/courses' component={CourseList} />
+                        <Route exact path='/courses/:id' component={Course} />
                         <Route exact path='/login' component={Login} />
                         {privateRoutes.map((route, i) =>
                             (<PrivateRoute
@@ -42,13 +46,12 @@ class MainContent extends Component {
                         <Route component={PageNotFound} />
                     </Switch>
                 </Router>
-            </div>
+            </Container>
         )
     }
 }
 
 const mapStateToProps = (state, ownProps) => {
-    console.log(state)
     return {
         session: state.session
     }

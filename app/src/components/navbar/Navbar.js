@@ -1,5 +1,6 @@
 /* global alert */
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import logo from '../../assets/img/logo.svg'
 
 import { Menu, Button } from 'semantic-ui-react'
@@ -18,6 +19,7 @@ class Navbar extends Component {
     }
 
     render() {
+        const { session } = this.props
         return (
             <Menu className="no-border-radius" inverted>
                 <Menu.Item>
@@ -27,7 +29,7 @@ class Navbar extends Component {
                     <Menu.Item
                         as={Button}
                         name="user"
-                        content="Name of the User"
+                        content={session.user.name}
                         onClick={this.onClick} />
                     <Menu.Item
                         as={Button}
@@ -38,6 +40,10 @@ class Navbar extends Component {
             </Menu>
         )
     }
+}
+
+Navbar.propTypes = {
+    session: PropTypes.object.isRequired
 }
 
 export default Navbar

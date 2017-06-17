@@ -3,7 +3,8 @@ import * as roles from './Roles'
  * User Domain Model
  */
 class User {
-  constructor (name, role) {
+  constructor (id, name, role) {
+    this.id = id
     this.name = name
     this.role = role // array
   }
