@@ -15,7 +15,7 @@ import * as roles from '../../models/Roles'
  */
 const initialState = {
   isAuthenticated: true,
-  user: new User(1, "Nuno Reis", roles.TEACHER),
+  user: new User(1, "Nuno Reis", roles.ADMIN),
   jwt: null
 }
 
