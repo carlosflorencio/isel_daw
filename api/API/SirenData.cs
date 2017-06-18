@@ -14,6 +14,7 @@ namespace API
         public static string REL_TEACHERS_CLASSES = "/relations#teacher-classes";
 
         public static string REL_COURSE_CLASSES = "/relations#course-classes";
+        public static string REl_COURSE_COORDINATOR = "/relations#course-coordinator";
 
         public static string REL_CLASS_SEMESTER = "/relations#class-semester";
 

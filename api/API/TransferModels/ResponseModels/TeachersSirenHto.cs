@@ -54,7 +54,7 @@ namespace API.TransferModels.ResponseModels
                             .WithName("edit-teacher")
                             .WithTitle("Edit Teacher")
                             .WithMethod("PUT")
-                            .WithHref(UrlToTeacher(Routes.TeacherEdit, item.Number))
+                            .WithHref(Url.ToTeacher(Routes.TeacherEdit, item.Number))
                             .WithType("application/json")
                             .WithField(
                                 new FieldBuilder()
@@ -71,7 +71,7 @@ namespace API.TransferModels.ResponseModels
                             .WithName("delete-teacher")
                             .WithTitle("Delete Teacher")
                             .WithMethod("DELETE")
-                            .WithHref(UrlToTeacher(Routes.TeacherDelete, item.Number))
+                            .WithHref(Url.ToTeacher(Routes.TeacherDelete, item.Number))
                     );
             }
 
@@ -83,10 +83,10 @@ namespace API.TransferModels.ResponseModels
             return entity
                 .WithLink(new LinkBuilder()
                     .WithRel("self")
-                    .WithHref(UrlToTeacher(Routes.TeacherEntry, item.Number)))
+                    .WithHref(Url.ToTeacher(Routes.TeacherEntry, item.Number)))
                 .WithLink(new LinkBuilder()
                     .WithRel(SirenData.REL_TEACHERS_CLASSES)
-                    .WithHref(UrlToTeacher(Routes.TeacherClassList, item.Number)));
+                    .WithHref(Url.ToTeacher(Routes.TeacherClassList, item.Number)));
         }
 
         /*
@@ -130,16 +130,6 @@ namespace API.TransferModels.ResponseModels
                 .WithLink(new LinkBuilder()
                     .WithRel("index")
                     .WithHref(UrlTo(Routes.Index)));
-        }
-
-        /*
-        |-----------------------------------------------------------------------
-        | Helpers
-        |-----------------------------------------------------------------------
-        */
-        private string UrlToTeacher(string route, int number)
-        {
-            return Url.AbsoluteRouteUrl(route, new {number = number});
         }
     }
 }

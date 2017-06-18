@@ -117,17 +117,6 @@ namespace API.Controllers
             return Ok(_representation.ClassGroupsCollection(groups, query));
         }
 
-        [HttpGet("{id}/students", Name=Routes.ClassParticipantsList)]
-        public async Task<IActionResult> ClassParticipants(int Id, [FromQuery]ListQueryStringDto query)
-        {
-            // List<Group> groups = await _repo.GetClassParticipants(Id);
-
-            // return Ok(_representation.ClassGroupsCollection(groups, query));
-
-            //TODO: Implement GET ClassParticipants
-            return StatusCode(501, "Not Implemented");
-        }
-
         [HttpPost("{id}/students", Name=Routes.ClassParticipantAdd)]
         [Authorize(Roles = Roles.Admin)]
         public async Task<IActionResult> AddParticipant(int Id, [FromBody]StudentDTO dto)

@@ -15,12 +15,17 @@ namespace API.Controllers
     {
         private ITeacherRepository _repo;
 
-        private readonly TeachersSirenHto _representation;
+        private readonly TeachersSirenHto _teachersRep;
+        private readonly ClassesSirenHto _classesRep;
 
-        public TeachersController(ITeacherRepository repo, TeachersSirenHto representation)
+        public TeachersController(
+            ITeacherRepository repo,
+            TeachersSirenHto teachersRepresentation,
+            ClassesSirenHto classesRepresentation)
         {
             _repo = repo;
-            _representation = representation;
+            _teachersRep = teachersRepresentation;
+            _classesRep = classesRepresentation;
         }
 
         [HttpGet("", Name=Routes.TeacherList)]
@@ -28,7 +33,7 @@ namespace API.Controllers
         {
             var teachers = await _repo.GetAllPaginatedAsync(query);
 
-            var result = _representation.Collection(teachers, query);
+            var result = _teachersRep.Collection(teachers, query);
 
             return Ok(result);
         }
@@ -42,7 +47,7 @@ namespace API.Controllers
                 return NotFound();
             }
 
-            return Ok(_representation.Entity(teacher));
+            return Ok(_teachersRep.Entity(teacher));
         }
 
         [HttpPost("", Name=Routes.TeacherCreate)]
@@ -69,7 +74,7 @@ namespace API.Controllers
             return CreatedAtRoute(
                 Routes.TeacherEntry,
                 new {number = teacher.Number},
-                _representation.Entity(teacher)
+                _teachersRep.Entity(teacher)
             );
         }
 
@@ -97,7 +102,7 @@ namespace API.Controllers
                 throw new Exception("Unable to edit teacher " + Number);
             }
             
-            return Ok(_representation.Entity(teacher));
+            return Ok(_teachersRep.Entity(teacher));
             //return NoContent();
         }
 
@@ -120,18 +125,21 @@ namespace API.Controllers
         }
 
         [HttpGet("{number}/classes", Name = Routes.TeacherClassList)]
-        public async Task<IActionResult> TeacherClasses(int number, [FromQuery] ListQueryStringDto query)
+        public async Task<IActionResult> TeacherClasses(
+            int number,
+            [FromQuery] ListQueryStringDto query)
         {
-            // PagedList<Class> classes = await _repo.GetPaginatedTeacherClassesAsync(number);
+            Teacher teacher = await _repo.GetByNumberAsync(number);
 
-            // if(classes == null){
-            //     return NotFound();
-            // }
+            if(teacher == null){
+                 return NotFound();
+            }
 
-            // var result = _representation.ClassesCollection(classes, query);
+            PagedList<Class> classes =
+                await _repo.GetPaginatedTeacherClassesAsync(number, query);
 
-            // return Ok(result);
-            return StatusCode(501, "Not Implemented");
+            return Ok(classes);
+            //return Ok(_classesRep.Collection(classes, query));
         }
     }
 }

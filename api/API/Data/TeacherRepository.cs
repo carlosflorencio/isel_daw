@@ -68,12 +68,17 @@ namespace API.Data
                 .SingleOrDefaultAsync();
         }
 
-        public async Task<PagedList<Class>> GetPaginatedTeacherClassesAsync(int number)
+        public Task<PagedList<Class>> GetPaginatedTeacherClassesAsync(
+            int number,
+            ListQueryStringDto p)
         {
-            List<Teacher> teachers = await Context.Teachers
-                .Include(c => c.Classes.Where(ct => ct.TeacherId == number)).ToListAsync();
+            IQueryable<Class> classes = Context.Teachers
+                .Where(t => t.Number == number)
+                .Include(t => t.Classes)
+                .ThenInclude(ct => ct.Class)
+                .SelectMany(c => c.Classes.Select(ct => ct.Class));
 
-            return null;
+            return PagedList<Class>.Create(classes, p.Page, p.Limit);
         }
     }
 }

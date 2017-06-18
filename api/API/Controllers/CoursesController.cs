@@ -62,5 +62,20 @@ namespace API.Controllers
             return Ok(_classesRep.Collection(classes, query));
         }
 
+        [HttpPost("", Name = Routes.CourseCreate)]
+        public IActionResult Post(){
+            return StatusCode(501, "Not Implemented");
+        }
+
+        [HttpPut("{id}", Name = Routes.CourseEdit)]
+        public IActionResult Put(int id){
+            return StatusCode(501, "Not Implemented");
+        }
+        
+        [HttpDelete("{id}", Name = Routes.CourseDelete)]
+        public IActionResult Delete(int id){
+            return StatusCode(501, "Not Implemented");
+        }
+
     }
 }

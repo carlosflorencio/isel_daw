@@ -57,7 +57,7 @@ namespace API.TransferModels.ResponseModels
                             .WithName("edit-student")
                             .WithTitle("Edit Student")
                             .WithMethod("PUT")
-                            .WithHref(UrlToStudent(Routes.StudentEdit, item.Number))
+                            .WithHref(Url.ToStudent(Routes.StudentEdit, item.Number))
                             .WithType("application/json")
                             .WithField(
                                 new FieldBuilder()
@@ -74,7 +74,7 @@ namespace API.TransferModels.ResponseModels
                             .WithName("delete-student")
                             .WithTitle("Delete Student")
                             .WithMethod("DELETE")
-                            .WithHref(UrlToStudent(Routes.StudentDelete, item.Number))
+                            .WithHref(Url.ToStudent(Routes.StudentDelete, item.Number))
                     );
             }
 
@@ -88,13 +88,13 @@ namespace API.TransferModels.ResponseModels
             return entity
                 .WithLink(new LinkBuilder()
                     .WithRel("self")
-                    .WithHref(UrlToStudent(Routes.StudentEntry, item.Number)))
+                    .WithHref(Url.ToStudent(Routes.StudentEntry, item.Number)))
                 .WithLink(new LinkBuilder()
                     .WithRel(SirenData.REL_STUDENTS_CLASSES)
-                    .WithHref(UrlToStudent(Routes.StudentClassList, item.Number)))
+                    .WithHref(Url.ToStudent(Routes.StudentClassList, item.Number)))
                 .WithLink(new LinkBuilder()
                     .WithRel(SirenData.REL_STUDENTS_GROUPS)
-                    .WithHref(UrlToStudent(Routes.StudentGroupList, item.Number)));
+                    .WithHref(Url.ToStudent(Routes.StudentGroupList, item.Number)));
         }
 
         /*
@@ -143,17 +143,6 @@ namespace API.TransferModels.ResponseModels
                     .WithRel("index")
                     .WithHref(UrlTo(Routes.Index)));
         }
-
-        /*
-        |-----------------------------------------------------------------------
-        | Helpers
-        |-----------------------------------------------------------------------
-        */
-        private string UrlToStudent(string route, int number)
-        {
-            return Url.AbsoluteRouteUrl(route, new {number = number});
-        }
-
     }
 
 }

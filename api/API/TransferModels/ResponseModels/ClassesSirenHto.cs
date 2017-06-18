@@ -130,7 +130,7 @@ namespace API.TransferModels.ResponseModels
                             .WithName("edit-class")
                             .WithTitle("Edit Class")
                             .WithMethod("PUT")
-                            .WithHref(UrlToClass(Routes.ClassEdit, item.Id))
+                            .WithHref(Url.ToClass(Routes.ClassEdit, item.Id))
                             .WithType("application/json")
                             .WithField(
                                 new FieldBuilder()
@@ -152,7 +152,7 @@ namespace API.TransferModels.ResponseModels
                             .WithName("delete-class")
                             .WithTitle("Delete Class")
                             .WithMethod("DELETE")
-                            .WithHref(UrlToClass(Routes.CourseDelete, item.Id))
+                            .WithHref(Url.ToClass(Routes.CourseDelete, item.Id))
                     );
             }
 
@@ -164,7 +164,7 @@ namespace API.TransferModels.ResponseModels
             return entity
                 .WithLink(new LinkBuilder()
                     .WithRel("self")
-                    .WithHref(UrlToClass(Routes.ClassEntry, item.Id)));
+                    .WithHref(Url.ToClass(Routes.ClassEntry, item.Id)));
         }
 
         /*
@@ -207,16 +207,6 @@ namespace API.TransferModels.ResponseModels
                 .WithLink(new LinkBuilder()
                     .WithRel("index")
                     .WithHref(UrlTo(Routes.Index)));
-        }
-
-        /*
-        |-----------------------------------------------------------------------
-        | Helpers
-        |-----------------------------------------------------------------------
-        */
-        private string UrlToClass(string route, int id)
-        {
-            return Url.AbsoluteRouteUrl(route, new {id = id});
         }
     }
 }

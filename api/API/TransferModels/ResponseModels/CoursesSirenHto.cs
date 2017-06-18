@@ -37,7 +37,7 @@ namespace API.TransferModels.ResponseModels
                             .WithName("edit-course")
                             .WithTitle("Edit Course")
                             .WithMethod("PUT")
-                            .WithHref(UrlToCourse(Routes.CourseEdit, item.Id))
+                            .WithHref(Url.ToCourse(Routes.CourseEdit, item.Id))
                             .WithType("application/json")
                             .WithField(
                                 new FieldBuilder()
@@ -59,7 +59,7 @@ namespace API.TransferModels.ResponseModels
                             .WithName("delete-course")
                             .WithTitle("Delete Course")
                             .WithMethod("DELETE")
-                            .WithHref(UrlToCourse(Routes.CourseDelete, item.Id))
+                            .WithHref(Url.ToCourse(Routes.CourseDelete, item.Id))
                     );
             }
 
@@ -71,10 +71,13 @@ namespace API.TransferModels.ResponseModels
             return entity
                 .WithLink(new LinkBuilder()
                     .WithRel("self")
-                    .WithHref(UrlToCourse(Routes.CourseEntry, item.Id)))
+                    .WithHref(Url.ToCourse(Routes.CourseEntry, item.Id)))
                 .WithLink(new LinkBuilder()
                     .WithRel(SirenData.REL_COURSE_CLASSES)
-                    .WithHref(UrlToCourse(Routes.CourseClasses, item.Id)));
+                    .WithHref(Url.ToCourse(Routes.CourseClasses, item.Id)))
+                .WithLink(new LinkBuilder()
+                    .WithRel(SirenData.REl_COURSE_COORDINATOR)
+                    .WithHref(Url.ToTeacher(Routes.TeacherEntry, item.CoordinatorId)));
         }
 
         protected override SirenEntityBuilder AddEntityProperties(SirenEntityBuilder entity, Course item)
@@ -129,16 +132,6 @@ namespace API.TransferModels.ResponseModels
                 .WithLink(new LinkBuilder()
                     .WithRel("index")
                     .WithHref(UrlTo(Routes.Index)));
-        }
-
-        /*
-        |-----------------------------------------------------------------------
-        | Helpers
-        |-----------------------------------------------------------------------
-        */
-        private string UrlToCourse(string route, int id)
-        {
-            return Url.AbsoluteRouteUrl(route, new {id = id});
         }
     }
 }
