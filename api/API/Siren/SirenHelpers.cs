@@ -24,5 +24,10 @@ namespace API.Siren
         {
             return Url.AbsoluteRouteUrl(route, new {number = number});
         }
+
+        public static string ToGroup(this IUrlHelper Url, string route, int id, int classId)
+        {
+            return Url.AbsoluteRouteUrl(route, new {id = id, classId = classId});
+        }
     }
 }

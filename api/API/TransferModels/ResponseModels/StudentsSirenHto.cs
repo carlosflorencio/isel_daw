@@ -91,10 +91,7 @@ namespace API.TransferModels.ResponseModels
                     .WithHref(Url.ToStudent(Routes.StudentEntry, item.Number)))
                 .WithLink(new LinkBuilder()
                     .WithRel(SirenData.REL_STUDENTS_CLASSES)
-                    .WithHref(Url.ToStudent(Routes.StudentClassList, item.Number)))
-                .WithLink(new LinkBuilder()
-                    .WithRel(SirenData.REL_STUDENTS_GROUPS)
-                    .WithHref(Url.ToStudent(Routes.StudentGroupList, item.Number)));
+                    .WithHref(Url.ToStudent(Routes.StudentClassList, item.Number)));
         }
 
         /*

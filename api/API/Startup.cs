@@ -75,7 +75,6 @@ namespace API
             services.AddScoped<TeachersSirenHto>();
             services.AddScoped<CoursesSirenHto>();
             services.AddScoped<ClassesSirenHto>();
-
         }
 
         public void Configure(IApplicationBuilder app,

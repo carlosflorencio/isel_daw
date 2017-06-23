@@ -5,6 +5,8 @@ import Student from './components/students/Student'
 import CourseClasses from './components/classes/CourseClasses'
 import Class from './components/classes/ClassContainer'
 import ClassGroups from './components/groups/ClassGroupsContainer'
+import Group from './components/groups/Group'
+import ClassStudents from './components/students/ClassStudentsContainer'
 
 export default [
     {
@@ -39,6 +41,20 @@ export default [
         path: '/classes/:id/groups',
         exact: true,
         component: ClassGroups,
+        minRole: roles.STUDENT,
+        routes: []
+    },
+    {
+        path: '/classes/:id/groups/:groupId',
+        exact: true,
+        component: Group,
+        minRole: roles.STUDENT,
+        routes: []
+    },
+    {
+        path: '/classes/:id/students',
+        exact: true,
+        component: ClassStudents,
         minRole: roles.STUDENT,
         routes: []
     },

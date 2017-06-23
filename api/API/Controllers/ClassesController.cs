@@ -16,12 +16,17 @@ namespace API.Controllers
     {
         private IClassRepository _repo;
 
-        private readonly ClassesSirenHto _representation;
+        private readonly ClassesSirenHto _classesRep;
+        private readonly GroupsSirenHto _groupsRep;
 
-        public ClassesController(IClassRepository repo, ClassesSirenHto representation)
+        public ClassesController(
+            IClassRepository repo,
+            ClassesSirenHto classesRepresentation,
+            GroupsSirenHto groupsRepresentation)
         {
             _repo = repo;
-            _representation = representation;
+            _classesRep = classesRepresentation;
+            _groupsRep = groupsRepresentation;
         }
 
         [HttpGet("{id}", Name=Routes.ClassEntry)]
@@ -34,7 +39,7 @@ namespace API.Controllers
                 return NotFound();
             }
 
-            return Ok(_representation.Entity(c));
+            return Ok(_classesRep.Entity(c));
         }
 
         [HttpPost("", Name=Routes.ClassCreate)]
@@ -58,7 +63,7 @@ namespace API.Controllers
                 return CreatedAtRoute(
                     Routes.ClassEntry,
                     new { id = c.Id },
-                    _representation.Entity(c));
+                    _classesRep.Entity(c));
             }
 
             throw new Exception("Unable to add Class");
@@ -86,7 +91,7 @@ namespace API.Controllers
             c.CourseId = dto.CourseId;
 
             if(await _repo.EditAsync(c)){
-                return Ok(_representation.Entity(c));
+                return Ok(_classesRep.Entity(c));
             }
 
             throw new Exception("Unbale to edit Class " + Id);
@@ -114,7 +119,7 @@ namespace API.Controllers
         {
             PagedList<Group> groups = await _repo.GetClassGroups(Id, query);
 
-            return Ok(_representation.ClassGroupsCollection(groups, query));
+            return Ok(_groupsRep.Collection(groups, query));
         }
 
         [HttpPost("{id}/students", Name=Routes.ClassParticipantAdd)]

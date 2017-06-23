@@ -12,9 +12,14 @@ class Navbar extends Component {
         }
 
         this.onClick = this.onClick.bind(this)
+        this.onLogin = this.onLogin.bind(this)
     }
 
     onClick() {
+        alert('Not Implemented')
+    }
+
+    onLogin() {
         alert('Not Implemented')
     }
 
@@ -23,20 +28,33 @@ class Navbar extends Component {
         return (
             <Menu className="no-border-radius" inverted>
                 <Menu.Item>
-                    <img src={logo} alt=''/>
+                    <img src={logo} alt='' />
                 </Menu.Item>
-                <Menu.Menu position='right'>
-                    <Menu.Item
-                        as={Button}
-                        name="user"
-                        content={session.user.name}
-                        onClick={this.onClick} />
-                    <Menu.Item
-                        as={Button}
-                        name="logout"
-                        content='Logout'
-                        onClick={this.onClick} />
-                </Menu.Menu>
+                {
+                    session &&
+                    <Menu.Menu position='right'>
+                        <Menu.Item
+                            as={Button}
+                            name="user"
+                            content={session.user.name}
+                            onClick={this.onClick} />
+                        <Menu.Item
+                            as={Button}
+                            name="logout"
+                            content='Logout'
+                            onClick={this.onClick} />
+                    </Menu.Menu>
+                }
+                {
+                    !session &&
+                    <Menu.Menu position='right'>
+                        <Menu.Item
+                            as={Button}
+                            name="login"
+                            content={'Login'}
+                            onClick={this.onLogin} />
+                    </Menu.Menu>
+                }
             </Menu>
         )
     }

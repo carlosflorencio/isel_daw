@@ -4,6 +4,8 @@ import App from './App'
 import registerServiceWorker from './registerServiceWorker'
 import './assets/css/index.css'
 
+import './data/axiosConfig'
+
 import 'semantic-ui-css/semantic.min.css'
 
 ReactDOM.render(<App />, document.getElementById('root'))

@@ -17,12 +17,17 @@ namespace API.Controllers
     public class StudentsController : Controller
     {
         private readonly IStudentRepository _repo;
-        private readonly StudentsSirenHto _representation;
+        private readonly StudentsSirenHto _studentsRep;
+        private readonly ClassesSirenHto _classesRep;
 
-        public StudentsController(IStudentRepository repo, StudentsSirenHto representation)
+        public StudentsController(
+            IStudentRepository repo,
+            StudentsSirenHto studentsRepresentation,
+            ClassesSirenHto classesRepresentation)
         {
             _repo = repo;
-            _representation = representation;
+            _studentsRep = studentsRepresentation;
+            _classesRep = classesRepresentation;
         }
 
         // GET: api/students
@@ -31,7 +36,7 @@ namespace API.Controllers
         {
             var students = await _repo.GetAllPaginatedAsync(query);
 
-            var result = _representation.Collection(students, query);
+            var result = _studentsRep.Collection(students, query);
 
             return Ok(result);
         }
@@ -45,7 +50,7 @@ namespace API.Controllers
                 return NotFound();
             }
 
-            return Ok(_representation.Entity(student));
+            return Ok(_studentsRep.Entity(student));
         }
 
         [HttpPost("", Name = Routes.StudentCreate)]
@@ -71,7 +76,7 @@ namespace API.Controllers
             return CreatedAtRoute(
                 Routes.StudentEntry,
                 new {number = student.Number},
-                _representation.Entity(student)
+                _studentsRep.Entity(student)
             );
         }
 
@@ -98,7 +103,7 @@ namespace API.Controllers
                 throw new Exception("Unable to edit student " + Number);
             }
 
-            return Ok(_representation.Entity(student));
+            return Ok(_studentsRep.Entity(student));
             //return NoContent();
         }
 
@@ -123,16 +128,16 @@ namespace API.Controllers
 
         // GET: api/students/{number}/classes
         [HttpGet("{number:int}/classes", Name = Routes.StudentClassList)]
-        public string Classes(int number, [FromQuery] ListQueryStringDto query)
+        public async Task<IActionResult> Classes(int number, [FromQuery] ListQueryStringDto query)
         {
-            return "value";
-        }
+            Student student = await _repo.GetByNumberAsync(number);
 
-        // GET: api/students/{number}/groups
-        [HttpGet("{number:int}/groups", Name = Routes.StudentGroupList)]
-        public string Groups(int number, [FromQuery] ListQueryStringDto query)
-        {
-            return "value";
+            if(student == null){
+                return NotFound();
+            }
+
+            //return Ok(_classesRep.Collection());
+            return StatusCode(501, "Not Implemented");
         }
     }
 }
