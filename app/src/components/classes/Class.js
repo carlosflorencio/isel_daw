@@ -5,11 +5,18 @@ import { NavLink } from 'react-router-dom'
 
 import { ADMIN } from '../../models/Roles'
 
+import ClassesRepository from '../../data/repositories/ClassesRepository'
+
 class Class extends Component {
     constructor(props) {
         super(props)
         this.state = {
         }
+    }
+
+    componentDidMount() {
+        ClassesRepository.getClass(this.props.match.params.id).
+            then(c => console.log(c))
     }
 
     render() {

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import { Redirect } from 'react-router'
 
-import { GUEST, STUDENT } from '../../models/Roles'
+import { GUEST, TEACHER } from '../../models/Roles'
 
 class Home extends Component {
     constructor(props) {
@@ -19,9 +19,9 @@ class Home extends Component {
         }
         return (
             <Redirect to={ 
-                session.user.hasRole(STUDENT) ?
-                    "students/"+session.user.id :
-                    "/teachers/"+session.user.id
+                session.user.hasRole(TEACHER) ?
+                    "/teachers/"+session.user.id :
+                    "students/"+session.user.id
                 }
             />
         )

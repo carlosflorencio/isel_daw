@@ -117,7 +117,7 @@ namespace API.Extensions
                 new Student {
                     Email = "nuno@gmail.com",
                     Name = "Nuno Reis",
-                    Number = 35248,
+                    Number = 40564,
                     Password = "123456"
                 },
                 new Student {

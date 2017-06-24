@@ -31,14 +31,18 @@ class Navbar extends Component {
                 <Menu.Item>
                     <img src={logo} alt='' />
                 </Menu.Item>
+                <Menu.Item 
+                    as={NavLink}
+                    to='/courses'
+                    content={'Courses'}
+                />
                 {
                     session.isAuthenticated &&
                     <Menu.Menu position='right'>
                         <Menu.Item
-                            as={Button}
                             name="user"
                             content={session.user.name}
-                            onClick={this.onClick} />
+                        />
                         <Menu.Item
                             as={Button}
                             name="logout"

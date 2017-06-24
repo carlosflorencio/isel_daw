@@ -1,9 +1,13 @@
 import axios from 'axios'
-import queryString from 'query-string'
 
 class CoursesRepository {
     static getCourses(page, limit) {
-        return axios.get('/api/courses', queryString.stringify({page, limit}))
+        return axios.get('/api/courses', { params: { page, limit } })
+            .then(resp => resp.data)
+    }
+
+    static getCourse(id) {
+        return axios.get('/api/courses/'+id)
             .then(resp => resp.data)
     }
 }

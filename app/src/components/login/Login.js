@@ -40,7 +40,7 @@ class Login extends Component {
             <Container className='padding-left-right' fluid>
                 <Segment color='teal' secondary>
                     <Segment basic compact textAlign='right'>
-                        <Header as='h1' textAlign='left'>Login</Header>
+                        <Header as='h1' textAlign='left'>Welcome Back</Header>
                         <Form widths='equal'>
                             <Form.Input
                                 label='Email:'
@@ -59,8 +59,8 @@ class Login extends Component {
                                 onChange={this.onStateChange}
                                 inline
                             />
-                        </Form>
-                        <Button onClick={this.submitLogin}>Submit</Button>
+                        </Form> 
+                        <Button className='margin-top' onClick={this.submitLogin}>Login</Button>
                     </Segment>
                 </Segment>
             </Container>

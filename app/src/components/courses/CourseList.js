@@ -3,18 +3,21 @@ import PropTypes from 'prop-types'
 
 import { ADMIN } from '../../models/Roles'
 
+import CoursesRepository from '../../data/repositories/CoursesRepository'
+
 class CourseList extends Component {
     constructor(props) {
         super(props)
+        let params = new URLSearchParams(props.location.search);
         this.state = {
-            page: 1,
-            limit: 5
+            page: params.page || 1,
+            limit: params.limit || 5
         }
     }
 
     componentDidMount() {
-        this.props.actions.getCourses(this.state.page, this.state.limit)
-            .then(_ => console.log(this.props.courses))
+        CoursesRepository.getCourses(this.state.page, this.state.limit)
+            .then(courses => console.log(courses))
     }
 
     render() {
@@ -37,9 +40,7 @@ const CourseForm = () => (
 )
 
 CourseList.propTypes = {
-    session: PropTypes.object.isRequired,
-    courses: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired
+    session: PropTypes.object.isRequired
 }
 
 export default CourseList
