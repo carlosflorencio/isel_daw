@@ -9,7 +9,7 @@ import Navbar from './navbar/NavbarContainer'
 import Home from './home/HomeContainer'
 import Course from './courses/CourseContainer'
 import CourseList from './courses/CourseListContainer'
-import Login from './login/Login'
+import Login from './login/LoginContainer'
 import PageNotFound from './shared/PageNotFound'
 import Unauthorized from './shared/Unauthorized'
 import privateRoutes from '../routes'
@@ -24,27 +24,29 @@ class MainContent extends Component {
     render() {
         return (
             <Container fluid>
-                <Navbar />
                 <Router>
-                    <Switch>
-                        <Route exact path='/' component={Home} />
-                        <Route exact path='/courses' component={CourseList} />
-                        <Route exact path='/courses/:id' component={Course} />
-                        <Route exact path='/login' component={Login} />
-                        {privateRoutes.map((route, i) =>
-                            (<PrivateRoute
-                                key={i}
-                                path={route.path}
-                                exact={route.exact}
-                                component={route.component}
-                                session={this.props.session}
-                                minRole={route.minRole}
-                                routes={route.routes}
-                            />)
-                        )}
-                        <Route path="/unauthorized" component={Unauthorized} />
-                        <Route component={PageNotFound} />
-                    </Switch>
+                    <div>
+                        <Navbar />
+                        <Switch>
+                            <Route exact path='/' component={Home} />
+                            <Route exact path='/courses' component={CourseList} />
+                            <Route exact path='/courses/:id' component={Course} />
+                            <Route exact path='/login' component={Login} />
+                            {privateRoutes.map((route, i) =>
+                                (<PrivateRoute
+                                    key={i}
+                                    path={route.path}
+                                    exact={route.exact}
+                                    component={route.component}
+                                    session={this.props.session}
+                                    minRole={route.minRole}
+                                    routes={route.routes}
+                                />)
+                            )}
+                            <Route path="/unauthorized" component={Unauthorized} />
+                            <Route component={PageNotFound} />
+                        </Switch>
+                    </div>
                 </Router>
             </Container>
         )

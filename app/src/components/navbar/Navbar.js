@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import logo from '../../assets/img/logo.svg'
 
 import { Menu, Button } from 'semantic-ui-react'
+import { NavLink } from 'react-router-dom'
 
 class Navbar extends Component {
     constructor(props) {
@@ -12,15 +13,15 @@ class Navbar extends Component {
         }
 
         this.onClick = this.onClick.bind(this)
-        this.onLogin = this.onLogin.bind(this)
+        this.onLogout = this.onLogout.bind(this)
     }
 
     onClick() {
         alert('Not Implemented')
     }
 
-    onLogin() {
-        alert('Not Implemented')
+    onLogout() {
+        this.props.actions.logout()
     }
 
     render() {
@@ -31,7 +32,7 @@ class Navbar extends Component {
                     <img src={logo} alt='' />
                 </Menu.Item>
                 {
-                    session &&
+                    session.isAuthenticated &&
                     <Menu.Menu position='right'>
                         <Menu.Item
                             as={Button}
@@ -42,17 +43,17 @@ class Navbar extends Component {
                             as={Button}
                             name="logout"
                             content='Logout'
-                            onClick={this.onClick} />
+                            onClick={this.onLogout} />
                     </Menu.Menu>
                 }
                 {
-                    !session &&
+                    !session.isAuthenticated &&
                     <Menu.Menu position='right'>
                         <Menu.Item
-                            as={Button}
-                            name="login"
+                            as={NavLink}
+                            to='/login'
                             content={'Login'}
-                            onClick={this.onLogin} />
+                            name="login" />
                     </Menu.Menu>
                 }
             </Menu>
@@ -61,7 +62,8 @@ class Navbar extends Component {
 }
 
 Navbar.propTypes = {
-    session: PropTypes.object.isRequired
+    session: PropTypes.object.isRequired,
+    actions: PropTypes.object.isRequired
 }
 
 export default Navbar

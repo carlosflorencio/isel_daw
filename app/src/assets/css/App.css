@@ -27,3 +27,8 @@
     border-radius: 0 !important;
 }
 
+.padding-left-right{
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+}
+

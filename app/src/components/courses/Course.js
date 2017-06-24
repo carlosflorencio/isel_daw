@@ -23,6 +23,7 @@ class Course extends Component {
                     Course Classes
                 </Button>
                 {
+                    session.isAuthenticated &&
                     session.user.hasRole(ADMIN) &&
                     (<ClassForm />)
                 }

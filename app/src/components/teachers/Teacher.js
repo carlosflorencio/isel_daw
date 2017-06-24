@@ -10,9 +10,9 @@ class Teacher extends Component {
     }
 
     componentDidMount() {
-        // TeacherRepository.getTeacher(this.props.match.params.id)
-        //     .then(teacher => console.log(teacher))
-        //     .catch(error => console.log(error.message))
+        TeacherRepository.getTeacher(this.props.match.params.id)
+            .then(teacher => console.log(teacher))
+            .catch(error => console.log(error.message))
     }
 
     render() {

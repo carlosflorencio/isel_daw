@@ -7,7 +7,14 @@ class CourseList extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            page: 1,
+            limit: 5
         }
+    }
+
+    componentDidMount() {
+        this.props.actions.getCourses(this.state.page, this.state.limit)
+            .then(_ => console.log(this.props.courses))
     }
 
     render() {
@@ -16,6 +23,7 @@ class CourseList extends Component {
             <div>
                 <h1>Paginated List of Courses</h1>
                 {
+                    session.isAuthenticated &&
                     session.user.hasRole(ADMIN) &&  // Coordinator of the course
                     (<CourseForm />)
                 }
@@ -29,7 +37,9 @@ const CourseForm = () => (
 )
 
 CourseList.propTypes = {
-    session: PropTypes.object.isRequired
+    session: PropTypes.object.isRequired,
+    courses: PropTypes.object.isRequired,
+    actions: PropTypes.object.isRequired
 }
 
 export default CourseList

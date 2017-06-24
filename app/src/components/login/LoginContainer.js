@@ -1,9 +1,9 @@
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { logout } from '../login/AuthReducer'
+import Login from './Login'
 
-import Navbar from './Navbar'
+import { login } from './AuthReducer'
 
 const mapStateToProps = (state, ownProps) => {
     return {
@@ -13,8 +13,8 @@ const mapStateToProps = (state, ownProps) => {
 
 function mapDispatchToProps (dispatch) {
   return {
-      actions: bindActionCreators({ logout }, dispatch)
+      actions: bindActionCreators({ login }, dispatch)
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Navbar)
+export default connect(mapStateToProps, mapDispatchToProps)(Login)
