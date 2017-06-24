@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
 import {Button} from 'semantic-ui-react'
 import {NavLink} from 'react-router-dom'
+
+import CoursesRepository from '../../data/repositories/CoursesRepository'
 
 import { ADMIN } from '../../models/Roles'
 
@@ -10,6 +13,11 @@ class Course extends Component {
         super(props)
         this.state = {
         }
+    }
+
+    componentDidMount() {
+        CoursesRepository.getCourse(this.props.match.params.id)
+            .then(course => console.log(course))
     }
 
     render() {
@@ -23,6 +31,7 @@ class Course extends Component {
                     Course Classes
                 </Button>
                 {
+                    session.isAuthenticated &&
                     session.user.hasRole(ADMIN) &&
                     (<ClassForm />)
                 }
@@ -34,5 +43,9 @@ class Course extends Component {
 const ClassForm = () => (
  <h1>Class Form Only for Admins</h1>
 );
+
+Course.propTypes = {
+    session: PropTypes.object.isRequired
+}
 
 export default Course

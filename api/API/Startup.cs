@@ -14,13 +14,16 @@ using API.TransferModels.ResponseModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Routing;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Mvc.Cors.Internal;
 
 namespace API
 {
     public class Startup
     {
+        private readonly string CorsPolicy = "DAW-CORS-POLICY";
         private IConfigurationRoot Configuration { get; }
 
         public Startup(IHostingEnvironment env)
@@ -41,6 +44,21 @@ namespace API
                 opt => opt.UseNpgsql(Configuration["Data:PostgreConnection:ConnectionString"])
             );
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy(CorsPolicy,
+                     builder => {
+                         var origins = Configuration.GetSection("SafeOrigins")
+                            .GetChildren()
+                            .Select(x => x.Value)
+                            .ToArray();
+
+                         builder.WithOrigins(origins)
+                            .WithHeaders("Authorization", "Content-Type")
+                            .AllowAnyMethod();
+                     });
+            });
+
             // MVC
             services.AddMvc(options =>
             {
@@ -59,6 +77,9 @@ namespace API
 
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
+            // needed to inject IUrlHelper
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+
             // Custom Services
             // AddTransient -> services are created each time they are requested.
             // AddScoped    -> services are created once per request.
@@ -68,13 +89,11 @@ namespace API
             services.AddScoped<IClassRepository, ClassRepository>();
             services.AddScoped<ICourseRepository, CourseRepository>();
 
-            // needed to inject IUrlHelper
-            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-
             services.AddScoped<StudentsSirenHto>();
             services.AddScoped<TeachersSirenHto>();
             services.AddScoped<CoursesSirenHto>();
             services.AddScoped<ClassesSirenHto>();
+            services.AddScoped<GroupsSirenHto>();
         }
 
         public void Configure(IApplicationBuilder app,
@@ -85,6 +104,8 @@ namespace API
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug(LogLevel.Debug);
+
+            app.UseCors(CorsPolicy);
 
             app.UseMiddleware<BasicAuthMiddleware>();
 

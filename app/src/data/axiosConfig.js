@@ -9,5 +9,6 @@ import axios from 'axios'
  */
 axios.defaults.baseURL = 'http://localhost:5000'
 axios.defaults.timeout = 5000
-axios.defaults.responseType = 'vnd.siren+json'
+axios.defaults.responseType = 'application/vnd.siren+json'
+axios.defaults.headers.common['Authorization'] = 'Basic ' + localStorage.getItem('jwt')
 //axios.defaults.headers.post['Content-Type'] = 'application/json'

@@ -1,28 +1,25 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
-
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
-    <PackageReference Include="FluentSiren.AspNetCore.Mvc" Version="0.6.1.2" />
-    <PackageReference Include="Microsoft.AspNetCore" Version="1.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="1.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="1.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="1.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.1" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="1.1.0" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.0" />
+    <PackageReference Include="FluentSiren.AspNetCore.Mvc" Version="0.6.1.2"/>
+    <PackageReference Include="Microsoft.AspNetCore" Version="1.1.1"/>
+    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="1.1.1"/>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.2"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="1.1.1"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="1.1.1"/>
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.1"/>
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="1.1.0"/>
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.0"/>
+    <PackageReference Include="Microsoft.AspNetCore.Cors" Version="1.1.2"/>
   </ItemGroup>
-
   <ItemGroup>
-    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="1.0.0" />
-    <DotNetCliToolReference Include="Microsoft.DotNet.Watcher.Tools" Version="1.0.0" />
+    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="1.0.0"/>
+    <DotNetCliToolReference Include="Microsoft.DotNet.Watcher.Tools" Version="1.0.0"/>
   </ItemGroup>
-
   <ItemGroup>
-    <ProjectReference Include="..\FluentSiren\FluentSiren.csproj" />
+    <ProjectReference Include="..\FluentSiren\FluentSiren.csproj"/>
   </ItemGroup>
-
 </Project>

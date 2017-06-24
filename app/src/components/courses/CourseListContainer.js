@@ -1,4 +1,4 @@
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 
 import CourseList from './CourseList'
 
@@ -7,11 +7,5 @@ const mapStateToProps = (state, ownProps) => {
         session: state.session
     }
 }
-
-// function mapDispatchToProps (dispatch) {
-//   return {
-    
-//   }
-// }
 
 export default connect(mapStateToProps)(CourseList)
