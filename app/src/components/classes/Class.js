@@ -15,8 +15,8 @@ class Class extends Component {
     }
 
     componentDidMount() {
-        ClassesRepository.getClass(this.props.match.params.id).
-            then(c => console.log(c))
+        ClassesRepository.getClass(this.props.match.params.id)
+            .then(c => console.log(c))
     }
 
     render() {
