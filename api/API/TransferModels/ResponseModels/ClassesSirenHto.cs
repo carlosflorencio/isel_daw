@@ -110,6 +110,7 @@ namespace API.TransferModels.ResponseModels
         protected override SirenEntityBuilder AddEntityProperties(SirenEntityBuilder entity, Class item)
         {
             return entity
+                .WithProperty("id", item.Id)
                 .WithProperty("name", item.Name)
                 .WithProperty("maxGroupSize", item.MaxGroupSize)
                 .WithProperty("autoEnrollment", item.AutoEnrollment);

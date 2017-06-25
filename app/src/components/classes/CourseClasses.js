@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
+import {Table, Segment} from 'semantic-ui-react'
+import {NavLink} from 'react-router-dom'
+
 import ClassesRepository from '../../data/repositories/ClassesRepository'
 
 class CourseClasses extends Component {
@@ -10,20 +13,46 @@ class CourseClasses extends Component {
         }
     }
 
-    componentDidMount() {
-        ClassesRepository.getCourseClasses(this.props.match.params.id)
-            .then(classes => console.log(classes))
-    }
-
     render() {
-        const { id } = this.props.match.params
+        const {classes} = this.props
         return (
-            <div>
-                <h1>Classes of Course {id}</h1>
-                <h2>List of classes with link to details</h2>
-            </div>
+            <Segment className='padding-left-right' basic>
+                <Table celled striped selectable color='teal'>
+                    <Table.Header>
+                        <Table.Row>
+                            <Table.HeaderCell colSpan='2' textAlign='center'>
+                                Classes
+                            </Table.HeaderCell>
+                        </Table.Row>
+                    </Table.Header>
+                    <Table.Body>
+                        {
+                            classes.entities &&
+                            classes.entities.map(c => {
+                                return (
+                                    <Table.Row key={c.properties['id']}>
+                                        <Table.Cell collapsing>
+                                            <b>{c.properties['name']}</b>
+                                        </Table.Cell>
+                                        <Table.Cell collapsing>
+                                            <NavLink
+                                                to={'/classes/' + c.properties['id']}>
+                                                Details
+                                            </NavLink>
+                                        </Table.Cell>
+                                    </Table.Row>
+                                )
+                            })
+                        }
+                    </Table.Body>
+                </Table>
+            </Segment>
         )
     }
+}
+
+CourseClasses.propTypes = {
+    classes: PropTypes.object.isRequired
 }
 
 export default CourseClasses

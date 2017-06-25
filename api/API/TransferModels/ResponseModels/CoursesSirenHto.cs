@@ -10,7 +10,6 @@ namespace API.TransferModels.ResponseModels
 {
     public class CoursesSirenHto : SirenCollectionHto<Course>
     {
-        
         protected override string Class { get; } = "course";
         protected override string RouteList { get; } = Routes.CourseList;
 
@@ -83,6 +82,7 @@ namespace API.TransferModels.ResponseModels
         protected override SirenEntityBuilder AddEntityProperties(SirenEntityBuilder entity, Course item)
         {
             return entity
+                .WithProperty("id", item.Id)
                 .WithProperty("name", item.Name)
                 .WithProperty("acr", item.Acronym);
         }

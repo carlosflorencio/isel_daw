@@ -1,47 +1,70 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import {Button} from 'semantic-ui-react'
-import {NavLink} from 'react-router-dom'
+import { Segment } from 'semantic-ui-react'
 
+import ClassesRepository from '../../data/repositories/ClassesRepository'
 import CoursesRepository from '../../data/repositories/CoursesRepository'
 
-import { ADMIN } from '../../models/Roles'
+import CourseClasses from '../classes/CourseClasses'
+
+import { ADMIN, STUDENT } from '../../models/Roles'
 
 class Course extends Component {
     constructor(props) {
         super(props)
+        let params = new URLSearchParams(props.location.search)
         this.state = {
+            isLoading: true,
+            page: params.page || 1,
+            limit: params.limit || 5
         }
     }
 
     componentDidMount() {
         CoursesRepository.getCourse(this.props.match.params.id)
-            .then(course => console.log(course))
+            .then(course => {
+                console.log(course)
+                this.setState({ course, isLoading: false })
+            }).then(_ =>
+                ClassesRepository.getCourseClasses(
+                    this.props.match.params.id,
+                    this.state.page,
+                    this.state.limit
+                ).then(classes => {
+                    console.log(classes)
+                    this.setState({ classes })
+                })
+            )
     }
 
     render() {
         const { session } = this.props
-        const { id } = this.props.match.params
+        const { course, classes, isLoading } = this.state
         return (
-            <div>
-                <h1>Course {id}</h1>
-                <h2>The course details</h2>
-                <Button as={NavLink} to={"/courses/"+id+"/classes"}>
-                    Course Classes
-                </Button>
+            <Segment basic textAlign='center' loading={isLoading}>
+                {
+                    course &&
+                    <h1>{course.properties['name']} ({course.properties['acr']})</h1>
+                }
+                {
+                    session.isAuthenticated &&
+                    session.user.hasRole(STUDENT) &&
+                    classes &&
+                    <CourseClasses classes={classes} />
+                }
                 {
                     session.isAuthenticated &&
                     session.user.hasRole(ADMIN) &&
                     (<ClassForm />)
                 }
-            </div>
+            </Segment>
         )
     }
 }
 
 const ClassForm = () => (
- <h1>Class Form Only for Admins</h1>
+    <h1>Class Form Only for Admins</h1>
 );
 
 Course.propTypes = {

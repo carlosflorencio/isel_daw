@@ -1,15 +1,17 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { ADMIN } from '../../models/Roles'
+import { Table, Segment } from 'semantic-ui-react'
+import { NavLink } from 'react-router-dom'
 
 import CoursesRepository from '../../data/repositories/CoursesRepository'
 
 class CourseList extends Component {
     constructor(props) {
         super(props)
-        let params = new URLSearchParams(props.location.search);
+        let params = new URLSearchParams(props.location.search)
         this.state = {
+            courses: {},
             page: params.page || 1,
             limit: params.limit || 5
         }
@@ -17,26 +19,62 @@ class CourseList extends Component {
 
     componentDidMount() {
         CoursesRepository.getCourses(this.state.page, this.state.limit)
-            .then(courses => console.log(courses))
+            .then(courses => {
+                console.log(courses)
+                this.setState({ courses })
+            })
     }
 
     render() {
+        const { courses } = this.state
         const { session } = this.props
         return (
-            <div>
-                <h1>Paginated List of Courses</h1>
+            <Segment className='padding-left-right' basic>
+                <Table celled striped selectable color='teal'>
+                    <Table.Header>
+                        <Table.Row>
+                            <Table.HeaderCell colSpan='3' textAlign='center'>
+                                Courses
+                            </Table.HeaderCell>
+                        </Table.Row>
+                    </Table.Header>
+                    <Table.Body>
+                        {
+                            courses.entities &&
+                            courses.entities.map(course => {
+                                return (
+                                    <Table.Row key={course.properties['id']}>
+                                        <Table.Cell collapsing >
+                                            {course.properties['acr']}
+                                        </Table.Cell>
+                                        <Table.Cell collapsing>
+                                            {course.properties['name']}
+                                        </Table.Cell>
+                                        <Table.Cell collapsing>
+                                            <NavLink
+                                                to={'/courses/' + course.properties['id']}>
+                                                Details
+                                            </NavLink>
+                                        </Table.Cell>
+                                    </Table.Row>
+                                )
+                            })
+                        }
+                    </Table.Body>
+                </Table>
                 {
                     session.isAuthenticated &&
-                    session.user.hasRole(ADMIN) &&  // Coordinator of the course
-                    (<CourseForm />)
+                    courses.actions &&
+                    (<CourseForm action={courses.actions[0]} />)
                 }
-            </div>
+            </Segment>
         )
     }
 }
 
-const CourseForm = () => (
- <h1>Course Form Only for the Coordinator of the Course</h1>
+const CourseForm = ({ action }) => (
+    <h1>{action.title}</h1>
+
 )
 
 CourseList.propTypes = {

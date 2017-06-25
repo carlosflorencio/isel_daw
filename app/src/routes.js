@@ -2,7 +2,7 @@ import * as roles from './models/Roles'
 
 import Teacher from './components/teachers/Teacher'
 import Student from './components/students/Student'
-import CourseClasses from './components/classes/CourseClasses'
+//import CourseClasses from './components/classes/CourseClasses'
 import Class from './components/classes/ClassContainer'
 import ClassGroups from './components/groups/ClassGroupsContainer'
 import Group from './components/groups/Group'
@@ -23,13 +23,13 @@ export default [
         minRole: roles.STUDENT,
         routes: []
     },
-    {
-        path: '/courses/:id/classes',
-        exact: true,
-        component: CourseClasses,
-        minRole: roles.STUDENT,
-        routes: []
-    },
+    // {
+    //     path: '/courses/:id/classes',
+    //     exact: true,
+    //     component: CourseClasses,
+    //     minRole: roles.STUDENT,
+    //     routes: []
+    // },
     {
         path: '/classes/:id',
         exact: true,
