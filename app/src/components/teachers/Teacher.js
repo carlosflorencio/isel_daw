@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import TeacherRepository from '../../data/repositories/TeacherRepository'
+import axios from 'axios'
 
 class Teacher extends Component {
     constructor(props) {
@@ -10,9 +10,12 @@ class Teacher extends Component {
     }
 
     componentDidMount() {
-        TeacherRepository.getTeacher(this.props.match.params.id)
+        // TeacherRepository.getTeacher(this.props.match.params.id)
+        //     .then(teacher => console.log(teacher))
+        //     .catch(error => console.log(error.message))
+        axios.get('http://localhost:5000/api/teachers/'+this.props.match.params.id)
+            .then(resp => resp.data)
             .then(teacher => console.log(teacher))
-            .catch(error => console.log(error.message))
     }
 
     render() {

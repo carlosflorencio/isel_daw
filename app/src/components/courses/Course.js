@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import axios from 'axios'
 
 import { Segment } from 'semantic-ui-react'
 
 import ClassesRepository from '../../data/repositories/ClassesRepository'
 import CoursesRepository from '../../data/repositories/CoursesRepository'
+
+import SirenHelpers from '../../helpers/SirenHelpers'
 
 import CourseClasses from '../classes/CourseClasses'
 
@@ -26,12 +29,11 @@ class Course extends Component {
             .then(course => {
                 console.log(course)
                 this.setState({ course, isLoading: false })
-            }).then(_ =>
-                ClassesRepository.getCourseClasses(
-                    this.props.match.params.id,
-                    this.state.page,
-                    this.state.limit
-                ).then(classes => {
+                return SirenHelpers.getLink(course, '/relations#course-classes')
+            }).then(href =>
+                axios.get(href, {params: {page: this.state.page, limit: this.state.limit}})
+                .then(resp => resp.data)
+                .then(classes => {
                     console.log(classes)
                     this.setState({ classes })
                 })
@@ -56,14 +58,15 @@ class Course extends Component {
                 {
                     session.isAuthenticated &&
                     session.user.hasRole(ADMIN) &&
-                    (<ClassForm />)
+                    classes &&
+                    (<ClassForm action={SirenHelpers.getAction(classes, 'add-class')}/>)
                 }
             </Segment>
         )
     }
 }
 
-const ClassForm = () => (
+const ClassForm = ({action}) => (
     <h1>Class Form Only for Admins</h1>
 );
 

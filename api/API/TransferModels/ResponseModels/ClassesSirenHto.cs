@@ -27,20 +27,6 @@ namespace API.TransferModels.ResponseModels
 
         public SirenEntity ClassGroupsCollection(PagedList<Group> groups, ListQueryStringDto query)
         {
-//            var entity = new SirenEntityBuilder()
-//                    .WithClass("group")
-//                    .WithClass("collection")
-//                    .WithProperty("totalCount", groups.TotalCount)
-//                    .WithProperty("totalPages", groups.TotalPages)
-//                    .WithProperty("currentPage", groups.CurrentPage)
-//                    .WithProperty("pageSize", groups.PageSize);
-//
-//            if (!string.IsNullOrEmpty(query.Search))
-//            {
-//                entity
-//                    .WithProperty("search", query.Search);
-//            }
-//
 //            foreach (var group in groups)
 //            {
 //                entity
@@ -61,43 +47,6 @@ namespace API.TransferModels.ResponseModels
 //                        .WithHref(_url.AbsoluteRouteUrl(Routes.GroupStudentsList,
 //                        new { id = group.Id }))));
 //            }
-//
-//            if (_context.HttpContext.User.IsInRole(Roles.Admin)) {
-//                entity
-//                    .WithAction(new ActionBuilder()
-//                        .WithName("add-class")
-//                        .WithTitle("Add Class")
-//                        .WithMethod("POST")
-//                        .WithHref(_url.AbsoluteRouteUrl(Routes.ClassCreate))
-//                        .WithType("application/json")
-//                        .WithField(new FieldBuilder()
-//                                        .WithName("name")
-//                                        .WithType("text"))
-//                        .WithField(new FieldBuilder()
-//                                        .WithName("maxGroupSize")
-//                                        .WithType("number"))
-//                        .WithField(new FieldBuilder()
-//                                        .WithName("autoEnrollment")
-//                                        .WithType("checkbox"))
-//                        .WithField(new FieldBuilder()
-//                                        .WithName("semesterId")
-//                                        .WithType("number"))
-//                        .WithField(new FieldBuilder()
-//                                        .WithName("courseId")
-//                                        .WithType("number")));
-//            }
-//
-//            entity
-//                .WithLink(new LinkBuilder()
-//                    .WithRel("self")
-//                    .WithHref(_url.AbsoluteRouteUrl(Routes.ClassGroupsList)))
-//                .WithLink(new LinkBuilder()
-//                    .WithRel("index")
-//                    .WithHref(_url.AbsoluteRouteUrl(Routes.Index)))
-//                .WithNavigationLinks(_url, Routes.ClassGroupsList, groups.TotalPages, query);
-//
-//            return entity.Build();
-
             return null;
         }
 
