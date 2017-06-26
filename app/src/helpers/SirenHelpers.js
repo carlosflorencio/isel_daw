@@ -7,8 +7,8 @@ class SirenHelpers {
 
     static getAction(sirenView, name){
         let actions = sirenView.actions
-        return actions.filter(action => action.name.indexOf(name) >= 0)
-            .map(link => link.href)[0]
+        var result = actions.filter(action => action.name.indexOf(name) >= 0)[0]
+        return result
     }
 
 }

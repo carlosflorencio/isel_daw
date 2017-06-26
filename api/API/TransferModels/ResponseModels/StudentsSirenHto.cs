@@ -101,7 +101,8 @@ namespace API.TransferModels.ResponseModels
         */
 
         protected override SirenEntityBuilder AddCollectionActions(
-            SirenEntityBuilder entity)
+            SirenEntityBuilder entity,
+            Student item)
         {
             if (Context.HttpContext.User.IsInRole(Roles.Admin))
             {
@@ -130,7 +131,8 @@ namespace API.TransferModels.ResponseModels
         }
 
         protected override SirenEntityBuilder AddCollectionLinks(
-            SirenEntityBuilder entity)
+            SirenEntityBuilder entity,
+            Student item)
         {
             return entity
                 .WithLink(new LinkBuilder()

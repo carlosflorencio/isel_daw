@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using API.TransferModels.ResponseModels;
 using Microsoft.AspNetCore.Authorization;
@@ -32,7 +33,8 @@ namespace API.Controllers
                 new HomeEntity
                 {
                     Name = x.AttributeRouteInfo.Name,
-                    Url = origin + "/" + x.AttributeRouteInfo.Template
+                    Url = origin + "/" + 
+                        Regex.Replace(x.AttributeRouteInfo.Template, @":+[a-z]+", "")
                 }).ToList();
 
             return Ok(HomeJsonHome.Home(routes));

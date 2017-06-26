@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import axios from 'axios'
 
 import { Segment, Card, Image } from 'semantic-ui-react'
+
+import { TeacherEntry } from '../../data/ApiContracts'
 
 //import SirenHelpers from '../../helpers/SirenHelpers'
 
@@ -13,13 +16,10 @@ class Teacher extends Component {
     }
 
     componentDidMount() {
-        // First GET can be requested once in the begining and stored in redux store
-        axios.get()
-            .then(resp => resp.data)
-            .then(home => axios.get(
-                home.TeacherEntry.replace("{number}", this.props.match.params.id))
-            )
-            .then(resp => resp.data)
+        const uri = this.props.api.requests[TeacherEntry]
+                .replace("{number}", this.props.match.params.id)
+
+        axios.get(uri).then(resp => resp.data)
             .then(teacher => {
                 console.log(teacher)
                 this.setState({ teacher })
@@ -56,6 +56,11 @@ class Teacher extends Component {
             </Segment>
         )
     }
+}
+
+Teacher.propTypes = {
+    api: PropTypes.object.isRequired,
+    session: PropTypes.object.isRequired
 }
 
 export default Teacher

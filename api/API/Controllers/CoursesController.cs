@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using API.Data.Contracts;
 using API.Models;
@@ -63,8 +64,24 @@ namespace API.Controllers
         }
 
         [HttpPost("", Name = Routes.CourseCreate)]
-        public IActionResult Post(){
-            return StatusCode(501, "Not Implemented");
+        public async Task<IActionResult> Post([FromBody]CourseDTO dto){
+            if(!ModelState.IsValid){
+                return BadRequest(ModelState);
+            }
+
+            Course c = new Course {
+                Name = dto.Name,
+                Acronym = dto.Acronym,
+                CoordinatorId = dto.CoordinatorId
+            };
+
+            if(!await _repo.AddAsync(c)){
+                throw new Exception("Unable to Add Course");
+            }
+
+            c = await _repo.GetByIdAsync(c.Id);
+
+            return Created(Routes.ClassEntry, new { Id = c.Id });
         }
 
         [HttpPut("{id}", Name = Routes.CourseEdit)]

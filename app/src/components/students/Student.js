@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import axios from 'axios'
 
 import { Segment, Card, Image } from 'semantic-ui-react'
 
-import StudentsRepository from '../../data/repositories/StudentsRepository'
+import { StudentEntry } from '../../data/ApiContracts'
 
 class Student extends Component {
     constructor(props) {
@@ -12,7 +14,9 @@ class Student extends Component {
     }
 
     componentDidMount() {
-        StudentsRepository.getStudent(this.props.match.params.id)
+        const uri = this.props.api.requests[StudentEntry]
+            .replace("{number}", this.props.match.params.id)
+        axios.get(uri).then(resp =>  resp.data)
             .then(student => {
                 console.log(student)
                 this.setState({student})
@@ -49,6 +53,11 @@ class Student extends Component {
             </Segment>
         )
     }
+}
+
+Student.propTypes = {
+    api: PropTypes.object.isRequired,
+    session: PropTypes.object.isRequired
 }
 
 export default Student

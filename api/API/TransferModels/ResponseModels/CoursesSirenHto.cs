@@ -52,7 +52,8 @@ namespace API.TransferModels.ResponseModels
                                 new FieldBuilder()
                                     .WithName("coordinatorId")
                                     .WithType("number")
-                                    .WithValue(item.CoordinatorId.ToString())))
+                                    .WithValue(item.CoordinatorId.ToString()))
+                    )
                     .WithAction(
                         new ActionBuilder()
                             .WithName("delete-course")
@@ -96,9 +97,9 @@ namespace API.TransferModels.ResponseModels
         |-----------------------------------------------------------------------
         | Collection
         |-----------------------------------------------------------------------
-        */        
+        */
 
-        protected override SirenEntityBuilder AddCollectionActions(SirenEntityBuilder entity)
+        protected override SirenEntityBuilder AddCollectionActions(SirenEntityBuilder entity, Course item)
         {
             if (Context.HttpContext.User.IsInRole(Roles.Admin))
             {
@@ -110,12 +111,15 @@ namespace API.TransferModels.ResponseModels
                         .WithHref(UrlTo(Routes.CourseCreate))
                         .WithType("application/json")
                         .WithField(new FieldBuilder()
+                            .WithTitle("Name")
                             .WithName("name")
                             .WithType("text"))
                         .WithField(new FieldBuilder()
+                            .WithTitle("Acronym")
                             .WithName("acronym")
                             .WithType("text"))
                         .WithField(new FieldBuilder()
+                            .WithTitle("Coordinator Number")
                             .WithName("coordinatorId")
                             .WithType("number")));
             }
@@ -123,7 +127,7 @@ namespace API.TransferModels.ResponseModels
             return entity;
         }
 
-        protected override SirenEntityBuilder AddCollectionLinks(SirenEntityBuilder entity)
+        protected override SirenEntityBuilder AddCollectionLinks(SirenEntityBuilder entity, Course item)
         {
             return entity
                 .WithLink(new LinkBuilder()

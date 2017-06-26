@@ -4,8 +4,6 @@ import PropTypes from 'prop-types'
 import {Table, Segment} from 'semantic-ui-react'
 import {NavLink} from 'react-router-dom'
 
-import ClassesRepository from '../../data/repositories/ClassesRepository'
-
 class CourseClasses extends Component {
     constructor(props) {
         super(props)

@@ -95,7 +95,7 @@ namespace API.TransferModels.ResponseModels
         |-----------------------------------------------------------------------
         */
 
-        protected override SirenEntityBuilder AddCollectionActions(SirenEntityBuilder entity)
+        protected override SirenEntityBuilder AddCollectionActions(SirenEntityBuilder entity, Teacher item)
         {
             return entity
                     .WithAction(new ActionBuilder()
@@ -121,7 +121,7 @@ namespace API.TransferModels.ResponseModels
                             .WithType("checkbox")));
         }
 
-        protected override SirenEntityBuilder AddCollectionLinks(SirenEntityBuilder entity)
+        protected override SirenEntityBuilder AddCollectionLinks(SirenEntityBuilder entity, Teacher item)
         {
             return entity
                 .WithLink(new LinkBuilder()

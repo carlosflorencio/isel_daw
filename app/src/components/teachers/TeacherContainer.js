@@ -1,6 +1,7 @@
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 
-import CourseList from './CourseList'
+import Teacher from './Teacher'
 
 const mapStateToProps = (state, ownProps) => {
     return {
@@ -9,4 +10,4 @@ const mapStateToProps = (state, ownProps) => {
     }
 }
 
-export default connect(mapStateToProps)(CourseList)
+export default connect(mapStateToProps)(Teacher)

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom'
 import { Container } from 'semantic-ui-react'
 
@@ -14,6 +15,8 @@ import PageNotFound from './shared/PageNotFound'
 import Unauthorized from './shared/Unauthorized'
 import privateRoutes from '../routes'
 
+import { getHomepage } from './ApiReducer'
+
 class MainContent extends Component {
     constructor(props) {
         super(props)
@@ -21,33 +24,40 @@ class MainContent extends Component {
         }
     }
 
+    componentDidMount() {
+        this.props.actions.getHomepage()
+    }
+
     render() {
         return (
             <Container fluid>
-                <Router>
-                    <div>
-                        <Navbar />
-                        <Switch>
-                            <Route exact path='/' component={Home} />
-                            <Route exact path='/courses' component={CourseList} />
-                            <Route exact path='/courses/:id' component={Course} />
-                            <Route exact path='/login' component={Login} />
-                            {privateRoutes.map((route, i) =>
-                                (<PrivateRoute
-                                    key={i}
-                                    path={route.path}
-                                    exact={route.exact}
-                                    component={route.component}
-                                    session={this.props.session}
-                                    minRole={route.minRole}
-                                    routes={route.routes}
-                                />)
-                            )}
-                            <Route path="/unauthorized" component={Unauthorized} />
-                            <Route component={PageNotFound} />
-                        </Switch>
-                    </div>
-                </Router>
+                {
+                    this.props.api.hasData &&
+                    <Router>
+                        <div>
+                            <Navbar />
+                            <Switch>
+                                <Route exact path='/' component={Home} />
+                                <Route exact path='/courses' component={CourseList} />
+                                <Route exact path='/courses/:id' component={Course} />
+                                <Route exact path='/login' component={Login} />
+                                {privateRoutes.map((route, i) =>
+                                    (<PrivateRoute
+                                        key={i}
+                                        path={route.path}
+                                        exact={route.exact}
+                                        component={route.component}
+                                        session={this.props.session}
+                                        minRole={route.minRole}
+                                        routes={route.routes}
+                                    />)
+                                )}
+                                <Route path="/unauthorized" component={Unauthorized} />
+                                <Route component={PageNotFound} />
+                            </Switch>
+                        </div>
+                    </Router>
+                }
             </Container>
         )
     }
@@ -55,10 +65,19 @@ class MainContent extends Component {
 
 const mapStateToProps = (state, ownProps) => {
     return {
+        api: state.api,
         session: state.session
     }
 }
 
 
-export default connect(mapStateToProps)(MainContent)
+const mapDispatchToProps = dispatch => {
+    return {
+        actions: bindActionCreators({ getHomepage }, dispatch)
+    }
+}
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainContent)
 

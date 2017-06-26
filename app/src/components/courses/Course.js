@@ -4,12 +4,11 @@ import axios from 'axios'
 
 import { Segment } from 'semantic-ui-react'
 
-import ClassesRepository from '../../data/repositories/ClassesRepository'
-import CoursesRepository from '../../data/repositories/CoursesRepository'
-
 import SirenHelpers from '../../helpers/SirenHelpers'
-
 import CourseClasses from '../classes/CourseClasses'
+import CustomForm from '../shared/CustomForm'
+
+import {CourseEntry} from '../../data/ApiContracts'
 
 import { ADMIN, STUDENT } from '../../models/Roles'
 
@@ -25,19 +24,22 @@ class Course extends Component {
     }
 
     componentDidMount() {
-        CoursesRepository.getCourse(this.props.match.params.id)
+        let uri = this.props.api.requests[CourseEntry]
+            .replace('{id}', this.props.match.params.id)
+        axios.get(uri).then(resp => resp.data)
             .then(course => {
                 console.log(course)
                 this.setState({ course, isLoading: false })
                 return SirenHelpers.getLink(course, '/relations#course-classes')
-            }).then(href =>
-                axios.get(href, {params: {page: this.state.page, limit: this.state.limit}})
-                .then(resp => resp.data)
-                .then(classes => {
-                    console.log(classes)
-                    this.setState({ classes })
-                })
-            )
+            })
+            .then(href => axios.get(
+                href, 
+                { params: { page: this.state.page, limit: this.state.limit } })
+            ).then(resp => resp.data)
+            .then(classes => {
+                console.log(classes)
+                this.setState({ classes })
+            })
     }
 
     render() {
@@ -59,16 +61,12 @@ class Course extends Component {
                     session.isAuthenticated &&
                     session.user.hasRole(ADMIN) &&
                     classes &&
-                    (<ClassForm action={SirenHelpers.getAction(classes, 'add-class')}/>)
+                    (<CustomForm action={SirenHelpers.getAction(classes, 'add-class')} />)
                 }
             </Segment>
         )
     }
 }
-
-const ClassForm = ({action}) => (
-    <h1>Class Form Only for Admins</h1>
-);
 
 Course.propTypes = {
     session: PropTypes.object.isRequired

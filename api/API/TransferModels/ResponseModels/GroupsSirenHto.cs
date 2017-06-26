@@ -56,7 +56,7 @@ namespace API.TransferModels.ResponseModels
         |-----------------------------------------------------------------------
         */
 
-        protected override SirenEntityBuilder AddCollectionActions(SirenEntityBuilder entity)
+        protected override SirenEntityBuilder AddCollectionActions(SirenEntityBuilder entity, Group item)
         {
             if (Context.HttpContext.User.IsInRole(Roles.Admin))
             {
@@ -84,7 +84,7 @@ namespace API.TransferModels.ResponseModels
             return entity;
         }
 
-        protected override SirenEntityBuilder AddCollectionLinks(SirenEntityBuilder entity)
+        protected override SirenEntityBuilder AddCollectionLinks(SirenEntityBuilder entity, Group item)
         {
             return entity
                 .WithLink(new LinkBuilder()

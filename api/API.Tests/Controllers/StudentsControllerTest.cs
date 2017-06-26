@@ -31,19 +31,19 @@ namespace API.Tests.Controllers
         |--------------------------------------------------------------------------
         */
 
-        [Fact]
-        public async Task Test_Get_Students_Without_Auth()
-        {
-            // Arrange
-            var server = new TestServer(new WebHostBuilder().UseStartup<TestStartup>());
-            var client = server.CreateClient();
+        // [Fact]
+        // public async Task Test_Get_Students_Without_Auth()
+        // {
+        //     // Arrange
+        //     var server = new TestServer(new WebHostBuilder().UseStartup<TestStartup>());
+        //     var client = server.CreateClient();
 
-            // Act
-            var response = await client.GetAsync("api/students");
+        //     // Act
+        //     var response = await client.GetAsync("api/students");
 
-            // Assert
-            Assert.Equal(System.Net.HttpStatusCode.Unauthorized, response.StatusCode);
-        }
+        //     // Assert
+        //     Assert.Equal(System.Net.HttpStatusCode.Unauthorized, response.StatusCode);
+        // }
 
         [Fact]
         public void Get_All_Students_With_Admin_Role()

@@ -1,7 +1,7 @@
 import * as roles from './models/Roles'
 
-import Teacher from './components/teachers/Teacher'
-import Student from './components/students/Student'
+import Teacher from './components/teachers/TeacherContainer'
+import Student from './components/students/StudentContainer'
 //import CourseClasses from './components/classes/CourseClasses'
 import Class from './components/classes/ClassContainer'
 import ClassGroups from './components/groups/ClassGroupsContainer'

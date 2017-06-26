@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import axios from 'axios'
 
 import { Table, Segment } from 'semantic-ui-react'
 import { NavLink } from 'react-router-dom'
 
-import CoursesRepository from '../../data/repositories/CoursesRepository'
+import CustomForm from '../shared/CustomForm'
+
+import {CourseList as CourseListRequest} from '../../data/ApiContracts'
 
 class CourseList extends Component {
     constructor(props) {
@@ -18,7 +21,8 @@ class CourseList extends Component {
     }
 
     componentDidMount() {
-        CoursesRepository.getCourses(this.state.page, this.state.limit)
+        let uri = this.props.api.requests[CourseListRequest]
+        axios.get(uri).then(resp => resp.data)
             .then(courses => {
                 console.log(courses)
                 this.setState({ courses })
@@ -65,19 +69,15 @@ class CourseList extends Component {
                 {
                     session.isAuthenticated &&
                     courses.actions &&
-                    (<CourseForm action={courses.actions[0]} />)
+                    (<CustomForm action={courses.actions[0]} />)
                 }
             </Segment>
         )
     }
 }
 
-const CourseForm = ({ action }) => (
-    <h1>{action.title}</h1>
-
-)
-
 CourseList.propTypes = {
+    api: PropTypes.object.isRequired,
     session: PropTypes.object.isRequired
 }
 
