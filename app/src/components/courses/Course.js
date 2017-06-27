@@ -2,14 +2,14 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import axios from 'axios'
 
-import { Segment, Button } from 'semantic-ui-react'
-import {NavLink} from 'react-router-dom'
+import { Segment, Button, Header } from 'semantic-ui-react'
+import { NavLink } from 'react-router-dom'
 
 import SirenHelpers from '../../helpers/SirenHelpers'
 import ClassList from '../classes/ClassList'
 import CustomForm from '../shared/CustomForm'
 
-import {CourseEntry} from '../../data/ApiContracts'
+import { CourseEntry } from '../../data/ApiContracts'
 
 class Course extends Component {
     constructor(props) {
@@ -34,7 +34,7 @@ class Course extends Component {
                 return SirenHelpers.getLink(course, '/relations#course-classes')
             })
             .then(href => axios.get(
-                href, 
+                href,
                 { params: { page: this.state.page, limit: this.state.limit } })
             ).then(resp => resp.data)
             .then(classes => {
@@ -46,33 +46,42 @@ class Course extends Component {
     render() {
         const { course, teacher, classes, isLoading } = this.state
         return (
-            <Segment basic textAlign='center' loading={isLoading}>
+            <Segment basic loading={isLoading}>
                 {
                     course.properties &&
-                    <div>
-                        <h1>{course.properties['name']} ({course.properties['acr']})</h1>
-                        <h2>Coordinator: {teacher.properties['name']}</h2>
-                        <h2>E-mail: {teacher.properties['email']}</h2>
-                        <Button 
-                            as={NavLink} 
-                            to={'/teachers/'+teacher.properties['number']}>
-                            Coordinator Details
-                        </Button>
-                    </div>
-
+                    <Header className='padding-left-right' as='h1'>
+                        {course.properties['name']}
+                    </Header>
                 }
                 {
                     classes &&
-                    <ClassList header={'Classes'} classes={classes} />
+                    <ClassList 
+                        header={course.properties['acr'] + ' Classes'}
+                        classes={classes}
+                    />
+                }
+                <Segment basic textAlign='center'>
+                {
+                    course.properties &&
+                    <div>
+                        <h2>Coordinator: {teacher.properties['name']}</h2>
+                        <h2>E-mail: {teacher.properties['email']}</h2>
+                        <Button
+                            as={NavLink}
+                            to={'/teachers/' + teacher.properties['number']}>
+                            Coordinator Details
+                        </Button>
+                    </div>
                 }
                 {
                     course.actions &&
-                    <CustomForm 
+                    <CustomForm
                         action={
                             SirenHelpers.getAction(course, 'add-class-to-course')
                         }
                     />
                 }
+                </Segment>
             </Segment>
         )
     }

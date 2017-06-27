@@ -4,14 +4,8 @@ import ClassGroups from './ClassGroups'
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        session: state.session
+        api: state.api
     }
 }
-
-// function mapDispatchToProps (dispatch) {
-//   return {
-    
-//   }
-// }
 
 export default connect(mapStateToProps)(ClassGroups)

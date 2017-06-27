@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import axios from 'axios'
 
-import { Segment } from 'semantic-ui-react'
+import { Segment, Header } from 'semantic-ui-react'
 import CustomForm from '../shared/CustomForm'
 
 import SirenHelpers from '../../helpers/SirenHelpers'
@@ -30,36 +30,34 @@ class Class extends Component {
     }
 
     render() {
-        const { cl, teachers } = this.state
-        const { id } = this.props.match.params
+        const { cl } = this.state
         return (
-            <Segment basic textAlign='center'>
+            <Segment color='teal' padded>
                 {
                     cl.properties &&
                     <div>
-                        <h1>Class {cl.properties.name}</h1>
-                        <h2>Max group size: {cl.properties.maxGroupSize}</h2>
-                        <h2>
+                        <Header as='h1' textAlign='left'>
+                            Class {cl.properties.name}
+                        </Header>
+                        <Header as='h2' textAlign='left'>
+                            Max group size: {cl.properties.maxGroupSize}
+                        </Header>
+                        <Header as='h2' textAlign='left'>
                             Auto Enrollment: {
                                 cl.properties.autoEnrollment ? 'Yes' : 'No'
                             }
-                        </h2>
+                        </Header>
                     </div>
                 }
-                {/*{
-                    //TODO: Missing Remove Teacher from Class =S
-                    teachers &&
-                    <TeachersList
-                        teachers={teachers}
-                    />
-                }*/}
                 {
                     cl.actions &&
-                    (<CustomForm 
-                        action={
-                            SirenHelpers.getAction(cl, 'add-teacher-to-class')
-                        }
-                    />)
+                    <Segment basic>
+                        <CustomForm 
+                            action={
+                                SirenHelpers.getAction(cl, 'add-teacher-to-class')
+                            }
+                        />
+                    </Segment>
                 }
             </Segment>
         )

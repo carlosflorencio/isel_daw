@@ -1,51 +1,49 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-import { Route, BrowserRouter as Router, Switch, NavLink } from 'react-router-dom'
+import { Route, Switch, NavLink } from 'react-router-dom'
 import { Segment, Menu, Grid } from 'semantic-ui-react'
 import classRoutes from './routes'
 
+import PageNotFound from '../shared/PageNotFound'
 import ClassContainer from './ClassContainer'
 
-class ClassPage extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-        }
-    }
-
-    render() {
-        const { id } = this.props.match.params
-        return (
-            <Segment basic textAlign='center'>
-                <Grid stackable textAlign='center'>
-                    <Grid.Row>
-                        <Grid.Column width={3}>
-                            <ClassMenu id={id} />
-                        </Grid.Column>
-                        <Grid.Column width={13}>
-                            <Router>
-                                <Switch>
-                                    <Route exact path='/classes/:id' component={ClassContainer} />
-                                    {classRoutes.map((route, i) => 
-                                        <Route
-                                            key={i}
-                                            path={route.path}
-                                            exact={route.exact}
-                                            component={route.component}
-                                        />
-                                    )}
-                                </Switch>
-                            </Router>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            </Segment>
-        )
-    }
+const ClassPage = (props) => {
+    const { id } = props.match.params
+    return (
+        <Segment basic>
+            <Grid stackable textAlign='center'>
+                <Grid.Row>
+                    <Grid.Column width={3}>
+                        <ClassMenu id={id} />
+                    </Grid.Column>
+                    <Grid.Column width={13}>
+                        <Switch>
+                            <Route exact path='/classes/:id/info' component={ClassContainer} />
+                            {classRoutes.map((route, i) =>
+                                <Route
+                                    key={i}
+                                    path={route.path}
+                                    exact={route.exact}
+                                    component={route.component}
+                                />
+                            )}
+                            <Route component={PageNotFound} />
+                        </Switch>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+        </Segment>
+    )
 }
 
 const ClassMenu = ({ id }) =>
-    <Menu vertical>
+    <Menu vertical color='teal'>
+        <Menu.Item
+            as={NavLink}
+            to={'/classes/' + id + '/info'}
+            name='info'>
+            Class Details
+        </Menu.Item>
         <Menu.Item
             as={NavLink}
             to={'/classes/' + id + '/teachers'}

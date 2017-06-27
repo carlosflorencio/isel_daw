@@ -2,7 +2,7 @@ import * as roles from '../../models/Roles'
 
 import ClassGroups from '../groups/ClassGroupsContainer'
 import ClassStudents from '../students/ClassStudentsContainer'
-import ClassTeachers from '../teachers/ClassTeachers'
+import ClassTeachers from '../teachers/ClassTeachersContainer'
 import Group from '../groups/Group'
 
 

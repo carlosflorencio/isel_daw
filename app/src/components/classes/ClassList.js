@@ -34,7 +34,7 @@ class ClassList extends Component {
                                         </Table.Cell>
                                         <Table.Cell collapsing>
                                             <NavLink
-                                                to={'/classes/' + c.properties['id']}>
+                                                to={'/classes/' + c.properties['id'] + '/info'}>
                                                 Details
                                             </NavLink>
                                         </Table.Cell>

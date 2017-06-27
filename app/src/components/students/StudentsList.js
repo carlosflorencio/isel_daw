@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { Table } from 'semantic-ui-react'
 import { NavLink } from 'react-router-dom'
 
-class TeachersList extends Component {
+class StudentsList extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -12,36 +12,36 @@ class TeachersList extends Component {
     }
 
     render() {
-        const { teachers } = this.props
+        const { students } = this.props
         return (
             <Table celled striped selectable color='teal'>
                 <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell colSpan='4' textAlign='center'>
-                            Teachers
+                            Students
                         </Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
                 <Table.Body>
                     {
-                        teachers.entities &&
-                        teachers.entities.map(teacher => {
+                        students.entities &&
+                        students.entities.map(student => {
                             return (
-                                <Table.Row key={teacher.properties['number']}>
+                                <Table.Row key={student.properties['number']}>
                                     <Table.Cell collapsing >
-                                        {teacher.properties['name']}
+                                        {student.properties['name']}
                                     </Table.Cell>
                                     <Table.Cell collapsing>
-                                        {teacher.properties['email']}
+                                        {student.properties['email']}
                                     </Table.Cell>
                                     <Table.Cell collapsing>
                                         <NavLink
-                                            to={'/teachers/' + teacher.properties['number']}>
+                                            to={'/students/' + student.properties['number']}>
                                             Details
                                         </NavLink>
                                     </Table.Cell>
                                     {
-                                        
+                                        // Remove
                                     }
                                 </Table.Row>
                             )
@@ -53,9 +53,9 @@ class TeachersList extends Component {
     }
 }
 
-TeachersList.propTypes = {
-    teachers: PropTypes.object.isRequired,
+StudentsList.propTypes = {
+    students: PropTypes.object.isRequired,
 }
 
-export default TeachersList
+export default StudentsList
 
