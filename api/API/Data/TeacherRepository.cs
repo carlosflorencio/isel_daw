@@ -70,15 +70,15 @@ namespace API.Data
 
         public Task<PagedList<Class>> GetPaginatedTeacherClassesAsync(
             int number,
-            ListQueryStringDto p)
+            ListQueryStringDto query)
         {
-            IQueryable<Class> classes = Context.Teachers
-                .Where(t => t.Number == number)
-                .Include(t => t.Classes)
-                .ThenInclude(ct => ct.Class)
-                .SelectMany(c => c.Classes.Select(ct => ct.Class));
+            IQueryable<Class> classes = Context.Classes
+                .Where(cl => cl.Teachers
+                    .Where(ct => ct.TeacherId == number)
+                    .FirstOrDefault() != default(ClassTeacher)
+                ).Include(cl => cl.Semester);
 
-            return PagedList<Class>.Create(classes, p.Page, p.Limit);
+            return PagedList<Class>.Create(classes, query.Page, query.Limit);
         }
     }
 }

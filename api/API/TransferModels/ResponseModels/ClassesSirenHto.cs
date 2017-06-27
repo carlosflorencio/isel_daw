@@ -16,7 +16,8 @@ namespace API.TransferModels.ResponseModels
     public class ClassesSirenHto : SirenCollectionHto<Class>
     {
         protected override string Class { get; } = "class";
-        protected override string RouteList { get; } = Routes.CourseClasses;
+
+        protected override string RouteList => Routes.ClassList;
 
         public ClassesSirenHto(
             IUrlHelperFactory urlHelperFactory,
@@ -179,11 +180,11 @@ namespace API.TransferModels.ResponseModels
         {
             return entity
                 .WithLink(new LinkBuilder()
-                    .WithRel("self")
-                    .WithHref(UrlTo(Routes.CourseClasses)))
-                .WithLink(new LinkBuilder()
                     .WithRel("index")
-                    .WithHref(UrlTo(Routes.Index)));
+                    .WithHref(UrlTo(Routes.Index)))
+                .WithLink(new LinkBuilder()
+                    .WithRel("self")
+                    .WithHref(UrlTo(RouteList)));
         }
     }
 }

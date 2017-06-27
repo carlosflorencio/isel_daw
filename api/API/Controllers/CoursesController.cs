@@ -15,12 +15,12 @@ namespace API.Controllers
         private ICourseRepository _repo;
 
         private readonly CoursesSirenHto _coursesRep;
-        private readonly ClassesSirenHto _classesRep;
+        private readonly CourseClassesSirenHto _classesRep;
 
         public CoursesController(
             ICourseRepository repo,
             CoursesSirenHto coursesRepresentation,
-            ClassesSirenHto classesRepresentation)
+            CourseClassesSirenHto classesRepresentation)
         {
             _repo = repo;
             _coursesRep = coursesRepresentation;
@@ -48,7 +48,7 @@ namespace API.Controllers
             return Ok(_coursesRep.Entity(course));
         }
 
-        [HttpGet("{id}/classes", Name = Routes.CourseClasses)]
+        [HttpGet("{id}/classes", Name = Routes.CourseClassList)]
         public async Task<IActionResult> GetCourseClasses(int Id, [FromQuery] ListQueryStringDto query)
         {
             Course course = await _repo.GetByIdAsync(Id);
@@ -60,7 +60,7 @@ namespace API.Controllers
 
             PagedList<Class> classes = await _repo.GetCourseClassesAsync(Id, query);
 
-            return Ok(_classesRep.Collection(classes, query));
+            return Ok(_classesRep.WeakCollection(Id, classes, query));
         }
 
         [HttpPost("", Name = Routes.CourseCreate)]

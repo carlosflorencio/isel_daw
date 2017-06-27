@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import {Table, Segment} from 'semantic-ui-react'
 import {NavLink} from 'react-router-dom'
 
-class CourseClasses extends Component {
+class ClassList extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -49,8 +49,8 @@ class CourseClasses extends Component {
     }
 }
 
-CourseClasses.propTypes = {
+ClassList.propTypes = {
     classes: PropTypes.object.isRequired
 }
 
-export default CourseClasses
+export default ClassList

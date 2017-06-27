@@ -35,7 +35,7 @@ namespace API
         public const string CourseCreate = nameof(CourseCreate);
         public const string CourseEdit = nameof(CourseEdit);
         public const string CourseDelete = nameof(CourseDelete);
-        public const string CourseClasses = nameof(CourseClasses);
+        public const string CourseClassList = nameof(CourseClassList);
 
         // ClassesController
         public const string ClassList = nameof(ClassList);

@@ -14,6 +14,7 @@ class CourseList extends Component {
         super(props)
         let params = new URLSearchParams(props.location.search)
         this.state = {
+            isLoading:true,
             courses: {},
             page: params.page || 1,
             limit: params.limit || 5
@@ -25,15 +26,14 @@ class CourseList extends Component {
         axios.get(uri).then(resp => resp.data)
             .then(courses => {
                 console.log(courses)
-                this.setState({ courses })
+                this.setState({ courses, isLoading:false })
             })
     }
 
     render() {
-        const { courses } = this.state
-        const { session } = this.props
+        const { courses, isLoading } = this.state
         return (
-            <Segment className='padding-left-right' basic>
+            <Segment basic className='padding-left-right' loading={isLoading}>
                 <Table celled striped selectable color='teal'>
                     <Table.Header>
                         <Table.Row>
@@ -67,7 +67,6 @@ class CourseList extends Component {
                     </Table.Body>
                 </Table>
                 {
-                    session.isAuthenticated &&
                     courses.actions &&
                     (<CustomForm action={courses.actions[0]} />)
                 }

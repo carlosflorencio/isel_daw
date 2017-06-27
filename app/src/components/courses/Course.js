@@ -5,12 +5,10 @@ import axios from 'axios'
 import { Segment } from 'semantic-ui-react'
 
 import SirenHelpers from '../../helpers/SirenHelpers'
-import CourseClasses from '../classes/CourseClasses'
+import ClassList from '../classes/ClassList'
 import CustomForm from '../shared/CustomForm'
 
 import {CourseEntry} from '../../data/ApiContracts'
-
-import { STUDENT } from '../../models/Roles'
 
 class Course extends Component {
     constructor(props) {
@@ -18,6 +16,7 @@ class Course extends Component {
         let params = new URLSearchParams(props.location.search)
         this.state = {
             isLoading: true,
+            course: {},
             page: params.page || 1,
             limit: params.limit || 5
         }
@@ -43,24 +42,24 @@ class Course extends Component {
     }
 
     render() {
-        const { session } = this.props
         const { course, classes, isLoading } = this.state
         return (
             <Segment basic textAlign='center' loading={isLoading}>
                 {
-                    course &&
+                    course.properties &&
                     <h1>{course.properties['name']} ({course.properties['acr']})</h1>
                 }
                 {
-                    session.isAuthenticated &&
-                    session.user.hasRole(STUDENT) &&
                     classes &&
-                    <CourseClasses classes={classes} />
+                    <ClassList classes={classes} />
                 }
                 {
-                    course &&
                     course.actions &&
-                    (<CustomForm action={SirenHelpers.getAction(course, 'add-class-to-course')} />)
+                    <CustomForm 
+                        action={
+                            SirenHelpers.getAction(course, 'add-class-to-course')
+                        }
+                    />
                 }
             </Segment>
         )

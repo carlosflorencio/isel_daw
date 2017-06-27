@@ -6,12 +6,16 @@ import { Segment, Card, Image } from 'semantic-ui-react'
 
 import { TeacherEntry } from '../../data/ApiContracts'
 
-//import SirenHelpers from '../../helpers/SirenHelpers'
+import SirenHelpers from '../../helpers/SirenHelpers'
+
+import ClassList from '../classes/ClassList'
 
 class Teacher extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            teacher: {},
+            classes: {}
         }
     }
 
@@ -23,17 +27,24 @@ class Teacher extends Component {
             .then(teacher => {
                 console.log(teacher)
                 this.setState({ teacher })
+                return SirenHelpers.getLink(teacher, '/relations#teacher-classes')
+            })
+            .then(href => axios.get(href))
+            .then(resp => resp.data)
+            .then(classes => {
+                console.log(classes)
+                this.setState({classes})
             })
     }
 
     render() {
-        const { teacher } = this.state
+        const { teacher, classes } = this.state
         return (
             <Segment basic textAlign='center'>
                 <Segment className='padding-left-right' color='teal'>
                     <h1>Teacher</h1>
                     {
-                        teacher &&
+                        teacher.properties &&
                         <Card centered>
                             <Image src='http://via.placeholder.com/300x150' />
                             <Card.Content>
@@ -47,10 +58,8 @@ class Teacher extends Component {
                         </Card>
                     }
                     {
-                        //teacher &&
-                        //<DeleteTeacher 
-                        //    action={SirenHelpers.getAction(teacher, 'delete-teacher')}
-                        ///>
+                        classes.entities &&
+                        <ClassList classes={classes} />
                     }
                 </Segment>
             </Segment>

@@ -17,6 +17,7 @@ namespace API.Data.Contracts
         Task<PagedList<Student>> GetAllPaginatedAsync(ListQueryStringDto p);
 
         Task<Student> GetByEmailAndPasswordAsync(string email, string password);
-
+        
+        Task<PagedList<Class>> GetStudentClasses(int number, ListQueryStringDto query);
     }
 }

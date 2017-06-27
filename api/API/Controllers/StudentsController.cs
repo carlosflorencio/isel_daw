@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.Data.Contracts;
 using API.Models;
+using API.Services;
 using API.TransferModels.InputModels;
 using API.TransferModels.ResponseModels;
 using FluentSiren.Builders;
@@ -18,12 +19,12 @@ namespace API.Controllers
     {
         private readonly IStudentRepository _repo;
         private readonly StudentsSirenHto _studentsRep;
-        private readonly ClassesSirenHto _classesRep;
+        private readonly StudentClassesSirenHto _classesRep;
 
         public StudentsController(
             IStudentRepository repo,
             StudentsSirenHto studentsRepresentation,
-            ClassesSirenHto classesRepresentation)
+            StudentClassesSirenHto classesRepresentation)
         {
             _repo = repo;
             _studentsRep = studentsRepresentation;
@@ -136,8 +137,9 @@ namespace API.Controllers
                 return NotFound();
             }
 
-            //return Ok(_classesRep.Collection());
-            return StatusCode(501, "Not Implemented");
+            PagedList<Class> classes = await _repo.GetStudentClasses(number, query);
+
+            return Ok(_classesRep.WeakCollection(number, classes, query));
         }
     }
 }

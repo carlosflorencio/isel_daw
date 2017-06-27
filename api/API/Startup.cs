@@ -93,6 +93,9 @@ namespace API
             services.AddScoped<TeachersSirenHto>();
             services.AddScoped<CoursesSirenHto>();
             services.AddScoped<ClassesSirenHto>();
+            services.AddScoped<CourseClassesSirenHto>();
+            services.AddScoped<TeacherClassesSirenHto>();
+            services.AddScoped<StudentClassesSirenHto>();
             services.AddScoped<GroupsSirenHto>();
         }
 

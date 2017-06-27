@@ -4,33 +4,48 @@ import axios from 'axios'
 
 import { Segment, Card, Image } from 'semantic-ui-react'
 
+import SirenHelpers from '../../helpers/SirenHelpers'
+
+import ClassList from '../classes/ClassList'
+
 import { StudentEntry } from '../../data/ApiContracts'
 
 class Student extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            student: {},
+            classes: {}
         }
     }
 
     componentDidMount() {
         const uri = this.props.api.requests[StudentEntry]
             .replace("{number}", this.props.match.params.id)
-        axios.get(uri).then(resp =>  resp.data)
+
+        axios.get(uri)
+            .then(resp =>  resp.data)
             .then(student => {
                 console.log(student)
                 this.setState({student})
+                return SirenHelpers.getLink(student, '/relations#student-classes')
+            })
+            .then(href => axios.get(href))
+            .then(resp => resp.data)
+            .then(classes => {
+                console.log(classes)
+                this.setState({classes})
             })
     }
 
     render() {
-        const {student} = this.state
+        const { student, classes } = this.state
         return (
             <Segment basic textAlign='center'>
                 <Segment className='padding-left-right' color='teal'>
                     <h1>Student</h1>
                     {
-                        student &&
+                        student.properties &&
                         <Card centered>
                             <Image src='http://via.placeholder.com/300x150' />
                             <Card.Content>
@@ -42,6 +57,10 @@ class Student extends Component {
                                 </Card.Description>
                             </Card.Content>
                         </Card>
+                    }
+                    {
+                        classes.entities &&
+                        <ClassList classes={classes} />
                     }
                     {
                         //teacher &&

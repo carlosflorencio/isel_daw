@@ -15,6 +15,7 @@ class Class extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            cl:{}
         }
     }
 
@@ -43,7 +44,7 @@ class Class extends Component {
         return (
             <Segment basic textAlign='center'>
                 {
-                    cl &&
+                    cl.properties &&
                     <div>
                         <h1>Class {cl.properties.name}</h1>
                         <h2>Max group size: {cl.properties.maxGroupSize}</h2>
@@ -55,11 +56,11 @@ class Class extends Component {
                     </div>
                 }
                 {
+                    //TODO: Missing Remove Teacher from Class =S
                     teachers &&
                     <TeachersList teachers={teachers}/>
                 }
                 {
-                    cl &&
                     cl.actions &&
                     (<CustomForm 
                         action={

@@ -104,7 +104,7 @@ namespace API.TransferModels.ResponseModels
                     .WithHref(Url.ToCourse(Routes.CourseEntry, item.Id)))
                 .WithLink(new LinkBuilder()
                     .WithRel(SirenData.REL_COURSE_CLASSES)
-                    .WithHref(Url.ToCourse(Routes.CourseClasses, item.Id)))
+                    .WithHref(Url.ToCourse(Routes.CourseClassList, item.Id)))
                 .WithLink(new LinkBuilder()
                     .WithRel(SirenData.REl_COURSE_COORDINATOR)
                     .WithHref(Url.ToTeacher(Routes.TeacherEntry, item.CoordinatorId)));

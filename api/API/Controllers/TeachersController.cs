@@ -16,12 +16,12 @@ namespace API.Controllers
         private ITeacherRepository _repo;
 
         private readonly TeachersSirenHto _teachersRep;
-        private readonly ClassesSirenHto _classesRep;
+        private readonly TeacherClassesSirenHto _classesRep;
 
         public TeachersController(
             ITeacherRepository repo,
             TeachersSirenHto teachersRepresentation,
-            ClassesSirenHto classesRepresentation)
+            TeacherClassesSirenHto classesRepresentation)
         {
             _repo = repo;
             _teachersRep = teachersRepresentation;
@@ -138,8 +138,7 @@ namespace API.Controllers
             PagedList<Class> classes =
                 await _repo.GetPaginatedTeacherClassesAsync(number, query);
 
-            return Ok(classes);
-            //return Ok(_classesRep.Collection(classes, query));
+            return Ok(_classesRep.WeakCollection(number, classes, query));
         }
     }
 }
