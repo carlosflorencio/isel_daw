@@ -88,6 +88,17 @@ namespace API.Data
             return SaveAsync();
         }
 
+        public Task<bool> RemoveTeacherFrom(Class c, int number)
+        {
+            Context.Remove<ClassTeacher>(new ClassTeacher
+            {
+                ClassId = c.Id,
+                TeacherId = number
+            });
+
+            return SaveAsync();
+        }
+
         public Task<bool> AddGroupTo(Class c)
         {
             c.Groups.Add(new Group

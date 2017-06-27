@@ -16,7 +16,7 @@ namespace API.Data.Contracts
         
         Task<bool> AddParticipantTo(Class c, int studentNumberId);
         Task<bool> AddTeacherTo(Class c, int teacherNumber);
-
+        Task<bool> RemoveTeacherFrom(Class c, int number);
         Task<bool> AddGroupTo(Class c);
 
         Task<List<Student>> GetClassParticipants(int id);

@@ -181,7 +181,27 @@ namespace API.Controllers
                 return Ok();    //TODO: What to return...
             }
 
-            throw new Exception("Unable to add participant " + dto.Number);
+            throw new Exception("Unable to add teacher " + dto.Number);
+        }
+
+        [HttpDelete("{id}/teachers/{teacherId}", Name=Routes.ClassTeacherRemove)]
+        [Authorize(Roles = Roles.Admin)]
+        public async Task<IActionResult> RemoveTeacher(int Id, int teacherId)
+        {
+            if(!ModelState.IsValid){
+                return BadRequest(ModelState);
+            }
+
+            Class c = await _repo.GetByIdAsync(Id);
+            if(c == null){
+                return NotFound();
+            }
+
+            if(await _repo.RemoveTeacherFrom(c, teacherId)){
+                return NoContent();
+            }
+
+            throw new Exception("Unable to remove teacher " + teacherId);
         }
 
         [HttpPost("{id}/groups", Name=Routes.ClassGroupAdd)]

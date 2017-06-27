@@ -2,20 +2,18 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import axios from 'axios'
 
-import { Segment, Button } from 'semantic-ui-react'
-import { NavLink } from 'react-router-dom'
+import { Segment } from 'semantic-ui-react'
+import CustomForm from '../shared/CustomForm'
 
 import SirenHelpers from '../../helpers/SirenHelpers'
 
 import { ClassEntry } from '../../data/ApiContracts'
-import CustomForm from '../shared/CustomForm'
-import TeachersList from '../teachers/TeachersList'
 
 class Class extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            cl:{}
+            cl: {}
         }
     }
 
@@ -28,13 +26,6 @@ class Class extends Component {
             .then(cl => {
                 console.log(cl)
                 this.setState({ cl })
-                return SirenHelpers.getLink(cl, "/relations/class#teachers")
-            })
-            .then(href => axios.get(href))
-            .then(resp => resp.data)
-            .then(teachers => {
-                console.log(teachers)
-                this.setState({ teachers })
             })
     }
 
@@ -55,11 +46,13 @@ class Class extends Component {
                         </h2>
                     </div>
                 }
-                {
+                {/*{
                     //TODO: Missing Remove Teacher from Class =S
                     teachers &&
-                    <TeachersList teachers={teachers}/>
-                }
+                    <TeachersList
+                        teachers={teachers}
+                    />
+                }*/}
                 {
                     cl.actions &&
                     (<CustomForm 
@@ -68,12 +61,6 @@ class Class extends Component {
                         }
                     />)
                 }
-                <Button as={NavLink} to={"/classes/" + id + "/groups"}>
-                    Groups of the Class
-                </Button>
-                <Button as={NavLink} to={"/classes/" + id + "/students"}>
-                    Students of the Class
-                </Button>
             </Segment>
         )
     }

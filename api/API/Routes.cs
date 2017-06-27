@@ -28,6 +28,7 @@ namespace API
         public const string TeacherEdit = nameof(TeacherEdit);
         public const string TeacherDelete = nameof(TeacherDelete);
         public const string TeacherClassList = nameof(TeacherClassList);
+        public const string TeacherCourseList = nameof(TeacherCourseList);
 
         // CoursesController
         public const string CourseList = nameof(CourseList);
@@ -45,6 +46,7 @@ namespace API
         public const string ClassDelete = nameof(ClassDelete);
         public const string ClassTeachersList = nameof(ClassTeachersList);
         public const string ClassTeacherAdd = nameof(ClassTeacherAdd);
+        public const string ClassTeacherRemove = nameof(ClassTeacherRemove);
         public const string ClassStudentsList = nameof(ClassStudentsList);
         public const string ClassGroupsList = nameof(ClassGroupsList);
         public const string ClassParticipantsList = nameof(ClassParticipantsList);

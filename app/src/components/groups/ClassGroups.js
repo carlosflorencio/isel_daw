@@ -11,16 +11,16 @@ class ClassGroups extends Component {
     }
 
     render() {
-        const { session } = this.props
-        const {id} = this.props.match.params
+        // const { session } = this.props
+        // const {id} = this.props.match.params
         return (
             <div>
-                <h1>Groups of Class {id}</h1>
+                {/*<h1>Groups of Class {id}</h1>*/}
                 <h2>List of groups with option of deletion</h2>
-                {
+                {/*{
                     session.user.hasRole(TEACHER) &&
                     (<GroupForm />)
-                }
+                }*/}
             </div>
         )
     }

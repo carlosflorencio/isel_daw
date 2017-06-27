@@ -60,13 +60,7 @@ class Student extends Component {
                     }
                     {
                         classes.entities &&
-                        <ClassList classes={classes} />
-                    }
-                    {
-                        //teacher &&
-                        //<DeleteTeacher 
-                        //    action={SirenHelpers.getAction(teacher, 'delete-teacher')}
-                        ///>
+                        <ClassList header={'Classes you attend'} classes={classes} />
                     }
                 </Segment>
             </Segment>

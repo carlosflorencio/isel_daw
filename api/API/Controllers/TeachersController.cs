@@ -17,15 +17,18 @@ namespace API.Controllers
 
         private readonly TeachersSirenHto _teachersRep;
         private readonly TeacherClassesSirenHto _classesRep;
+        private readonly TeacherCoursesSirenHto _coursesRep;
 
         public TeachersController(
             ITeacherRepository repo,
             TeachersSirenHto teachersRepresentation,
-            TeacherClassesSirenHto classesRepresentation)
+            TeacherClassesSirenHto classesRepresentation,
+            TeacherCoursesSirenHto coursesRepresentation)
         {
             _repo = repo;
             _teachersRep = teachersRepresentation;
             _classesRep = classesRepresentation;
+            _coursesRep = coursesRepresentation;
         }
 
         [HttpGet("", Name=Routes.TeacherList)]
@@ -139,6 +142,23 @@ namespace API.Controllers
                 await _repo.GetPaginatedTeacherClassesAsync(number, query);
 
             return Ok(_classesRep.WeakCollection(number, classes, query));
+        }
+
+        [HttpGet("{number}/courses", Name = Routes.TeacherCourseList)]
+        public async Task<IActionResult> TeacherCourses(
+            int number,
+            [FromQuery] ListQueryStringDto query)
+        {
+            Teacher teacher = await _repo.GetByNumberAsync(number);
+
+            if(teacher == null){
+                 return NotFound();
+            }
+
+            PagedList<Course> courses =
+                await _repo.GetPaginatedTeacherCourses(number, query);
+
+            return Ok(_coursesRep.WeakCollection(number, courses, query));
         }
     }
 }

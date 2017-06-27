@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 
-import CourseList from './CourseList'
+import CoursesPage from './CoursesPage'
 
 const mapStateToProps = (state, ownProps) => {
     return {
@@ -9,4 +9,4 @@ const mapStateToProps = (state, ownProps) => {
     }
 }
 
-export default connect(mapStateToProps)(CourseList)
+export default connect(mapStateToProps)(CoursesPage)

@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import axios from 'axios'
 
-import { Segment } from 'semantic-ui-react'
+import { Segment, Button } from 'semantic-ui-react'
+import {NavLink} from 'react-router-dom'
 
 import SirenHelpers from '../../helpers/SirenHelpers'
 import ClassList from '../classes/ClassList'
@@ -28,7 +29,8 @@ class Course extends Component {
         axios.get(uri).then(resp => resp.data)
             .then(course => {
                 console.log(course)
-                this.setState({ course, isLoading: false })
+                const teacher = SirenHelpers.getSubEntity(course, 'coordinator')
+                this.setState({ course, teacher, isLoading: false })
                 return SirenHelpers.getLink(course, '/relations#course-classes')
             })
             .then(href => axios.get(
@@ -42,16 +44,26 @@ class Course extends Component {
     }
 
     render() {
-        const { course, classes, isLoading } = this.state
+        const { course, teacher, classes, isLoading } = this.state
         return (
             <Segment basic textAlign='center' loading={isLoading}>
                 {
                     course.properties &&
-                    <h1>{course.properties['name']} ({course.properties['acr']})</h1>
+                    <div>
+                        <h1>{course.properties['name']} ({course.properties['acr']})</h1>
+                        <h2>Coordinator: {teacher.properties['name']}</h2>
+                        <h2>E-mail: {teacher.properties['email']}</h2>
+                        <Button 
+                            as={NavLink} 
+                            to={'/teachers/'+teacher.properties['number']}>
+                            Coordinator Details
+                        </Button>
+                    </div>
+
                 }
                 {
                     classes &&
-                    <ClassList classes={classes} />
+                    <ClassList header={'Classes'} classes={classes} />
                 }
                 {
                     course.actions &&

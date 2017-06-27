@@ -88,7 +88,13 @@ namespace API.TransferModels.ResponseModels
                     .WithHref(Url.ToTeacher(Routes.TeacherEntry, item.Number)))
                 .WithLink(new LinkBuilder()
                     .WithRel(SirenData.REL_TEACHERS_CLASSES)
-                    .WithHref(Url.ToTeacher(Routes.TeacherClassList, item.Number)));
+                    .WithHref(Url.ToTeacher(Routes.TeacherClassList, item.Number)))
+                .WithLink(new LinkBuilder()
+                    .WithRel(SirenData.REL_TEACHER_COURSES)
+                    .WithHref(Url.AbsoluteRouteUrl(
+                        Routes.TeacherCourseList,
+                        new { number = item.Number }))
+                );
         }
 
         /*

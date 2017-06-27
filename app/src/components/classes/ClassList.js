@@ -12,14 +12,14 @@ class ClassList extends Component {
     }
 
     render() {
-        const {classes} = this.props
+        const {header, classes} = this.props
         return (
             <Segment className='padding-left-right' basic>
                 <Table celled striped selectable color='teal'>
                     <Table.Header>
                         <Table.Row>
                             <Table.HeaderCell colSpan='2' textAlign='center'>
-                                Classes
+                                {header}
                             </Table.HeaderCell>
                         </Table.Row>
                     </Table.Header>
@@ -50,6 +50,7 @@ class ClassList extends Component {
 }
 
 ClassList.propTypes = {
+    header: PropTypes.string.isRequired,
     classes: PropTypes.object.isRequired
 }
 

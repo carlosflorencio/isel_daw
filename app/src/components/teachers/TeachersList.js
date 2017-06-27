@@ -12,14 +12,14 @@ class TeachersList extends Component {
     }
 
     render() {
-        const { teachers } = this.props
+        const { teachers, onRemove, onRemoveHeader } = this.props
         return (
             <Table celled striped selectable color='teal'>
                 <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell colSpan='4' textAlign='center'>
                             Teachers
-                            </Table.HeaderCell>
+                        </Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
                 <Table.Body>
@@ -38,13 +38,10 @@ class TeachersList extends Component {
                                         <NavLink
                                             to={'/teachers/' + teacher.properties['number']}>
                                             Details
-                                                </NavLink>
+                                        </NavLink>
                                     </Table.Cell>
                                     {
-                                        // Delete
-                                        <Table.Cell collapsing>
-                                            Delete
-                                        </Table.Cell>
+                                        
                                     }
                                 </Table.Row>
                             )
@@ -57,7 +54,7 @@ class TeachersList extends Component {
 }
 
 TeachersList.propTypes = {
-    teachers: PropTypes.object.isRequired
+    teachers: PropTypes.object.isRequired,
 }
 
 export default TeachersList

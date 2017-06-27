@@ -11,6 +11,13 @@ class SirenHelpers {
         return result
     }
 
+    static getSubEntity(sirenView, rel){
+        return sirenView.entities
+            .find(entity => 
+                entity.rel.find(item => item === rel)
+            )
+    }
+
 }
 
 export default SirenHelpers

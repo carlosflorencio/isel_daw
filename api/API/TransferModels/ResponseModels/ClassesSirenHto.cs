@@ -103,8 +103,22 @@ namespace API.TransferModels.ResponseModels
                             .WithField(new FieldBuilder()
                                 .WithTitle("Number")
                                 .WithName("number")
-                                .WithType("text"))
-                    );
+                                .WithType("text")));
+                    // .WithAction(new ActionBuilder()
+                    //         .WithName("remove-teacher-from-class")
+                    //         .WithTitle("Remove Teacher from Class")
+                    //         .WithMethod("DELETE")
+                    //         .WithHref(
+                    //             Url.AbsoluteRouteUrl(
+                    //                 Routes.ClassTeacherRemove, new {id = item.Id, teacherId = }
+                    //             )
+                    //         )
+                    //         .WithType("application/json")
+                    //         .WithField(new FieldBuilder()
+                    //             .WithTitle("Number")
+                    //             .WithName("number")
+                    //             .WithType("text"))
+                    // ); 
             }
 
             return entity;
@@ -116,15 +130,15 @@ namespace API.TransferModels.ResponseModels
                     .WithRel("self")
                     .WithHref(Url.ToClass(Routes.ClassEntry, item.Id)))
                 .WithLink(new LinkBuilder()
-                    .WithRel("/relations/class#teachers")
+                    .WithRel(SirenData.REL_CLASS_TEACHERS)
                     .WithHref(Url.AbsoluteRouteUrl(
                         Routes.ClassTeachersList, new { id = item.Id })))
                 .WithLink(new LinkBuilder()
-                    .WithRel("/relations/class#students")
+                    .WithRel(SirenData.REL_CLASS_STUDENTS)
                     .WithHref(Url.AbsoluteRouteUrl(
                         Routes.ClassStudentsList, new {id = item.Id})))
                 .WithLink(new LinkBuilder()
-                    .WithRel("/relations/class#groups")
+                    .WithRel(SirenData.REL_CLASS_GROUPS)
                     .WithHref(Url.AbsoluteRouteUrl(
                         Routes.ClassGroupsList, new {id = item.Id}))
                 );

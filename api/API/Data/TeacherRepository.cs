@@ -80,5 +80,13 @@ namespace API.Data
 
             return PagedList<Class>.Create(classes, query.Page, query.Limit);
         }
+
+        public Task<PagedList<Course>> GetPaginatedTeacherCourses(int number, ListQueryStringDto query)
+        {
+            IQueryable<Course> courses = Context.Courses
+                .Where(cl => cl.CoordinatorId == number);
+
+            return PagedList<Course>.Create(courses, query.Page, query.Limit);
+        }
     }
 }
