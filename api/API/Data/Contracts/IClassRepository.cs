@@ -15,9 +15,13 @@ namespace API.Data.Contracts
         Task<PagedList<Group>> GetClassGroups(int id, ListQueryStringDto p);
         
         Task<bool> AddParticipantTo(Class c, int studentNumberId);
+        Task<bool> AddTeacherTo(Class c, int teacherNumber);
 
         Task<bool> AddGroupTo(Class c);
 
         Task<List<Student>> GetClassParticipants(int id);
+
+        Task<PagedList<Teacher>> GetClassTeachers(int id, ListQueryStringDto query);
+        Task<PagedList<Student>> GetClassStudents(int id, ListQueryStringDto query);
     }
 }

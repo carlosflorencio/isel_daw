@@ -58,11 +58,13 @@ namespace API.TransferModels.ResponseModels
                             .WithType("application/json")
                             .WithField(
                                 new FieldBuilder()
+                                    .WithTitle("Name")
                                     .WithName("name")
                                     .WithType("text")
                                     .WithValue(item.Name))
                             .WithField(
                                 new FieldBuilder()
+                                    .WithTitle("E-mail")
                                     .WithName("email")
                                     .WithType("email")
                                     .WithValue(item.Email)))
@@ -95,7 +97,7 @@ namespace API.TransferModels.ResponseModels
         |-----------------------------------------------------------------------
         */
 
-        protected override SirenEntityBuilder AddCollectionActions(SirenEntityBuilder entity, Teacher item)
+        protected override SirenEntityBuilder AddCollectionActions(SirenEntityBuilder entity)
         {
             return entity
                     .WithAction(new ActionBuilder()
@@ -105,23 +107,28 @@ namespace API.TransferModels.ResponseModels
                         .WithHref(UrlTo(Routes.TeacherCreate))
                         .WithType("application/json")
                         .WithField(new FieldBuilder()
+                            .WithTitle("Number")
                             .WithName("number")
                             .WithType("number"))
                         .WithField(new FieldBuilder()
+                            .WithTitle("Name")
                             .WithName("name")
                             .WithType("text"))
                         .WithField(new FieldBuilder()
+                            .WithTitle("E-mail")
                             .WithName("email")
                             .WithType("email"))
                         .WithField(new FieldBuilder()
+                            .WithTitle("Password")
                             .WithName("password")
                             .WithType("password"))
                         .WithField(new FieldBuilder()
+                            .WithTitle("Admin")
                             .WithName("isAdmin")
                             .WithType("checkbox")));
         }
 
-        protected override SirenEntityBuilder AddCollectionLinks(SirenEntityBuilder entity, Teacher item)
+        protected override SirenEntityBuilder AddCollectionLinks(SirenEntityBuilder entity)
         {
             return entity
                 .WithLink(new LinkBuilder()

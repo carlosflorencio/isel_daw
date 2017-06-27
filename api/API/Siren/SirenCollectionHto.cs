@@ -46,11 +46,11 @@ namespace API.Siren
                 }
             }
 
-            AddCollectionActions(entity, items[0]);
+            AddCollectionActions(entity);
 
             AddNavigationLinks(entity, items.TotalPages, query);
 
-            AddCollectionLinks(entity, items[0]);
+            AddCollectionLinks(entity);
 
             return entity.Build();
         }
@@ -61,8 +61,7 @@ namespace API.Siren
         /// <param name="entity"></param>
         /// <returns></returns>
         protected abstract SirenEntityBuilder AddCollectionActions(
-            SirenEntityBuilder entity,
-            T item);
+            SirenEntityBuilder entity);
 
         /// <summary>
         /// Add all the Collection Links
@@ -71,7 +70,7 @@ namespace API.Siren
         /// <param name="entity"></param>
         /// <returns></returns>
         protected abstract SirenEntityBuilder AddCollectionLinks(
-            SirenEntityBuilder entity, T item);
+            SirenEntityBuilder entity);
 
         /*
         |-----------------------------------------------------------------------

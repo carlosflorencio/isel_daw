@@ -61,11 +61,13 @@ namespace API.TransferModels.ResponseModels
                             .WithType("application/json")
                             .WithField(
                                 new FieldBuilder()
+                                    .WithTitle("Name")
                                     .WithName("name")
                                     .WithType("text")
                                     .WithValue(item.Name))
                             .WithField(
                                 new FieldBuilder()
+                                    .WithTitle("E-mail")
                                     .WithName("email")
                                     .WithType("email")
                                     .WithValue(item.Email)))
@@ -101,8 +103,7 @@ namespace API.TransferModels.ResponseModels
         */
 
         protected override SirenEntityBuilder AddCollectionActions(
-            SirenEntityBuilder entity,
-            Student item)
+            SirenEntityBuilder entity)
         {
             if (Context.HttpContext.User.IsInRole(Roles.Admin))
             {
@@ -114,15 +115,19 @@ namespace API.TransferModels.ResponseModels
                         .WithHref(UrlTo(Routes.StudentCreate))
                         .WithType("application/json")
                         .WithField(new FieldBuilder()
+                            .WithTitle("Number")
                             .WithName("number")
                             .WithType("number"))
                         .WithField(new FieldBuilder()
+                            .WithTitle("Name")
                             .WithName("name")
                             .WithType("text"))
                         .WithField(new FieldBuilder()
+                            .WithTitle("E-mail")
                             .WithName("email")
                             .WithType("email"))
                         .WithField(new FieldBuilder()
+                            .WithTitle("Password")
                             .WithName("password")
                             .WithType("password")));
             }
@@ -131,8 +136,7 @@ namespace API.TransferModels.ResponseModels
         }
 
         protected override SirenEntityBuilder AddCollectionLinks(
-            SirenEntityBuilder entity,
-            Student item)
+            SirenEntityBuilder entity)
         {
             return entity
                 .WithLink(new LinkBuilder()

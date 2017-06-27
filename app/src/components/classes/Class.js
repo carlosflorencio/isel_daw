@@ -1,9 +1,15 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import axios from 'axios'
 
-import { Button } from 'semantic-ui-react'
+import { Segment, Button } from 'semantic-ui-react'
 import { NavLink } from 'react-router-dom'
 
-import { ADMIN } from '../../models/Roles'
+import SirenHelpers from '../../helpers/SirenHelpers'
+
+import { ClassEntry } from '../../data/ApiContracts'
+import CustomForm from '../shared/CustomForm'
+import TeachersList from '../teachers/TeachersList'
 
 class Class extends Component {
     constructor(props) {
@@ -13,20 +19,53 @@ class Class extends Component {
     }
 
     componentDidMount() {
-        // ClassesRepository.getClass(this.props.match.params.id)
-        //     .then(c => console.log(c))
+        var uri = this.props.api.requests[ClassEntry]
+            .replace("{id}", this.props.match.params.id)
+
+        axios.get(uri)
+            .then(resp => resp.data)
+            .then(cl => {
+                console.log(cl)
+                this.setState({ cl })
+                return SirenHelpers.getLink(cl, "/relations/class#teachers")
+            })
+            .then(href => axios.get(href))
+            .then(resp => resp.data)
+            .then(teachers => {
+                console.log(teachers)
+                this.setState({ teachers })
+            })
     }
 
     render() {
-        const { session } = this.props
+        const { cl, teachers } = this.state
         const { id } = this.props.match.params
         return (
-            <div>
-                <h1>Class {id}</h1>
-                <h2>Teachers of the Class and respective Link</h2>
+            <Segment basic textAlign='center'>
                 {
-                    session.user.hasRole(ADMIN) &&  // Coordinator of the course
-                    (<TeacherForm />)
+                    cl &&
+                    <div>
+                        <h1>Class {cl.properties.name}</h1>
+                        <h2>Max group size: {cl.properties.maxGroupSize}</h2>
+                        <h2>
+                            Auto Enrollment: {
+                                cl.properties.autoEnrollment ? 'Yes' : 'No'
+                            }
+                        </h2>
+                    </div>
+                }
+                {
+                    teachers &&
+                    <TeachersList teachers={teachers}/>
+                }
+                {
+                    cl &&
+                    cl.actions &&
+                    (<CustomForm 
+                        action={
+                            SirenHelpers.getAction(cl, 'add-teacher-to-class')
+                        }
+                    />)
                 }
                 <Button as={NavLink} to={"/classes/" + id + "/groups"}>
                     Groups of the Class
@@ -34,13 +73,14 @@ class Class extends Component {
                 <Button as={NavLink} to={"/classes/" + id + "/students"}>
                     Students of the Class
                 </Button>
-            </div>
+            </Segment>
         )
     }
 }
 
-const TeacherForm = () => (
- <h1>Teacher Form Only for the Coordinator of the Course Class</h1>
-)
+Class.propTypes = {
+    api: PropTypes.object.isRequired,
+    session: PropTypes.object.isRequired
+}
 
 export default Class

@@ -43,6 +43,9 @@ namespace API
         public const string ClassCreate = nameof(ClassCreate);
         public const string ClassEdit = nameof(ClassEdit);
         public const string ClassDelete = nameof(ClassDelete);
+        public const string ClassTeachersList = nameof(ClassTeachersList);
+        public const string ClassTeacherAdd = nameof(ClassTeacherAdd);
+        public const string ClassStudentsList = nameof(ClassStudentsList);
         public const string ClassGroupsList = nameof(ClassGroupsList);
         public const string ClassParticipantsList = nameof(ClassParticipantsList);
         public const string ClassParticipantAdd = nameof(ClassParticipantAdd);

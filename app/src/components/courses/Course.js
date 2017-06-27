@@ -10,7 +10,7 @@ import CustomForm from '../shared/CustomForm'
 
 import {CourseEntry} from '../../data/ApiContracts'
 
-import { ADMIN, STUDENT } from '../../models/Roles'
+import { STUDENT } from '../../models/Roles'
 
 class Course extends Component {
     constructor(props) {
@@ -58,10 +58,9 @@ class Course extends Component {
                     <CourseClasses classes={classes} />
                 }
                 {
-                    session.isAuthenticated &&
-                    session.user.hasRole(ADMIN) &&
-                    classes &&
-                    (<CustomForm action={SirenHelpers.getAction(classes, 'add-class')} />)
+                    course &&
+                    course.actions &&
+                    (<CustomForm action={SirenHelpers.getAction(course, 'add-class-to-course')} />)
                 }
             </Segment>
         )

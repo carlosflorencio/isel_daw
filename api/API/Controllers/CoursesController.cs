@@ -81,7 +81,7 @@ namespace API.Controllers
 
             c = await _repo.GetByIdAsync(c.Id);
 
-            return Created(Routes.ClassEntry, new { Id = c.Id });
+            return Created(Routes.CourseEntry, new { Id = c.Id });
         }
 
         [HttpPut("{id}", Name = Routes.CourseEdit)]

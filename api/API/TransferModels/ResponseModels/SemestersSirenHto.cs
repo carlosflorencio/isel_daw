@@ -58,12 +58,12 @@ namespace API.TransferModels.ResponseModels
         |-----------------------------------------------------------------------
         */
 
-        protected override SirenEntityBuilder AddCollectionActions(SirenEntityBuilder entity, Semester item)
+        protected override SirenEntityBuilder AddCollectionActions(SirenEntityBuilder entity)
         {
             throw new NotImplementedException();
         }
 
-        protected override SirenEntityBuilder AddCollectionLinks(SirenEntityBuilder entity, Semester item)
+        protected override SirenEntityBuilder AddCollectionLinks(SirenEntityBuilder entity)
         {
             throw new NotImplementedException();
         }

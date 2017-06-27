@@ -30,7 +30,7 @@ class MainContent extends Component {
 
     render() {
         return (
-            <Container fluid>
+            <Container className='menu-margin' fluid>
                 {
                     this.props.api.hasData &&
                     <Router>

@@ -40,20 +40,50 @@ namespace API.TransferModels.ResponseModels
                             .WithType("application/json")
                             .WithField(
                                 new FieldBuilder()
+                                    .WithTitle("Name")
                                     .WithName("name")
                                     .WithType("text")
                                     .WithValue(item.Name))
                             .WithField(
                                 new FieldBuilder()
+                                    .WithTitle("Acronym")
                                     .WithName("acronym")
                                     .WithType("text")
                                     .WithValue(item.Acronym))
                             .WithField(
                                 new FieldBuilder()
+                                    .WithTitle("Coordinator Number")
                                     .WithName("coordinatorId")
                                     .WithType("number")
                                     .WithValue(item.CoordinatorId.ToString()))
                     )
+                    .WithAction(
+                        new ActionBuilder()
+                            .WithName("add-class-to-course")
+                            .WithTitle("Add Class to Course")
+                            .WithMethod("POST")
+                            .WithHref(UrlTo(Routes.ClassCreate))
+                            .WithType("application/json")
+                            .WithField(new FieldBuilder()
+                                .WithName("CourseId")
+                                .WithType("hidden")
+                                .WithValue(item.Id.ToString()))
+                            .WithField(new FieldBuilder()
+                                .WithTitle("Semester")
+                                .WithName("SemesterId")
+                                .WithType("number"))
+                            .WithField(new FieldBuilder()
+                                .WithTitle("Name")
+                                .WithName("name")
+                                .WithType("text"))
+                            .WithField(new FieldBuilder()
+                                .WithTitle("Group Size")
+                                .WithName("maxGroupSize")
+                                .WithType("number"))
+                            .WithField(new FieldBuilder()
+                                .WithTitle("Auto Enrollment")
+                                .WithName("autoEnrollment")
+                                .WithType("checkbox")))
                     .WithAction(
                         new ActionBuilder()
                             .WithName("delete-course")
@@ -99,7 +129,7 @@ namespace API.TransferModels.ResponseModels
         |-----------------------------------------------------------------------
         */
 
-        protected override SirenEntityBuilder AddCollectionActions(SirenEntityBuilder entity, Course item)
+        protected override SirenEntityBuilder AddCollectionActions(SirenEntityBuilder entity)
         {
             if (Context.HttpContext.User.IsInRole(Roles.Admin))
             {
@@ -127,7 +157,7 @@ namespace API.TransferModels.ResponseModels
             return entity;
         }
 
-        protected override SirenEntityBuilder AddCollectionLinks(SirenEntityBuilder entity, Course item)
+        protected override SirenEntityBuilder AddCollectionLinks(SirenEntityBuilder entity)
         {
             return entity
                 .WithLink(new LinkBuilder()

@@ -48,14 +48,29 @@ namespace API.Extensions
                 }
             };
 
+            classes[0].Teachers = new List<ClassTeacher>(){
+                new ClassTeacher() {
+                    Class = classes[0],
+                    Teacher = teachers[0]
+                }
+            };
+
+            classes[1].Teachers = new List<ClassTeacher>(){
+                new ClassTeacher() {
+                    Class = classes[1],
+                    Teacher = teachers[0]
+                },
+                new ClassTeacher() {
+                    Class = classes[1],
+                    Teacher = teachers[5]
+                }
+            };
+
             classes[0].Groups = new List<Group>() {
                 new Group() {
                     Class = classes[0],
                 }
             };
-
-            // Persist all data
-            context.SaveChanges();
 
             classes[0].Groups[0].Students = new List<GroupStudent>() {
                 new GroupStudent() {
@@ -98,6 +113,12 @@ namespace API.Extensions
                     Name = "José Simão",
                     Email = "simao@gmail.com",
                     Number = 1233,
+                    Password = "123456"
+                },
+                new Teacher() {
+                    Name = "Filipe Freitas",
+                    Email = "freitas@gmail.com",
+                    Number = 8764,
                     Password = "123456"
                 }
             };

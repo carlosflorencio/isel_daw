@@ -29,7 +29,7 @@ namespace API.TransferModels.ResponseModels
 
         protected override SirenEntityBuilder AddEntityActions(SirenEntityBuilder entity, Group item)
         {
-            throw new NotImplementedException();
+            return entity;
         }
 
         protected override SirenEntityBuilder AddEntityLinks(SirenEntityBuilder entity, Group item)
@@ -56,35 +56,12 @@ namespace API.TransferModels.ResponseModels
         |-----------------------------------------------------------------------
         */
 
-        protected override SirenEntityBuilder AddCollectionActions(SirenEntityBuilder entity, Group item)
+        protected override SirenEntityBuilder AddCollectionActions(SirenEntityBuilder entity)
         {
-            if (Context.HttpContext.User.IsInRole(Roles.Admin))
-            {
-                entity
-                    .WithAction(new ActionBuilder()
-                        .WithName("add-group")
-                        .WithTitle("Add Group")
-                        .WithMethod("POST")
-                        .WithHref(UrlTo(Routes.ClassGroupAdd))  //TODO: missing class id
-                        .WithType("application/json")
-                        .WithField(new FieldBuilder()
-                            .WithName("number")
-                            .WithType("number"))
-                        .WithField(new FieldBuilder()
-                            .WithName("name")
-                            .WithType("text"))
-                        .WithField(new FieldBuilder()
-                            .WithName("email")
-                            .WithType("email"))
-                        .WithField(new FieldBuilder()
-                            .WithName("password")
-                            .WithType("password")));
-            }
-
             return entity;
         }
 
-        protected override SirenEntityBuilder AddCollectionLinks(SirenEntityBuilder entity, Group item)
+        protected override SirenEntityBuilder AddCollectionLinks(SirenEntityBuilder entity)
         {
             return entity
                 .WithLink(new LinkBuilder()

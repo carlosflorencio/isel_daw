@@ -27,7 +27,7 @@ class Navbar extends Component {
     render() {
         const { session } = this.props
         return (
-            <Menu className="no-border-radius" inverted>
+            <Menu className="no-border-radius" inverted fixed='top'>
                 <Menu.Item>
                     <img src={logo} alt='' />
                 </Menu.Item>

@@ -99,8 +99,7 @@ namespace API
         public void Configure(IApplicationBuilder app,
             IHostingEnvironment env,
             ILoggerFactory loggerFactory,
-            DatabaseContext context,
-            IStudentRepository studentRepo, ITeacherRepository teacherRepo)
+            DatabaseContext context)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug(LogLevel.Debug);

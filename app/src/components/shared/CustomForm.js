@@ -22,7 +22,7 @@ class CustomForm extends Component {
     post() {
         const { action } = this.props
         var data = {}
-        action.fields.map(field => {
+        action.fields.forEach(field => {
             data[field.name] = field.value
         })
         axios.post(action.href, data)

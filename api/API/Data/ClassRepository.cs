@@ -68,22 +68,30 @@ namespace API.Data
 
         public Task<bool> AddParticipantTo(Class c, int studentNumberId)
         {
-            Context.Add<ClassStudent>(new ClassStudent{
+            Context.Add<ClassStudent>(new ClassStudent
+            {
                 ClassId = c.Id,
                 StudentNumberId = studentNumberId
             });
-            
-            // c.Participants.Add(new ClassStudent{
-            //     Class = c,
-            //     StudentNumberId = studentNumberId
-            // });
+
+            return SaveAsync();
+        }
+
+        public Task<bool> AddTeacherTo(Class c, int teacherNumber)
+        {
+            Context.Add<ClassTeacher>(new ClassTeacher
+            {
+                ClassId = c.Id,
+                TeacherId = teacherNumber
+            });
 
             return SaveAsync();
         }
 
         public Task<bool> AddGroupTo(Class c)
         {
-            c.Groups.Add(new Group{
+            c.Groups.Add(new Group
+            {
                 ClassId = c.Id
             });
 
@@ -93,6 +101,28 @@ namespace API.Data
         public Task<List<Student>> GetClassParticipants(int id)
         {
             throw new NotImplementedException();
+        }
+
+        public Task<PagedList<Teacher>> GetClassTeachers(int id, ListQueryStringDto query)
+        {
+            IQueryable<Teacher> teachers = Context.Teachers
+                .Where(teacher => teacher.Classes
+                    .Where(ct => ct.ClassId == id)
+                    .FirstOrDefault() != default(ClassTeacher)
+                );
+
+            return PagedList<Teacher>.Create(teachers, query.Page, query.Limit);
+        }
+
+        public Task<PagedList<Student>> GetClassStudents(int id, ListQueryStringDto query)
+        {
+            IQueryable<Student> students = Context.Students
+                .Where(student => student.Classes
+                    .Where(cs => cs.ClassId == id)
+                    .FirstOrDefault() != default(ClassStudent)
+                );
+
+            return PagedList<Student>.Create(students, query.Page, query.Limit);
         }
     }
 }
