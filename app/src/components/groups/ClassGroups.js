@@ -7,6 +7,7 @@ import { NavLink } from 'react-router-dom'
 import { ClassGroupsList } from '../../data/ApiContracts'
 import SirenHelpers from '../../helpers/SirenHelpers'
 import CustomForm from '../shared/CustomForm'
+import EntityActionCell from '../shared/EntityActionCell'
 
 class ClassGroups extends Component {
     constructor(props) {
@@ -36,7 +37,7 @@ class ClassGroups extends Component {
                 <GroupsList
                     classId={this.props.match.params.id}
                     groups={groups}
-                    actionRel={'remove-group-from-class'}
+                    actionRel={'delete-group'}
                 />
                 {
                     groups.actions &&
@@ -52,7 +53,7 @@ class ClassGroups extends Component {
     }
 }
 
-const GroupsList = ({ classId, groups }) => {
+const GroupsList = ({ classId, groups, actionRel }) => {
     return (
         <Table celled striped selectable color='teal'>
             <Table.Header>
@@ -78,9 +79,12 @@ const GroupsList = ({ classId, groups }) => {
                                         Details
                                         </NavLink>
                                 </Table.Cell>
-                                {
-                                    // Remove Group
-                                }
+                                <EntityActionCell
+                                        onClick={() => axios(
+                                            SirenHelpers.createAxiosConfig(group, actionRel)
+                                        )}
+                                        action={SirenHelpers.getAction(group, actionRel)}
+                                    />
                             </Table.Row>
                         )
                     })

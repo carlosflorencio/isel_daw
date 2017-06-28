@@ -74,7 +74,7 @@ namespace API.Controllers
                 return NotFound();
             }
 
-            if (await _repo.DeleteAsync(new Group { Id = Id }))
+            if (await _repo.DeleteAsync(group))
             {
                 return NoContent();
             }
