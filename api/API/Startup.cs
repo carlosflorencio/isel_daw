@@ -88,16 +88,24 @@ namespace API
             services.AddScoped<ITeacherRepository, TeacherRepository>();
             services.AddScoped<IClassRepository, ClassRepository>();
             services.AddScoped<ICourseRepository, CourseRepository>();
+            services.AddScoped<IGroupRepository, GroupsRepository>();
 
             services.AddScoped<StudentsSirenHto>();
+            services.AddScoped<ClassStudentsSirenHto>();
+
             services.AddScoped<TeachersSirenHto>();
+            services.AddScoped<ClassTeachersSirenHto>();
+            
             services.AddScoped<CoursesSirenHto>();
             services.AddScoped<TeacherCoursesSirenHto>();
+
             services.AddScoped<ClassesSirenHto>();
             services.AddScoped<CourseClassesSirenHto>();
             services.AddScoped<TeacherClassesSirenHto>();
             services.AddScoped<StudentClassesSirenHto>();
+
             services.AddScoped<GroupsSirenHto>();
+            services.AddScoped<ClassGroupsSirenHto>();
         }
 
         public void Configure(IApplicationBuilder app,

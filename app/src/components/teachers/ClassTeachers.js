@@ -2,8 +2,12 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import axios from 'axios'
 
+import {Segment} from 'semantic-ui-react'
+
+import SirenHelpers from '../../helpers/SirenHelpers'
 import { ClassTeachersList } from '../../data/ApiContracts'
 
+import CustomForm from '../shared/CustomForm'
 import TeachersList from './TeachersList'
 
 class ClassTeachers extends Component {
@@ -27,8 +31,23 @@ class ClassTeachers extends Component {
     }
 
     render() {
+        const {teachers} = this.state
         return (
-            <TeachersList teachers={this.state.teachers}/>
+            <Segment basic>
+                <TeachersList 
+                    teachers={teachers}
+                    actionRel={'remove-teacher-from-class'}
+                />
+                {
+                    teachers.actions &&
+                    <CustomForm 
+                    action={SirenHelpers.getAction(
+                        teachers,
+                        'add-teacher-to-class'
+                    )}
+                />
+                }
+            </Segment>
         )
     }
 }

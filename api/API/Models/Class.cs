@@ -36,9 +36,11 @@ namespace API.Models
     public class ClassTeacher {
 
         public int ClassId { get; set; }
+        [ForeignKey("ClassId")]
         public Class Class { get; set; }
 
         public int TeacherId { get; set; }
+        [ForeignKey("TeacherId")]
         public Teacher Teacher { get; set; }
     }
 
@@ -46,9 +48,11 @@ namespace API.Models
     {
 
         public int ClassId { get; set; }
+        [ForeignKey("ClassId")]
         public Class Class { get; set; }
 
-        public int StudentNumberId { get; set; }
+        public int StudentId { get; set; }
+        [ForeignKey("StudentId")]
         public Student Student { get; set; }
     }
 }

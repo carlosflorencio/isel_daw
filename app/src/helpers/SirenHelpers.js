@@ -18,6 +18,14 @@ class SirenHelpers {
             )
     }
 
+    static createAxiosConfig(sirenView, actionName) {
+        let action = SirenHelpers.getAction(sirenView, actionName)
+        return {
+            method: action.method,
+            url: action.href
+        }
+    }
+
 }
 
 export default SirenHelpers

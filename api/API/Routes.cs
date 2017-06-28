@@ -51,12 +51,16 @@ namespace API
         public const string ClassGroupsList = nameof(ClassGroupsList);
         public const string ClassParticipantsList = nameof(ClassParticipantsList);
         public const string ClassParticipantAdd = nameof(ClassParticipantAdd);
+        public const string ClassParticipantRemove = nameof(ClassParticipantRemove);
         public const string ClassGroupAdd = nameof(ClassGroupAdd);
+        public const string ClassGroupRemove = nameof(ClassGroupRemove);
 
         // SemestersController
         public const string SemesterEntry = nameof(SemesterEntry);
 
         // GroupsController
+        public const string GroupCreate = nameof(GroupCreate);
+        public const string GroupDelete = nameof(GroupDelete);
         public const string GroupStudentsList = nameof(GroupStudentsList);
         public const string GroupEntry = nameof(GroupEntry);
     }

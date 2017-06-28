@@ -1,8 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import axios from 'axios'
 
-import { Table } from 'semantic-ui-react'
+import { Table, Button } from 'semantic-ui-react'
 import { NavLink } from 'react-router-dom'
+
+import EntityActionCell from '../shared/EntityActionCell'
+import SirenHelpers from '../../helpers/SirenHelpers'
 
 class TeachersList extends Component {
     constructor(props) {
@@ -12,7 +16,7 @@ class TeachersList extends Component {
     }
 
     render() {
-        const { teachers } = this.props
+        const { teachers, actionRel } = this.props
         return (
             <Table celled striped selectable color='teal'>
                 <Table.Header>
@@ -40,9 +44,12 @@ class TeachersList extends Component {
                                             Details
                                         </NavLink>
                                     </Table.Cell>
-                                    {
-                                        
-                                    }
+                                    <EntityActionCell
+                                        onClick={() => axios(
+                                            SirenHelpers.createAxiosConfig(teacher, actionRel)
+                                        )}
+                                        action={SirenHelpers.getAction(teacher, actionRel)}
+                                    />
                                 </Table.Row>
                             )
                         })

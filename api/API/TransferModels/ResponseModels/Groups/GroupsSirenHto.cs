@@ -2,6 +2,7 @@ using System;
 using API.Models;
 using API.Siren;
 using FluentSiren.Builders;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
 
@@ -29,7 +30,17 @@ namespace API.TransferModels.ResponseModels
 
         protected override SirenEntityBuilder AddEntityActions(SirenEntityBuilder entity, Group item)
         {
-            return entity;
+            return entity
+                .WithAction(new ActionBuilder()
+                    .WithName("delete-group")
+                    .WithTitle("Delete Group")
+                    .WithMethod("Delete")
+                    .WithHref(
+                        Url.AbsoluteRouteUrl(
+                            Routes.GroupDelete, 
+                            new { id = item.Id }
+                        )
+                    ));
         }
 
         protected override SirenEntityBuilder AddEntityLinks(SirenEntityBuilder entity, Group item)
@@ -37,12 +48,12 @@ namespace API.TransferModels.ResponseModels
             return entity
                 .WithLink(new LinkBuilder()
                     .WithRel("self")
-                    .WithHref(Url.ToGroup(Routes.GroupEntry, item.Id, item.ClassId)));
+                    .WithHref(Url.AbsoluteRouteUrl(Routes.GroupEntry, item.Id)));
         }
 
         protected override SirenEntityBuilder AddEntityProperties(SirenEntityBuilder entity, Group item)
         {
-            return entity.WithProperty("number", item.Id);
+            return entity.WithProperty("number", item.Number);
         }
 
         protected override SirenEntityBuilder AddEntitySubEntities(SirenEntityBuilder entity, Group item)
@@ -64,9 +75,6 @@ namespace API.TransferModels.ResponseModels
         protected override SirenEntityBuilder AddCollectionLinks(SirenEntityBuilder entity)
         {
             return entity
-                .WithLink(new LinkBuilder()
-                    .WithRel("self")
-                    .WithHref(UrlTo(Routes.ClassGroupsList)))   //TODO: missing class id
                 .WithLink(new LinkBuilder()
                     .WithRel("index")
                     .WithHref(UrlTo(Routes.Index)));

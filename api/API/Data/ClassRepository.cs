@@ -58,23 +58,48 @@ namespace API.Data
             return PagedList<Class>.Create(classes, p.Page, p.Limit);
         }
 
-        public Task<PagedList<Group>> GetClassGroups(int id, ListQueryStringDto p)
+        public Task<PagedList<Student>> GetClassStudents(int id, ListQueryStringDto query)
         {
-            IQueryable<Group> classGroups = Context.Groups
-                .Where(g => g.ClassId == id);
+            IQueryable<Student> students = Context.Students
+                .Where(student => student.Classes
+                    .Where(cs => cs.ClassId == id)
+                    .FirstOrDefault() != default(ClassStudent)
+                );
 
-            return PagedList<Group>.Create(classGroups, p.Page, p.Limit);
+            return PagedList<Student>.Create(students, query.Page, query.Limit);
         }
 
-        public Task<bool> AddParticipantTo(Class c, int studentNumberId)
+        public Task<bool> AddStudentTo(Class c, int studentNumberId)
         {
             Context.Add<ClassStudent>(new ClassStudent
             {
                 ClassId = c.Id,
-                StudentNumberId = studentNumberId
+                StudentId = studentNumberId
             });
 
             return SaveAsync();
+        }
+
+        public Task<bool> RemoveStudentFrom(Class c, int number)
+        {
+            Context.Remove<ClassStudent>(new ClassStudent
+            {
+                Class = c,
+                StudentId = number
+            });
+            Console.WriteLine("Remove Student");
+            return SaveAsync();
+        }
+
+        public Task<PagedList<Teacher>> GetClassTeachers(int id, ListQueryStringDto query)
+        {
+            IQueryable<Teacher> teachers = Context.Teachers
+                .Where(teacher => teacher.Classes
+                    .Where(ct => ct.ClassId == id)
+                    .FirstOrDefault() != default(ClassTeacher)
+                );
+
+            return PagedList<Teacher>.Create(teachers, query.Page, query.Limit);
         }
 
         public Task<bool> AddTeacherTo(Class c, int teacherNumber)
@@ -92,48 +117,19 @@ namespace API.Data
         {
             Context.Remove<ClassTeacher>(new ClassTeacher
             {
-                ClassId = c.Id,
+                Class = c,
                 TeacherId = number
             });
 
             return SaveAsync();
         }
 
-        public Task<bool> AddGroupTo(Class c)
+        public Task<PagedList<Group>> GetClassGroups(int id, ListQueryStringDto p)
         {
-            c.Groups.Add(new Group
-            {
-                ClassId = c.Id
-            });
+            IQueryable<Group> classGroups = Context.Groups
+                .Where(g => g.ClassId == id);
 
-            return SaveAsync();
-        }
-
-        public Task<List<Student>> GetClassParticipants(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<PagedList<Teacher>> GetClassTeachers(int id, ListQueryStringDto query)
-        {
-            IQueryable<Teacher> teachers = Context.Teachers
-                .Where(teacher => teacher.Classes
-                    .Where(ct => ct.ClassId == id)
-                    .FirstOrDefault() != default(ClassTeacher)
-                );
-
-            return PagedList<Teacher>.Create(teachers, query.Page, query.Limit);
-        }
-
-        public Task<PagedList<Student>> GetClassStudents(int id, ListQueryStringDto query)
-        {
-            IQueryable<Student> students = Context.Students
-                .Where(student => student.Classes
-                    .Where(cs => cs.ClassId == id)
-                    .FirstOrDefault() != default(ClassStudent)
-                );
-
-            return PagedList<Student>.Create(students, query.Page, query.Limit);
+            return PagedList<Group>.Create(classGroups, p.Page, p.Limit);
         }
     }
 }

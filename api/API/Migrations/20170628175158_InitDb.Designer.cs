@@ -9,7 +9,7 @@ using API.Models;
 namespace API.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20170424151344_InitDb")]
+    [Migration("20170628175158_InitDb")]
     partial class InitDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,11 +47,11 @@ namespace API.Migrations
                 {
                     b.Property<int>("ClassId");
 
-                    b.Property<int>("StudentNumberId");
+                    b.Property<int>("StudentId");
 
-                    b.HasKey("ClassId", "StudentNumberId");
+                    b.HasKey("ClassId", "StudentId");
 
-                    b.HasIndex("StudentNumberId");
+                    b.HasIndex("StudentId");
 
                     b.ToTable("ClassStudent");
                 });
@@ -97,30 +97,29 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.Group", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
                     b.Property<int>("ClassId");
 
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn);
+                    b.Property<int>("Number");
 
-                    b.HasKey("ClassId", "Id");
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClassId");
 
                     b.ToTable("Groups");
                 });
 
             modelBuilder.Entity("API.Models.GroupStudent", b =>
                 {
-                    b.Property<int>("ClassId");
-
                     b.Property<int>("StudentNumber");
 
                     b.Property<int>("GroupId");
 
-                    b.HasKey("ClassId", "StudentNumber", "GroupId");
+                    b.HasKey("StudentNumber", "GroupId");
 
-                    b.HasIndex("StudentNumber");
-
-                    b.HasIndex("ClassId", "GroupId");
+                    b.HasIndex("GroupId");
 
                     b.ToTable("GroupStudent");
                 });
@@ -201,7 +200,7 @@ namespace API.Migrations
 
                     b.HasOne("API.Models.Student", "Student")
                         .WithMany("Classes")
-                        .HasForeignKey("StudentNumberId")
+                        .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -236,19 +235,14 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.GroupStudent", b =>
                 {
-                    b.HasOne("API.Models.Class", "Class")
-                        .WithMany()
-                        .HasForeignKey("ClassId")
+                    b.HasOne("API.Models.Group", "Group")
+                        .WithMany("Students")
+                        .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("API.Models.Student", "Student")
                         .WithMany("Groups")
                         .HasForeignKey("StudentNumber")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("API.Models.Group", "Group")
-                        .WithMany("Students")
-                        .HasForeignKey("ClassId", "GroupId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }

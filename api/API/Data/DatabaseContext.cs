@@ -50,7 +50,7 @@ namespace API.Data
 
             // Relation Class N:N Student
             modelBuilder.Entity<ClassStudent>()
-                .HasKey(c => new { c.ClassId, c.StudentNumberId });
+                .HasKey(c => new { c.ClassId, c.StudentId });
 
             modelBuilder.Entity<ClassStudent>()
                 .HasOne(c => c.Class)
@@ -60,16 +60,11 @@ namespace API.Data
             modelBuilder.Entity<ClassStudent>()
                 .HasOne(c => c.Student)
                 .WithMany(c => c.Classes)
-                .HasForeignKey(c => c.StudentNumberId);
-
-            // Group
-            modelBuilder.Entity<Group>()
-                .HasKey(c => new { c.ClassId, c.Id });
-
+                .HasForeignKey(c => c.StudentId);
 
             // Relation Group N:N Student
             modelBuilder.Entity<GroupStudent>()
-                .HasKey(c => new { c.ClassId, c.StudentNumber, c.GroupId });
+                .HasKey(c => new { c.StudentNumber, c.GroupId });
 
             modelBuilder.Entity<GroupStudent>()
                 .HasOne(c => c.Student)
@@ -79,7 +74,7 @@ namespace API.Data
             modelBuilder.Entity<GroupStudent>()
                 .HasOne(c => c.Group)
                 .WithMany(c => c.Students)
-                .HasForeignKey(c => new { c.ClassId, c.GroupId });
+                .HasForeignKey(c => new { c.GroupId });
 
         }
     }

@@ -22,9 +22,10 @@ class CustomForm extends Component {
     post() {
         const { action } = this.props
         var data = {}
-        action.fields.forEach(field => {
-            data[field.name] = field.value
-        })
+        if(action.fields)
+            action.fields.forEach(field => {
+                data[field.name] = field.value
+            })
         axios.post(action.href, data)
             .then(resp => console.log(resp.data))
     }
@@ -36,6 +37,7 @@ class CustomForm extends Component {
                 <h1>{action.title}</h1>
                 <Form>
                     {
+                        action.fields &&
                         action.fields.map((field, i) => {
                             return <Form.Input
                                 key={i}

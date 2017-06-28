@@ -49,16 +49,6 @@ class Class extends Component {
                         </Header>
                     </div>
                 }
-                {
-                    cl.actions &&
-                    <Segment basic>
-                        <CustomForm 
-                            action={
-                                SirenHelpers.getAction(cl, 'add-teacher-to-class')
-                            }
-                        />
-                    </Segment>
-                }
             </Segment>
         )
     }

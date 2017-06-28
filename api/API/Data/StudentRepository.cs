@@ -75,7 +75,7 @@ namespace API.Data
         {
             IQueryable<Class> classes = Context.Classes
                 .Where(cl => cl.Participants
-                    .Where(cs => cs.StudentNumberId == number)
+                    .Where(cs => cs.StudentId == number)
                     .FirstOrDefault() != default(ClassStudent)
                 ).Include(cl => cl.Semester);
 

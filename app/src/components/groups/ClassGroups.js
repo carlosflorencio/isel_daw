@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 
-import { Table } from 'semantic-ui-react'
+import { Segment, Table } from 'semantic-ui-react'
 import { NavLink } from 'react-router-dom'
 
 import { ClassGroupsList } from '../../data/ApiContracts'
+import SirenHelpers from '../../helpers/SirenHelpers'
+import CustomForm from '../shared/CustomForm'
 
 class ClassGroups extends Component {
     constructor(props) {
@@ -27,11 +29,24 @@ class ClassGroups extends Component {
     }
 
     render() {
+        const { groups } = this.state
         return (
-            <GroupsList
-                classId={this.props.match.params.id}
-                groups={this.state.groups}
-            />
+            <Segment basic>
+                <GroupsList
+                    classId={this.props.match.params.id}
+                    groups={groups}
+                    actionRel={'remove-group-from-class'}
+                />
+                {
+                    groups.actions &&
+                    <CustomForm 
+                        action={SirenHelpers.getAction(
+                            groups,
+                            'add-group-to-class'
+                        )}
+                    />
+                }
+            </Segment>
         )
     }
 }

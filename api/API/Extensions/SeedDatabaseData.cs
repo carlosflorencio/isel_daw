@@ -68,14 +68,18 @@ namespace API.Extensions
 
             classes[0].Groups = new List<Group>() {
                 new Group() {
+                    Number = 1,
+                    Class = classes[0],
+                },
+                new Group() {
+                    Number = 2,
                     Class = classes[0],
                 }
             };
 
             classes[0].Groups[0].Students = new List<GroupStudent>() {
                 new GroupStudent() {
-                    Student = students[0],
-                    Class = classes[0]
+                    Student = students[0]
                 }
             };
 
