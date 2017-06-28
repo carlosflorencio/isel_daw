@@ -42,19 +42,9 @@ namespace API.Middlewares
                     var username = credentials[0];
                     var password = credentials[1];
 
-                    if (await IsValidUser(username, password, context))
-                    {
-                        await _next.Invoke(context);
-                    }
-                    else
-                    {
-                        InvalidLogin(context);
-                    }
+                    await AuthenticateUser(username, password, context);
                 }
-                else
-                {
-                    InvalidLogin(context);
-                }
+                await _next.Invoke(context);
             }
             finally
             {
@@ -68,7 +58,7 @@ namespace API.Middlewares
             }
         }
 
-        private async Task<bool> IsValidUser(string username, string password, HttpContext context)
+        private async Task<bool> AuthenticateUser(string username, string password, HttpContext context)
         {
             const string issuer = "https://hdn.pt";
 

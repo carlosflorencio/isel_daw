@@ -62,11 +62,6 @@ namespace API
             // MVC
             services.AddMvc(options =>
             {
-                var policy = new AuthorizationPolicyBuilder()
-                    .RequireAuthenticatedUser()
-                    .Build();
-                options.Filters.Add(new AuthorizeFilter(policy));
-
                 // Accept application/vnd.siren+json media type (json format)
                 options.OutputFormatters.Add(new SirenOutputFormatter());
             }).AddJsonOptions(options =>

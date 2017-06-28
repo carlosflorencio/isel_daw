@@ -31,11 +31,11 @@ class MainContent extends Component {
     render() {
         return (
             <Container className='menu-margin' fluid>
-                {
-                    this.props.api.hasData &&
-                    <Router>
-                        <div>
-                            <Navbar />
+                <Router>
+                    <div>
+                        <Navbar />
+                        {
+                            this.props.api.hasData &&
                             <Switch>
                                 <Route exact path='/' component={Home} />
                                 <Route exact path='/courses' component={CourseList} />
@@ -55,9 +55,9 @@ class MainContent extends Component {
                                 <Route path="/unauthorized" component={Unauthorized} />
                                 <Route component={PageNotFound} />
                             </Switch>
-                        </div>
-                    </Router>
-                }
+                        }
+                    </div>
+                </Router>
             </Container>
         )
     }
