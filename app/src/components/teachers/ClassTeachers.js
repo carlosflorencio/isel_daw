@@ -14,6 +14,7 @@ class ClassTeachers extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            isLoading: true,
             teachers: {}
         }
     }
@@ -26,14 +27,14 @@ class ClassTeachers extends Component {
             .then(resp => resp.data)
             .then(teachers => {
                 console.log(teachers)
-                this.setState({ teachers })
+                this.setState({ teachers, isLoading:false })
             })
     }
 
     render() {
-        const {teachers} = this.state
+        const {teachers, isLoading} = this.state
         return (
-            <Segment basic>
+            <Segment basic loading={isLoading}>
                 <TeachersList 
                     teachers={teachers}
                     actionRel={'remove-teacher-from-class'}

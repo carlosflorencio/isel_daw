@@ -176,7 +176,7 @@ namespace API.Controllers
                 return NotFound();
             }
 
-            if(await _classesRepo.RemoveStudentFrom(c, studentId)){
+            if(await _classesRepo.RemoveStudentFrom(new Class {Id = Id}, studentId)){
                 return NoContent();
             }
 

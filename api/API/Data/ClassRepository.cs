@@ -22,8 +22,6 @@ namespace API.Data
                 .Where(c => c.Id == Id)
                 .Include(c => c.Semester)
                 .Include(c => c.Course)
-                .Include(c => c.Participants)
-                .Include(c => c.Groups)
                 .FirstOrDefaultAsync();
         }
 
@@ -84,7 +82,7 @@ namespace API.Data
         {
             Context.Remove<ClassStudent>(new ClassStudent
             {
-                Class = c,
+                ClassId = c.Id,
                 StudentId = number
             });
             Console.WriteLine("Remove Student");
@@ -117,7 +115,7 @@ namespace API.Data
         {
             Context.Remove<ClassTeacher>(new ClassTeacher
             {
-                Class = c,
+                ClassId = c.Id,
                 TeacherId = number
             });
 

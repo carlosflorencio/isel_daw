@@ -12,6 +12,7 @@ class ClassGroups extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            isLoading: true,
             groups: {}
         }
     }
@@ -24,14 +25,14 @@ class ClassGroups extends Component {
             .then(resp => resp.data)
             .then(groups => {
                 console.log(groups)
-                this.setState({ groups })
+                this.setState({ groups, isLoading:false })
             })
     }
 
     render() {
-        const { groups } = this.state
+        const { groups, isLoading } = this.state
         return (
-            <Segment basic>
+            <Segment basic loading={isLoading}>
                 <GroupsList
                     classId={this.props.match.params.id}
                     groups={groups}

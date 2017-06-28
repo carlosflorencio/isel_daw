@@ -13,6 +13,7 @@ class Class extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            isLoading: true,
             cl: {}
         }
     }
@@ -25,14 +26,14 @@ class Class extends Component {
             .then(resp => resp.data)
             .then(cl => {
                 console.log(cl)
-                this.setState({ cl })
+                this.setState({ cl, isLoading: false })
             })
     }
 
     render() {
-        const { cl } = this.state
+        const { cl, isLoading } = this.state
         return (
-            <Segment color='teal' padded>
+            <Segment color='teal' padded loading={isLoading}>
                 {
                     cl.properties &&
                     <div>

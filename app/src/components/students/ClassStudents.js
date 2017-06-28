@@ -4,7 +4,7 @@ import axios from 'axios'
 
 import SirenHelpers from '../../helpers/SirenHelpers'
 
-import {Segment} from 'semantic-ui-react'
+import { Segment } from 'semantic-ui-react'
 
 import { ClassStudentsList } from '../../data/ApiContracts'
 import StudentsList from './StudentsList'
@@ -14,38 +14,39 @@ class ClassStudents extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            isLoading: true,
             students: {}
         }
     }
-    
+
     componentDidMount() {
         let uri = this.props.api.requests[ClassStudentsList]
             .replace('{id}', this.props.match.params.id)
 
-        axios.get(uri)  
+        axios.get(uri)
             .then(resp => resp.data)
             .then(students => {
                 console.log(students)
-                this.setState({ students })
+                this.setState({ students, isLoading: false })
             })
     }
 
     render() {
-        const { students } = this.state
+        const { students, isLoading } = this.state
         return (
-            <Segment basic>
-                <StudentsList 
-                    students={students} 
+            <Segment basic loading={isLoading}>
+                <StudentsList
+                    students={students}
                     actionRel={'remove-student-from-class'}
                 />
                 {
                     students.actions &&
-                    <CustomForm 
-                    action={SirenHelpers.getAction(
-                        students,
-                        'add-student-to-class'
-                    )}
-                />
+                    <CustomForm
+                        action={SirenHelpers.getAction(
+                            students,
+                            'add-student-to-class'
+                        )}
+                    />
                 }
             </Segment>
         )
