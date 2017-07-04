@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import axios from 'axios'
 
-import { Segment } from 'semantic-ui-react'
+import { Segment, Card, Image } from 'semantic-ui-react'
 
 import { GroupEntry } from '../../data/ApiContracts'
 
@@ -10,7 +10,7 @@ class Group extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            isLoading:true,
+            isLoading: true,
             group: {}
         }
     }
@@ -22,7 +22,7 @@ class Group extends Component {
             .then(resp => resp.data)
             .then(group => {
                 console.log(group)
-                this.setState({group, isLoading:false})
+                this.setState({ group, isLoading: false })
             })
     }
 
@@ -34,6 +34,21 @@ class Group extends Component {
                     group.properties &&
                     <h1>Group Number {group.properties['number']}</h1>
                 }
+                <Segment basic textAlign='center'>
+                    <Card.Group itemsPerRow={3}>
+                        {
+                            group.entities &&
+                            group.entities.map(item =>
+                                <Card color='teal'>
+                                    <Image src='http://via.placeholder.com/300x150' />
+                                    <Card.Content>
+                                        <Card.Header>{item.properties['name']}</Card.Header>
+                                    </Card.Content>
+                                </Card>
+                            )
+                        }
+                    </Card.Group>
+                </Segment>
             </Segment>
         )
     }

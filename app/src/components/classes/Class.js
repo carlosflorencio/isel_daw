@@ -3,9 +3,6 @@ import PropTypes from 'prop-types'
 import axios from 'axios'
 
 import { Segment, Header } from 'semantic-ui-react'
-import CustomForm from '../shared/CustomForm'
-
-import SirenHelpers from '../../helpers/SirenHelpers'
 
 import { ClassEntry } from '../../data/ApiContracts'
 

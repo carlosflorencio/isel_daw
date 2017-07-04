@@ -20,6 +20,7 @@ namespace API.Data
             return Context.Groups
                 .Where(group => group.Id == id)
                 .Include(group => group.Students)
+                    .ThenInclude(gs => gs.Student)
                 .FirstOrDefaultAsync();
         }
     }

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import axios from 'axios'
 
-import { Table, Button } from 'semantic-ui-react'
+import { Table } from 'semantic-ui-react'
 import { NavLink } from 'react-router-dom'
 
 import EntityActionCell from '../shared/EntityActionCell'
