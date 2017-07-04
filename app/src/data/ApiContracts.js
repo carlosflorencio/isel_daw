@@ -8,3 +8,5 @@ export const ClassEntry = 'ClassEntry'
 export const ClassTeachersList = 'ClassTeachersList'
 export const ClassStudentsList = 'ClassStudentsList'
 export const ClassGroupsList = 'ClassGroupsList'
+
+export const GroupEntry = 'GroupEntry'

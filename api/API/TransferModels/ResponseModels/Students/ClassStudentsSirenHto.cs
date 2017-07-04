@@ -32,7 +32,7 @@ namespace API.TransferModels.ResponseModels
             SirenEntityBuilder entity,
             Student item)
         {
-            if (Context.HttpContext.User.IsInRole(Roles.Admin))
+            if (Context.HttpContext.User.IsInRole(Roles.Teacher))
             {
                 entity
                     .WithAction(
@@ -53,7 +53,7 @@ namespace API.TransferModels.ResponseModels
         protected override SirenEntityBuilder AddCollectionActions(
             SirenEntityBuilder entity)
         {
-            if (Context.HttpContext.User.IsInRole(Roles.Admin))
+            if (Context.HttpContext.User.IsInRole(Roles.Teacher))
             {
                 entity
                     .WithAction(new ActionBuilder()

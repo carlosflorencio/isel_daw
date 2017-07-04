@@ -16,8 +16,8 @@ namespace API.TransferModels.ResponseModels
         protected int Identifier;
 
         public ClassTeachersSirenHto(
-            IUrlHelperFactory urlHelperFactory, 
-            IActionContextAccessor actionContextAccessor) : 
+            IUrlHelperFactory urlHelperFactory,
+            IActionContextAccessor actionContextAccessor) :
                 base(urlHelperFactory, actionContextAccessor)
         {
         }
@@ -31,7 +31,7 @@ namespace API.TransferModels.ResponseModels
 
         protected override SirenEntityBuilder AddEntityActions(SirenEntityBuilder entity, Teacher item)
         {
-            if (Context.HttpContext.User.IsInRole(Roles.Admin))
+            if (Context.HttpContext.User.IsInRole(Roles.Teacher))
             {
                 entity
                     .WithAction(
@@ -40,7 +40,7 @@ namespace API.TransferModels.ResponseModels
                             .WithTitle("Remove Teacher from Class")
                             .WithMethod("DELETE")
                             .WithHref(Url.AbsoluteRouteUrl(
-                                Routes.ClassTeacherRemove, 
+                                Routes.ClassTeacherRemove,
                                 new { id = Identifier, teacherId = item.Number }
                             ))
                     );
@@ -51,20 +51,24 @@ namespace API.TransferModels.ResponseModels
 
         protected override SirenEntityBuilder AddCollectionActions(SirenEntityBuilder entity)
         {
-            return entity
-                    .WithAction(new ActionBuilder()
-                        .WithName("add-teacher-to-class")
-                        .WithTitle("Add Teacher to Class")
-                        .WithMethod("POST")
-                        .WithHref(Url.AbsoluteRouteUrl(
-                            Routes.ClassTeacherAdd,
-                            new { id = Identifier }
-                        ))
-                        .WithType("application/json")
-                        .WithField(new FieldBuilder()
-                            .WithTitle("Number")
-                            .WithName("number")
-                            .WithType("number")));
+            if (Context.HttpContext.User.IsInRole(Roles.Teacher))
+            {
+                entity.WithAction(new ActionBuilder()
+                            .WithName("add-teacher-to-class")
+                            .WithTitle("Add Teacher to Class")
+                            .WithMethod("POST")
+                            .WithHref(Url.AbsoluteRouteUrl(
+                                Routes.ClassTeacherAdd,
+                                new { id = Identifier }
+                            ))
+                            .WithType("application/json")
+                            .WithField(new FieldBuilder()
+                                .WithTitle("Number")
+                                .WithName("number")
+                                .WithType("number")));
+            }
+
+            return entity;
         }
 
         protected override SirenEntityBuilder AddCollectionLinks(SirenEntityBuilder entity)

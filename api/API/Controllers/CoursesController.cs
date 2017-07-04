@@ -5,6 +5,7 @@ using API.Models;
 using API.Services;
 using API.TransferModels.InputModels;
 using API.TransferModels.ResponseModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -64,6 +65,7 @@ namespace API.Controllers
         }
 
         [HttpPost("", Name = Routes.CourseCreate)]
+        [Authorize(Roles = Roles.Admin)]
         public async Task<IActionResult> Post([FromBody]CourseDTO dto){
             if(!ModelState.IsValid){
                 return BadRequest(ModelState);
@@ -85,11 +87,13 @@ namespace API.Controllers
         }
 
         [HttpPut("{id}", Name = Routes.CourseEdit)]
+        [Authorize(Roles = Roles.Admin)]
         public IActionResult Put(int id){
             return StatusCode(501, "Not Implemented");
         }
         
         [HttpDelete("{id}", Name = Routes.CourseDelete)]
+        [Authorize(Roles = Roles.Admin)]
         public IActionResult Delete(int id){
             return StatusCode(501, "Not Implemented");
         }

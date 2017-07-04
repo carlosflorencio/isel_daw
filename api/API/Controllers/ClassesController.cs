@@ -144,7 +144,7 @@ namespace API.Controllers
         }
 
         [HttpPost("{id}/students", Name=Routes.ClassParticipantAdd)]
-        [Authorize(Roles = Roles.Admin)]
+        [Authorize(Roles = Roles.Teacher)]
         public async Task<IActionResult> AddStudent(int Id, [FromBody]StudentDTO dto)
         {
             if(!ModelState.IsValid){
@@ -164,7 +164,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}/students/{studentId}", Name=Routes.ClassParticipantRemove)]
-        [Authorize(Roles = Roles.Admin)]
+        [Authorize(Roles = Roles.Teacher)]
         public async Task<IActionResult> RemoveStudent(int Id, int studentId)
         {
             if(!ModelState.IsValid){
@@ -184,7 +184,7 @@ namespace API.Controllers
         }
 
         [HttpPost("{id}/teachers", Name=Routes.ClassTeacherAdd)]
-        [Authorize(Roles = Roles.Admin)]
+        [Authorize(Roles = Roles.Teacher)]
         public async Task<IActionResult> AddTeacher(int Id, [FromBody]TeacherDTO dto)
         {
             if(!ModelState.IsValid){
@@ -204,7 +204,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}/teachers/{teacherId}", Name=Routes.ClassTeacherRemove)]
-        [Authorize(Roles = Roles.Admin)]
+        [Authorize(Roles = Roles.Teacher)]
         public async Task<IActionResult> RemoveTeacher(int Id, int teacherId)
         {
             if(!ModelState.IsValid){

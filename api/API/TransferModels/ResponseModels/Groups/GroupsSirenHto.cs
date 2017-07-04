@@ -30,17 +30,21 @@ namespace API.TransferModels.ResponseModels
 
         protected override SirenEntityBuilder AddEntityActions(SirenEntityBuilder entity, Group item)
         {
-            return entity
-                .WithAction(new ActionBuilder()
-                    .WithName("delete-group")
-                    .WithTitle("Delete Group")
-                    .WithMethod("Delete")
-                    .WithHref(
-                        Url.AbsoluteRouteUrl(
-                            Routes.GroupDelete, 
-                            new { id = item.Id }
-                        )
-                    ));
+            if (Context.HttpContext.User.IsInRole(Roles.Teacher))
+            {
+                entity.WithAction(new ActionBuilder()
+                        .WithName("delete-group")
+                        .WithTitle("Delete Group")
+                        .WithMethod("Delete")
+                        .WithHref(
+                            Url.AbsoluteRouteUrl(
+                                Routes.GroupDelete,
+                                new { id = item.Id }
+                            )
+                        ));
+            }
+            
+            return entity;
         }
 
         protected override SirenEntityBuilder AddEntityLinks(SirenEntityBuilder entity, Group item)
@@ -58,6 +62,7 @@ namespace API.TransferModels.ResponseModels
 
         protected override SirenEntityBuilder AddEntitySubEntities(SirenEntityBuilder entity, Group item)
         {
+            //entity.WithSubEntity(new SubEntityBuilder());
             return entity;
         }
 
