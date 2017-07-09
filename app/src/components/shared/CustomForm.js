@@ -7,6 +7,7 @@ class CustomForm extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            fields: props.action.fields
         }
 
         this.onChange = this.onChange.bind(this)
@@ -14,31 +15,32 @@ class CustomForm extends Component {
     }
 
     onChange(event, {name, value}) {
-        var field = this.props.action.fields.find(field => field.name === name)
+        let field = this.state.fields.find(field => field.name === name)
         field.value = formHelper(field.type, value)
-        this.setState(this.state)
+        this.setState({fields: this.state.fields})
     }
 
     post() {
-        const { action } = this.props
+        const { fields } = this.state
         var data = {}
-        if(action.fields)
-            action.fields.forEach(field => {
+        if(fields)
+            fields.forEach(field => {
                 data[field.name] = field.value
             })
-        axios.post(action.href, data)
+        axios.post(this.props.action.href, data)
             .then(resp => console.log(resp.data))
     }
 
     render() {
         const {action} = this.props
+        const {fields} = this.state
         return (
             <div>
                 <h1>{action.title}</h1>
                 <Form>
                     {
-                        action.fields &&
-                        action.fields.map((field, i) => {
+                        fields &&
+                        fields.map((field, i) => {
                             return <Form.Input
                                 key={i}
                                 label={field.title}

@@ -43,14 +43,17 @@ namespace API.TransferModels.ResponseModels
 
         protected override SirenEntityBuilder AddEntitySubEntities(SirenEntityBuilder entity, Class item)
         {
-            return entity.WithSubEntity(
-                (SubEntityBuilder)new EmbeddedRepresentationBuilder()
-                    .WithRel("semester")
-                    .WithClass("semester")
-                    .WithProperty("Id", item.Semester.Id)
-                    .WithProperty("Year", item.Semester.Year)
-                    .WithProperty("Term", item.Semester.Term)
-            );
+            if(item.Semester != null)
+                entity.WithSubEntity(
+                    (SubEntityBuilder)new EmbeddedRepresentationBuilder()
+                        .WithRel("semester")
+                        .WithClass("semester")
+                        .WithProperty("Id", item.Semester.Id)
+                        .WithProperty("Year", item.Semester.Year)
+                        .WithProperty("Term", item.Semester.Term)
+                );
+
+            return entity;
         }
 
         protected override SirenEntityBuilder AddEntityActions(SirenEntityBuilder entity, Class item)

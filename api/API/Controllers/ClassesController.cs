@@ -60,7 +60,6 @@ namespace API.Controllers
                 return BadRequest(ModelState);
             }
 
-            //TODO: AutoMapper
             Class c = new Class{
                 Name = dto.Name,
                 MaxGroupSize = dto.MaxGroupSize,

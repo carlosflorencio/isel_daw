@@ -120,14 +120,17 @@ namespace API.TransferModels.ResponseModels
 
         protected override SirenEntityBuilder AddEntitySubEntities(SirenEntityBuilder entity, Course item)
         {
-            return entity.WithSubEntity(
-                (SubEntityBuilder)new EmbeddedRepresentationBuilder()
-                    .WithRel("coordinator")
-                    .WithClass("teacher")
-                    .WithProperty("number", item.Coordinator.Number)
-                    .WithProperty("name", item.Coordinator.Name)
-                    .WithProperty("email", item.Coordinator.Email)
-            );
+            if(item.Coordinator != null){}
+                entity.WithSubEntity(
+                    (SubEntityBuilder)new EmbeddedRepresentationBuilder()
+                        .WithRel("coordinator")
+                        .WithClass("teacher")
+                        .WithProperty("number", item.Coordinator.Number)
+                        .WithProperty("name", item.Coordinator.Name)
+                        .WithProperty("email", item.Coordinator.Email)
+                );
+                
+            return entity;
         }
 
         /*

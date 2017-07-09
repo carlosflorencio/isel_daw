@@ -62,18 +62,18 @@ namespace API.TransferModels.ResponseModels
 
         protected override SirenEntityBuilder AddEntitySubEntities(SirenEntityBuilder entity, Group item)
         {
-
-            item.Students.ForEach(i =>
-            {
-                entity.WithSubEntity(
-                    (SubEntityBuilder)new EmbeddedRepresentationBuilder()
-                        .WithRel("item")
-                        .WithClass("student")
-                        .WithProperty("number", i.Student.Number)
-                        .WithProperty("name", i.Student.Name)
-                        .WithProperty("email", i.Student.Email)
-                );
-            });
+            if(item.Students != null)
+                item.Students.ForEach(i => {
+                    entity.WithSubEntity(
+                        (SubEntityBuilder)new EmbeddedRepresentationBuilder()
+                            .WithRel("item")
+                            .WithClass("student")
+                            .WithProperty("number", i.Student.Number)
+                            .WithProperty("name", i.Student.Name)
+                            .WithProperty("email", i.Student.Email)
+                    );
+                });
+                
             return entity;
         }
 
