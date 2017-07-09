@@ -34,7 +34,12 @@ namespace API.Controllers
         {
             Group group = await _repo.FindByIdAsync(Id);
             if(group == null){
-                return NotFound();
+                return NotFound(new ProblemJson{
+                    Type = "/group-not-found",
+                    Status = 404,
+                    Title = "Group Not Found",
+                    Detail = "The group with the id "+Id+" does not exist or it wasn't found."
+                });
             }
 
             return Ok(_rep.Entity(group));
@@ -71,7 +76,12 @@ namespace API.Controllers
 
             Group group = await _repo.FindByIdAsync(Id);
             if(group == null){
-                return NotFound();
+                return NotFound(new ProblemJson{
+                    Type = "/group-not-found",
+                    Status = 404,
+                    Title = "Group Not Found",
+                    Detail = "The group with the id "+Id+" does not exist or it wasn't found."
+                });
             }
 
             if (await _repo.DeleteAsync(group))

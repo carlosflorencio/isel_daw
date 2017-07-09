@@ -44,11 +44,16 @@ namespace API.Controllers
 
         // GET api/students/39250
         [HttpGet("{number:int}", Name = Routes.StudentEntry)]
-        public async Task<IActionResult> Get(int number) {
-            var student = await _repo.GetByNumberAsync(number);
+        public async Task<IActionResult> Get(int Number) {
+            var student = await _repo.GetByNumberAsync(Number);
 
             if(student == null){
-                return NotFound();
+                return NotFound(new ProblemJson{
+                    Type = "/student-not-found",
+                    Status = 404,
+                    Title = "Student Not Found",
+                    Detail = "The student with the number "+Number+" does not exist or it wasn't found."
+                });
             }
 
             return Ok(_studentsRep.Entity(student));
@@ -91,7 +96,12 @@ namespace API.Controllers
 
             Student student = await _repo.GetByNumberAsync(Number);
             if(student == null){
-                return NotFound();
+                return NotFound(new ProblemJson{
+                    Type = "/student-not-found",
+                    Status = 404,
+                    Title = "Student Not Found",
+                    Detail = "The student with the number "+Number+" does not exist or it wasn't found."
+                });
             }
 
             //TODO: AutoMapper
@@ -105,7 +115,6 @@ namespace API.Controllers
             }
 
             return Ok(_studentsRep.Entity(student));
-            //return NoContent();
         }
 
         [HttpDelete("{number:int}", Name = Routes.StudentDelete)]
@@ -115,7 +124,12 @@ namespace API.Controllers
             Student student = await _repo.GetByNumberAsync(Number);
 
             if(student == null){
-                return NotFound();
+                return NotFound(new ProblemJson{
+                    Type = "/student-not-found",
+                    Status = 404,
+                    Title = "Student Not Found",
+                    Detail = "The student with the number "+Number+" does not exist or it wasn't found."
+                });
             }
 
             if(await _repo.DeleteAsync(student))
@@ -129,17 +143,22 @@ namespace API.Controllers
 
         // GET: api/students/{number}/classes
         [HttpGet("{number:int}/classes", Name = Routes.StudentClassList)]
-        public async Task<IActionResult> Classes(int number, [FromQuery] ListQueryStringDto query)
+        public async Task<IActionResult> Classes(int Number, [FromQuery] ListQueryStringDto query)
         {
-            Student student = await _repo.GetByNumberAsync(number);
+            Student student = await _repo.GetByNumberAsync(Number);
 
             if(student == null){
-                return NotFound();
+                return NotFound(new ProblemJson{
+                    Type = "/student-not-found",
+                    Status = 404,
+                    Title = "Student Not Found",
+                    Detail = "The student with the number "+Number+" does not exist or it wasn't found."
+                });
             }
 
-            PagedList<Class> classes = await _repo.GetStudentClasses(number, query);
+            PagedList<Class> classes = await _repo.GetStudentClasses(Number, query);
 
-            return Ok(_classesRep.WeakCollection(number, classes, query));
+            return Ok(_classesRep.WeakCollection(Number, classes, query));
         }
     }
 }

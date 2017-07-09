@@ -41,7 +41,12 @@ namespace API.Controllers
             Class c = await _classesRepo.GetByIdAsync(Id);
 
             if(c == null){
-                return NotFound();
+                return NotFound(new ProblemJson{
+                    Type = "/class-not-found",
+                    Status = 404,
+                    Title = "Class Not Found",
+                    Detail = "The class with the id "+Id+" does not exist or it wasn't found."
+                });
             }
 
             return Ok(_classesRep.Entity(c));
@@ -85,7 +90,12 @@ namespace API.Controllers
             Class c = await _classesRepo.GetByIdAsync(Id);
             if(c == null)
             {
-                return NotFound();
+                return NotFound(new ProblemJson{
+                    Type = "/class-not-found",
+                    Status = 404,
+                    Title = "Class Not Found",
+                    Detail = "The class with the id "+Id+" does not exist or it wasn't found."
+                });
             }
 
             //TODO: Mapper
@@ -109,7 +119,12 @@ namespace API.Controllers
             Class c = await _classesRepo.GetByIdAsync(Id);
             if(c == null)
             {
-                return NotFound();
+                return NotFound(new ProblemJson{
+                    Type = "/class-not-found",
+                    Status = 404,
+                    Title = "Class Not Found",
+                    Detail = "The class with the id "+Id+" does not exist or it wasn't found."
+                });
             }
 
             if(await _classesRepo.DeleteAsync(c)){
@@ -122,6 +137,16 @@ namespace API.Controllers
         [HttpGet("{id}/groups", Name=Routes.ClassGroupsList)]
         public async Task<IActionResult> ClassGroups(int Id, [FromQuery]ListQueryStringDto query)
         {
+            Class c = await _classesRepo.GetByIdAsync(Id);
+            if(c == null){
+                return NotFound(new ProblemJson{
+                    Type = "/class-not-found",
+                    Status = 404,
+                    Title = "Class Not Found",
+                    Detail = "The class with the id "+Id+" does not exist or it wasn't found."
+                });
+            }
+            
             PagedList<Group> groups = await _classesRepo.GetClassGroups(Id, query);
 
             return Ok(_groupsRep.WeakCollection(Id, groups, query));
@@ -130,6 +155,16 @@ namespace API.Controllers
         [HttpGet("{id}/teachers", Name=Routes.ClassTeachersList)]
         public async Task<IActionResult> ClassTeachers(int Id, [FromQuery]ListQueryStringDto query)
         {
+            Class c = await _classesRepo.GetByIdAsync(Id);
+            if(c == null){
+                return NotFound(new ProblemJson{
+                    Type = "/class-not-found",
+                    Status = 404,
+                    Title = "Class Not Found",
+                    Detail = "The class with the id "+Id+" does not exist or it wasn't found."
+                });
+            }
+
             PagedList<Teacher> teachers = await _classesRepo.GetClassTeachers(Id, query);
 
             return Ok(_teachersRep.WeakCollection(Id, teachers, query));
@@ -138,6 +173,16 @@ namespace API.Controllers
         [HttpGet("{id}/students", Name=Routes.ClassStudentsList)]
         public async Task<IActionResult> ClassStudents(int Id, [FromQuery]ListQueryStringDto query)
         {
+            Class c = await _classesRepo.GetByIdAsync(Id);
+            if(c == null){
+                return NotFound(new ProblemJson{
+                    Type = "/class-not-found",
+                    Status = 404,
+                    Title = "Class Not Found",
+                    Detail = "The class with the id "+Id+" does not exist or it wasn't found."
+                });
+            }
+
             PagedList<Student> students = await _classesRepo.GetClassStudents(Id, query);
 
             return Ok(_studentsRep.WeakCollection(Id, students, query));
@@ -153,7 +198,12 @@ namespace API.Controllers
 
             Class c = await _classesRepo.GetByIdAsync(Id);
             if(c == null){
-                return NotFound();
+                return NotFound(new ProblemJson{
+                    Type = "/class-not-found",
+                    Status = 404,
+                    Title = "Class Not Found",
+                    Detail = "The class with the id "+Id+" does not exist or it wasn't found."
+                });
             }
 
             if(await _classesRepo.AddStudentTo(c, dto.Number)){
@@ -173,7 +223,12 @@ namespace API.Controllers
 
             Class c = await _classesRepo.GetByIdAsync(Id);
             if(c == null){
-                return NotFound();
+                return NotFound(new ProblemJson{
+                    Type = "/class-not-found",
+                    Status = 404,
+                    Title = "Class Not Found",
+                    Detail = "The class with the id "+Id+" does not exist or it wasn't found."
+                });
             }
 
             if(await _classesRepo.RemoveStudentFrom(new Class {Id = Id}, studentId)){
@@ -193,7 +248,12 @@ namespace API.Controllers
 
             Class c = await _classesRepo.GetByIdAsync(Id);
             if(c == null){
-                return NotFound();
+                return NotFound(new ProblemJson{
+                    Type = "/class-not-found",
+                    Status = 404,
+                    Title = "Class Not Found",
+                    Detail = "The class with the id "+Id+" does not exist or it wasn't found."
+                });
             }
 
             if(await _classesRepo.AddTeacherTo(c, dto.Number)){
@@ -213,7 +273,12 @@ namespace API.Controllers
 
             Class c = await _classesRepo.GetByIdAsync(Id);
             if(c == null){
-                return NotFound();
+                return NotFound(new ProblemJson{
+                    Type = "/class-not-found",
+                    Status = 404,
+                    Title = "Class Not Found",
+                    Detail = "The class with the id "+Id+" does not exist or it wasn't found."
+                });
             }
 
             if(await _classesRepo.RemoveTeacherFrom(c, teacherId)){

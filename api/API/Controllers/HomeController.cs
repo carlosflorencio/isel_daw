@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using API.TransferModels.ResponseModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
 using static API.TransferModels.ResponseModels.HomeJsonHome;
@@ -29,12 +30,18 @@ namespace API.Controllers
         public IActionResult Index()
         {
             var origin = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host;
-            var routes = _provider.ActionDescriptors.Items.Select(x =>
-                new HomeEntity
-                {
-                    Name = x.AttributeRouteInfo.Name,
-                    Url = origin + "/" + 
-                        Regex.Replace(x.AttributeRouteInfo.Template, @":+[a-z]+", "")
+            var routes = _provider.ActionDescriptors.Items
+                .Where(x => (x as ControllerActionDescriptor)       // Needs Improvement
+                    .MethodInfo
+                    .GetCustomAttributes<HttpGetAttribute>()
+                    .FirstOrDefault() != default(HttpGetAttribute)
+                ).Select(x => {
+                    return new HomeEntity
+                    {
+                        Name = x.AttributeRouteInfo.Name,
+                        Url = origin + "/" +
+                            Regex.Replace(x.AttributeRouteInfo.Template, @":+[a-z]+", "")
+                    };
                 }).ToList();
 
             return Ok(HomeJsonHome.Home(routes));
@@ -44,7 +51,6 @@ namespace API.Controllers
         [HttpGet("/error/{code}", Name = "Error")]
         public IActionResult Error(int code)
         {
-
             var problem = new ProblemJson()
             {
                 Type = "type",

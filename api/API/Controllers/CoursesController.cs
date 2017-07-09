@@ -43,7 +43,12 @@ namespace API.Controllers
 
             if (course == null)
             {
-                return NotFound();
+                return NotFound(new ProblemJson{
+                    Type = "/clourse-not-found",
+                    Status = 404,
+                    Title = "Course Not Found",
+                    Detail = "The course with the id "+Id+" does not exist or it wasn't found."
+                });
             }
 
             return Ok(_coursesRep.Entity(course));
@@ -56,7 +61,12 @@ namespace API.Controllers
 
             if (course == null)
             {
-                return NotFound();
+                return NotFound(new ProblemJson{
+                    Type = "/clourse-not-found",
+                    Status = 404,
+                    Title = "Course Not Found",
+                    Detail = "The course with the id "+Id+" does not exist or it wasn't found."
+                });
             }
 
             PagedList<Class> classes = await _repo.GetCourseClassesAsync(Id, query);

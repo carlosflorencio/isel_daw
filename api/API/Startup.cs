@@ -114,8 +114,8 @@ namespace API
             app.UseCors(CorsPolicy);
 
             app.UseMiddleware<BasicAuthMiddleware>();
-
-            //app.UseMiddleware(typeof(ErrorHandlingMiddleware));
+            
+            //app.UseMiddleware<ErrorHandlingMiddleware>();
             app.UseStatusCodePagesWithReExecute("/error/{0}");
 
             // Seed data if there is none
