@@ -7,6 +7,7 @@ import { Container } from 'semantic-ui-react'
 import PrivateRoute from './shared/PrivateRoute'
 
 import Navbar from './navbar/NavbarContainer'
+import NoServerResponse from './shared/NoServerResponse'
 import Home from './home/HomeContainer'
 import Course from './courses/CourseContainer'
 import CourseList from './courses/CourseListContainer'
@@ -57,6 +58,10 @@ class MainContent extends Component {
                             </Switch>
                         </div>
                     </Router>
+                }
+                {
+                    !this.props.api.hasData && this.props.api.failedLoadingData &&
+                    <NoServerResponse />
                 }
             </Container>
         )

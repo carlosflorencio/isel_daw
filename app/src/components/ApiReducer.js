@@ -18,6 +18,7 @@ export const LOAD_HOMEPAGE_FAILURE = 'LOAD_HOMEPAGE_FAILURE'
  |--------------------------------------------------------------------------
  */
 const initialState = {
+    failedLoadingData: false,
     hasData: false,
     requests: {}
 }
@@ -30,8 +31,10 @@ export default helpers.createReducer(initialState, {
         }
     },
     [LOAD_HOMEPAGE_FAILURE]: (state, action) => {
-        console.log('LOAD_HOMEPAGE_FAILURE')
-        return initialState
+        return {
+            ...initialState,
+            failedLoadingData: true
+        }
     }
 })
 
