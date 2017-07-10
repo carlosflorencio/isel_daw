@@ -25,7 +25,7 @@ class Navbar extends Component {
     }
 
     render() {
-        const { session } = this.props
+        const { session, actions } = this.props
         return (
             <Menu className="no-border-radius" inverted fixed='top'>
                 <Menu.Item>
@@ -45,6 +45,7 @@ class Navbar extends Component {
                         />
                         <Menu.Item
                             as={Button}
+                            onClick={actions.requestLogout}
                             name="logout"
                             content='Logout'
                             onClick={this.onLogout} />
@@ -54,7 +55,8 @@ class Navbar extends Component {
                     !session.isAuthenticated &&
                     <Menu.Menu position='right'>
                         <Menu.Item
-                            as={NavLink}
+                            as={Button}
+                            onClick={actions.requestLogin}
                             to='/login'
                             content={'Login'}
                             name="login" />

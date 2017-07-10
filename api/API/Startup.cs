@@ -60,6 +60,13 @@ namespace API
                      });
             });
 
+            services.AddIdentityServer()
+                .AddTemporarySigningCredential()
+                .AddTestUsers(Config.GetUsers())
+                .AddInMemoryIdentityResources(Config.GetIdentityResources())
+                .AddInMemoryApiResources(Config.GetApiResources())
+                .AddInMemoryClients(Config.GetClients());
+
             // MVC
             services.AddMvc(options =>
             {
@@ -120,6 +127,8 @@ namespace API
 
             app.UseCors(CorsPolicy);
 
+            app.UseIdentityServer();
+
             app.UseMiddleware<BasicAuthMiddleware>();
             
             //app.UseMiddleware<ErrorHandlingMiddleware>();
@@ -131,6 +140,14 @@ namespace API
                 context.ClearAllData();
                 context.EnsureSeedDataForContext();
             }
+
+            app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
+            {
+                Authority = "http://localhost:5000",
+                RequireHttpsMetadata = false,
+
+                ApiName = "daw_api"
+            });
 
             app.UseMvcWithDefaultRoute();
 
