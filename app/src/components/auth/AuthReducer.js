@@ -118,7 +118,10 @@ export function requestLogout() {
   return {
     types: [LOGOUT_REQUEST, LOGOUT_SUCCESS, LOGOUT_FAILURE],
     callAPI: () => userManager.getUser().then(user => {
-      return;
+      if(!user)
+        return;
+
+      return userManager.signoutPopup().then(_ => true)
     })
   }
 }

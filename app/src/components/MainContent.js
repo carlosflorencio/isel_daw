@@ -45,7 +45,6 @@ class MainContent extends Component {
                                 <Route path='/auth' component={Auth} />
                                 <Route exact path='/courses' component={CourseList} />
                                 <Route exact path='/courses/:id' component={Course} />
-                                <Route exact path='/login' component={Login} />
                                 {privateRoutes.map((route, i) =>
                                     (<PrivateRoute
                                         key={i}

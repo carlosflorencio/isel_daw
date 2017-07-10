@@ -141,6 +141,8 @@ namespace API.TransferModels.ResponseModels
 
         protected override SirenEntityBuilder AddCollectionActions(SirenEntityBuilder entity)
         {
+            Console.WriteLine("----------------------------------------");
+            Console.WriteLine(Context.HttpContext.User.Identity.IsAuthenticated);
             if (Context.HttpContext.User.IsInRole(Roles.Admin))
             {
                 entity

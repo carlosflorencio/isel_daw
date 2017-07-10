@@ -34,7 +34,8 @@ namespace API.Controllers
                 .Where(x => (x as ControllerActionDescriptor)       // Needs Improvement
                     .MethodInfo
                     .GetCustomAttributes<HttpGetAttribute>()
-                    .FirstOrDefault() != default(HttpGetAttribute)
+                    .FirstOrDefault() != default(HttpGetAttribute) &&
+                    x.AttributeRouteInfo.Name != null
                 ).Select(x => {
                     return new HomeEntity
                     {

@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Routing;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc.Cors.Internal;
 using Swashbuckle.AspNetCore.Swagger;
+using IdentityServer4.Services;
 
 namespace API
 {
@@ -62,7 +63,7 @@ namespace API
 
             services.AddIdentityServer()
                 .AddTemporarySigningCredential()
-                .AddTestUsers(Config.GetUsers())
+                //.AddTestUsers(Config.GetUsers())
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryClients(Config.GetClients());
@@ -125,21 +126,14 @@ namespace API
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug(LogLevel.Debug);
 
-            app.UseCors(CorsPolicy);
-
-            app.UseIdentityServer();
-
-            app.UseMiddleware<BasicAuthMiddleware>();
-            
-            //app.UseMiddleware<ErrorHandlingMiddleware>();
-            app.UseStatusCodePagesWithReExecute("/error/{0}");
-
             // Seed data if there is none
             if (env.IsDevelopment())
             {
                 context.ClearAllData();
                 context.EnsureSeedDataForContext();
             }
+
+            app.UseCors(CorsPolicy);
 
             app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
             {
@@ -149,6 +143,14 @@ namespace API
                 ApiName = "daw_api"
             });
 
+            app.UseIdentityServer();
+
+            //app.UseMiddleware<BasicAuthMiddleware>();
+            
+            //app.UseMiddleware<ErrorHandlingMiddleware>();
+            app.UseStatusCodePagesWithReExecute("/error/{0}");
+
+            app.UseStaticFiles();
             app.UseMvcWithDefaultRoute();
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.

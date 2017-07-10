@@ -87,6 +87,30 @@ namespace API
                         new Claim("name", "Bob"),
                         new Claim("website", "https://bob.com")
                     }
+                }, 
+                new TestUser
+                {
+                    SubjectId = "3",
+                    Username = "pfelix@gmail.com",
+                    Password = "123456",
+                    Claims = new List<Claim>
+                        {
+                            new Claim(
+                                ClaimTypes.Name,
+                                "Pedro Felix",
+                                ClaimValueTypes.String
+                            ),
+                            new Claim(
+                                ClaimTypes.Email, 
+                                "pfelix@gmail.com", 
+                                ClaimValueTypes.String
+                            ),
+                            new Claim(
+                                ClaimTypes.Role, 
+                                Roles.Admin, 
+                                ClaimValueTypes.String
+                            )
+                        }
                 }
             };
         }

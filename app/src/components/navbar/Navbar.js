@@ -1,4 +1,3 @@
-/* global alert */
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import logo from '../../assets/img/logo.svg'
@@ -11,17 +10,6 @@ class Navbar extends Component {
         super(props)
         this.state = {
         }
-
-        this.onClick = this.onClick.bind(this)
-        this.onLogout = this.onLogout.bind(this)
-    }
-
-    onClick() {
-        alert('Not Implemented')
-    }
-
-    onLogout() {
-        this.props.actions.logout()
     }
 
     render() {
@@ -47,8 +35,7 @@ class Navbar extends Component {
                             as={Button}
                             onClick={actions.requestLogout}
                             name="logout"
-                            content='Logout'
-                            onClick={this.onLogout} />
+                            content='Logout' />
                     </Menu.Menu>
                 }
                 {
