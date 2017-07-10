@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Routing;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc.Cors.Internal;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace API
 {
@@ -101,6 +102,12 @@ namespace API
 
             services.AddScoped<GroupsSirenHto>();
             services.AddScoped<ClassGroupsSirenHto>();
+
+            // Register the Swagger generator, defining one or more Swagger documents
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "DAW API" });
+            });
         }
 
         public void Configure(IApplicationBuilder app,
@@ -126,6 +133,15 @@ namespace API
             }
 
             app.UseMvcWithDefaultRoute();
+
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS etc.), specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "DAW API");
+            });
         }
     }
 }

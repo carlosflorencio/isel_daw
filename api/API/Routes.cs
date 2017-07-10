@@ -11,6 +11,7 @@ namespace API
         // HomeController
         public const string Index = nameof(Index);
         public const string Error = nameof(Error);
+        public const string APIExplorer = nameof(APIExplorer);
 
         // StudentsController
         public const string StudentList = nameof(StudentList);

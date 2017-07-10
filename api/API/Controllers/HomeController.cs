@@ -26,7 +26,7 @@ namespace API.Controllers
             _provider = provider;
         }
 
-        [HttpGet("/", Name = "Index")]
+        [HttpGet("/", Name = Routes.Index)]
         public IActionResult Index()
         {
             var origin = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host;
@@ -48,7 +48,7 @@ namespace API.Controllers
         }
 
 
-        [HttpGet("/error/{code}", Name = "Error")]
+        [HttpGet("/error/{code}", Name = Routes.Error)]
         public IActionResult Error(int code)
         {
             var problem = new ProblemJson()
