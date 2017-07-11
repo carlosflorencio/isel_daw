@@ -23,7 +23,7 @@ class Course extends Component {
         }
     }
 
-    componentDidMount() {
+    getData() {
         let uri = this.props.api.requests[CourseEntry]
             .replace('{id}', this.props.match.params.id)
         axios(uri).then(resp => resp.data)
@@ -33,13 +33,24 @@ class Course extends Component {
                 this.setState({ course, teacher, isLoading: false })
                 return SirenHelpers.getLink(course, '/relations#course-classes')
             })
-            .then(href => axios(href)
-            ).then(resp => resp.data)
+            .then(href => axios(href))
+            .then(resp => resp.data)
             .then(classes => {
                 console.log(classes)
                 this.setState({ classes })
             })
     }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.session.isAuthenticated ^ prevProps.session.isAuthenticated) {
+            this.getData()
+        }
+    }
+
+    componentDidMount() {
+        this.getData()
+    }
+    
 
     render() {
         const { course, teacher, classes, isLoading } = this.state
@@ -53,32 +64,32 @@ class Course extends Component {
                 }
                 {
                     classes &&
-                    <ClassList 
+                    <ClassList
                         header={course.properties['acr'] + ' Classes'}
                         classes={classes}
                     />
                 }
                 <Segment basic textAlign='center'>
-                {
-                    course.properties &&
-                    <div>
-                        <h2>Coordinator: {teacher.properties['name']}</h2>
-                        <h2>E-mail: {teacher.properties['email']}</h2>
-                        <Button
-                            as={NavLink}
-                            to={'/teachers/' + teacher.properties['number']}>
-                            Coordinator Details
+                    {
+                        course.properties &&
+                        <div>
+                            <h2>Coordinator: {teacher.properties['name']}</h2>
+                            <h2>E-mail: {teacher.properties['email']}</h2>
+                            <Button
+                                as={NavLink}
+                                to={'/teachers/' + teacher.properties['number']}>
+                                Coordinator Details
                         </Button>
-                    </div>
-                }
-                {
-                    course.actions &&
-                    <CustomForm
-                        action={
-                            SirenHelpers.getAction(course, 'add-class-to-course')
-                        }
-                    />
-                }
+                        </div>
+                    }
+                    {
+                        course.actions &&
+                        <CustomForm
+                            action={
+                                SirenHelpers.getAction(course, 'add-class-to-course')
+                            }
+                        />
+                    }
                 </Segment>
             </Segment>
         )

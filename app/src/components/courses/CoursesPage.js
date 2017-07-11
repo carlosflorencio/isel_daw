@@ -7,38 +7,37 @@ import { Segment } from 'semantic-ui-react'
 import CustomForm from '../shared/CustomForm'
 import CourseList from './CourseList'
 
-import {CourseList as CourseListRequest} from '../../data/ApiContracts'
+import { CourseList as CourseListRequest } from '../../data/ApiContracts'
 
 class CoursesPage extends Component {
     constructor(props) {
         super(props)
         let params = new URLSearchParams(props.location.search)
         this.state = {
-            isLoading:true,
+            isLoading: true,
             courses: {},
             page: params.page || 1,
             limit: params.limit || 5
         }
     }
 
-    componentDidUpdate(prevProps){
-        if(this.props.session.isAuthenticated ^ prevProps.session.isAuthenticated){
-            let uri = this.props.api.requests[CourseListRequest]
-            axios(uri).then(resp => resp.data)
-                .then(courses => {
-                    console.log(courses)
-                    this.setState({ courses, isLoading:false })
-                })
-        }
-    }
-
-    componentDidMount() {
+    getData() {
         let uri = this.props.api.requests[CourseListRequest]
         axios(uri).then(resp => resp.data)
             .then(courses => {
                 console.log(courses)
-                this.setState({ courses, isLoading:false })
+                this.setState({ courses, isLoading: false })
             })
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.session.isAuthenticated ^ prevProps.session.isAuthenticated) {
+            this.getData()
+        }
+    }
+
+    componentDidMount() {
+        this.getData()
     }
 
     render() {
@@ -46,7 +45,7 @@ class CoursesPage extends Component {
         return (
             <Segment basic className='padding-left-right' loading={isLoading}>
                 {
-                    courses.entities && 
+                    courses.entities &&
                     <CourseList header={'Courses'} courses={courses} />
                 }
                 {

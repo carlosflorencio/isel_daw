@@ -17,7 +17,7 @@ class Group extends Component {
 
     componentDidMount() {
         let uri = this.props.api.requests[GroupEntry]
-            .replace('{id}', this.props.match.params.id)
+            .replace('{id}', this.props.match.params.groupId)
         axios(uri)
             .then(resp => resp.data)
             .then(group => {

@@ -47,7 +47,7 @@ class TeachersList extends Component {
                                     <EntityActionCell
                                         onClick={() => {
                                             let conf = SirenHelpers.createAxiosConfig(teacher, actionRel)
-                                            axios(conf.url,conf.method)
+                                            axios(conf.url, { method: conf.method })
                                         }}
                                         action={SirenHelpers.getAction(teacher, actionRel)}
                                     />

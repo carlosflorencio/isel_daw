@@ -59,7 +59,9 @@ namespace API.TransferModels.ResponseModels
 
         protected override SirenEntityBuilder AddEntityProperties(SirenEntityBuilder entity, Group item)
         {
-            return entity.WithProperty("number", item.Number);
+            return entity
+                .WithProperty("id", item.Id)
+                .WithProperty("number", item.Number);
         }
 
         protected override SirenEntityBuilder AddEntitySubEntities(SirenEntityBuilder entity, Group item)

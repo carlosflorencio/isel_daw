@@ -27,7 +27,7 @@ class CustomForm extends Component {
             fields.forEach(field => {
                 data[field.name] = field.value
             })
-        axios(this.props.action.href, this.props.action.method, data)
+        axios(this.props.action.href, { method: this.props.action.method, data: data })
             .then(resp => console.log(resp.data))
     }
 

@@ -75,14 +75,14 @@ const GroupsList = ({ classId, groups, actionRel }) => {
                                 <Table.Cell collapsing>
                                     <NavLink
                                         to={'/classes/' + classId + '/groups/' +
-                                            group.properties['number']}>
+                                            group.properties['id']}>
                                         Details
                                         </NavLink>
                                 </Table.Cell>
                                 <EntityActionCell
                                         onClick={() => {
                                             let conf = SirenHelpers.createAxiosConfig(group, actionRel)
-                                            axios(conf.url,conf.method)
+                                            axios(conf.url, { method: conf.method })
                                         }}
                                         action={SirenHelpers.getAction(group, actionRel)}
                                     />
