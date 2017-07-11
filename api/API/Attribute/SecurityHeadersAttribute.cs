@@ -5,7 +5,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace API.Logic
+namespace API.Attribute
 {
     public class SecurityHeadersAttribute : ActionFilterAttribute
     {

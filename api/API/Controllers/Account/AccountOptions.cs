@@ -4,7 +4,7 @@
 
 using System;
 
-namespace API.Logic.Account
+namespace API.Controllers.Account
 {
     public class AccountOptions
     {

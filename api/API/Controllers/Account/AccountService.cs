@@ -11,7 +11,7 @@ using IdentityServer4.Services;
 using IdentityServer4.Stores;
 using Microsoft.AspNetCore.Http;
 
-namespace API.Logic.Account
+namespace API.Controllers.Account
 {
     public class AccountService
     {

@@ -2,10 +2,12 @@
 // Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
 
 
-namespace API.Logic.Account
+using IdentityServer4.Models;
+
+namespace API.Controllers.Home
 {
-    public class LogoutInputModel
+    public class ErrorViewModel
     {
-        public string LogoutId { get; set; }
+        public ErrorMessage Error { get; set; }
     }
 }

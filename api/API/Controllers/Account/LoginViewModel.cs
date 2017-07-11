@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace API.Logic.Account
+namespace API.Controllers.Account
 {
     public class LoginViewModel : LoginInputModel
     {

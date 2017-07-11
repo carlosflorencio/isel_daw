@@ -4,7 +4,7 @@
 
 using System.Collections.Generic;
 
-namespace API.Logic.Consent
+namespace API.Controllers.Consent
 {
     public class ConsentViewModel : ConsentInputModel
     {

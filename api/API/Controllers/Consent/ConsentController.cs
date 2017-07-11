@@ -3,12 +3,13 @@
 
 
 using System.Threading.Tasks;
+using API.Attribute;
 using IdentityServer4.Services;
 using IdentityServer4.Stores;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace API.Logic.Consent
+namespace API.Controllers.Consent
 {
     /// <summary>
     /// This controller processes the consent UI

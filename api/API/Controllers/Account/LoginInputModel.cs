@@ -4,7 +4,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace API.Logic.Account
+namespace API.Controllers.Account
 {
     public class LoginInputModel
     {

@@ -5,12 +5,13 @@
 using System;
 using System.Dynamic;
 using System.Threading.Tasks;
+using API.Attribute;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.Logic.Home
+namespace API.Controllers.Home
 {
     [SecurityHeaders]
     public class HomeController : Controller
