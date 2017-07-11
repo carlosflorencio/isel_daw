@@ -62,7 +62,7 @@ namespace API.Controllers
             if (course == null)
             {
                 return NotFound(new ProblemJson{
-                    Type = "/clourse-not-found",
+                    Type = "/course-not-found",
                     Status = 404,
                     Title = "Course Not Found",
                     Detail = "The course with the id "+Id+" does not exist or it wasn't found."

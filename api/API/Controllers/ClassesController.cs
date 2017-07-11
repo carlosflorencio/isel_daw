@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     public class ClassesController : Controller
     {
         private IClassRepository _classesRepo;
@@ -213,7 +214,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}/students/{studentId}", Name=Routes.ClassParticipantRemove)]
-        [Authorize(Roles = Roles.Teacher)]
+        [Authorize(Roles = Roles.Teacher + "," +  Roles.Admin)]
         public async Task<IActionResult> RemoveStudent(int Id, int studentId)
         {
             if(!ModelState.IsValid){
@@ -238,7 +239,7 @@ namespace API.Controllers
         }
 
         [HttpPost("{id}/teachers", Name=Routes.ClassTeacherAdd)]
-        [Authorize(Roles = Roles.Teacher)]
+        [Authorize(Roles = Roles.Teacher + "," +  Roles.Admin)]
         public async Task<IActionResult> AddTeacher(int Id, [FromBody]TeacherDTO dto)
         {
             if(!ModelState.IsValid){
@@ -263,7 +264,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}/teachers/{teacherId}", Name=Routes.ClassTeacherRemove)]
-        [Authorize(Roles = Roles.Teacher)]
+        [Authorize(Roles = Roles.Teacher + "," +  Roles.Admin)]
         public async Task<IActionResult> RemoveTeacher(int Id, int teacherId)
         {
             if(!ModelState.IsValid){

@@ -63,16 +63,6 @@ namespace API
         public const string GroupDelete = nameof(GroupDelete);
         public const string GroupStudentsList = nameof(GroupStudentsList);
         public const string GroupEntry = nameof(GroupEntry);
-
-        // OpenID
-        public const string OpenIdLogin = nameof(OpenIdLogin);
-        public const string OpenIdLoginPost = nameof(OpenIdLoginPost);
-        public const string OpenIdLogout = nameof(OpenIdLogout);
-        public const string OpenIdLogoutPost = nameof(OpenIdLogoutPost);
-        public const string OpenIdExternalLogin = nameof(OpenIdExternalLogin);
-        public const string OpenIdExternalLoginCallback = nameof(OpenIdExternalLoginCallback);
-        public const string OpenIdConsentPost = nameof(OpenIdConsentPost);
-        public const string OpenIdConsent = nameof(OpenIdConsent);
     }
 }
 

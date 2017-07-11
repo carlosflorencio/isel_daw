@@ -33,7 +33,7 @@ namespace API.Logic.Consent
         /// </summary>
         /// <param name="returnUrl"></param>
         /// <returns></returns>
-        [HttpGet("", Name=Routes.OpenIdConsent)]
+        [HttpGet("")]
         public async Task<IActionResult> Index(string returnUrl)
         {
             var vm = await _consent.BuildViewModelAsync(returnUrl);
@@ -48,7 +48,7 @@ namespace API.Logic.Consent
         /// <summary>
         /// Handles the consent screen postback
         /// </summary>
-        [HttpPost("", Name=Routes.OpenIdConsentPost)]
+        [HttpPost("")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(ConsentInputModel model)
         {

@@ -16,18 +16,16 @@ namespace API
         // scopes define the resources in your system
         public static IEnumerable<IdentityResource> GetIdentityResources()
         {
-            var role = new IdentityResource(){
-                Name = "role",
-                DisplayName = "Role",
-                Required = true,
-                UserClaims = new[] { ClaimTypes.Role }
-            };
-
+            var user = new IdentityResource(
+                name: "user",
+                displayName: "User",
+                claimTypes: new[] { ClaimTypes.Name, ClaimTypes.Email, ClaimTypes.Role }
+            );
             return new List<IdentityResource>
             {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
-                role
+                user
             };
         }
 
@@ -39,6 +37,8 @@ namespace API
                     "daw_api",
                     "DAW API",
                     new string[]{
+                        ClaimTypes.Name,
+                        ClaimTypes.Email,
                         ClaimTypes.Role
                     }
                 )
@@ -69,7 +69,7 @@ namespace API
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        "role",
+                        "user",
                         "daw_api"
                     }
                 }

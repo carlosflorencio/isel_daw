@@ -52,7 +52,7 @@ namespace API.Logic.Account
         /// <summary>
         /// Show login page
         /// </summary>
-        [HttpGet("login", Name=Routes.OpenIdLogin)]
+        [HttpGet("login")]
         public async Task<IActionResult> Login(string returnUrl)
         {
             var vm = await _account.BuildLoginViewModelAsync(returnUrl);
@@ -63,7 +63,7 @@ namespace API.Logic.Account
         /// <summary>
         /// Show logout page
         /// </summary>
-        [HttpGet("logout", Name=Routes.OpenIdLogout)]
+        [HttpGet("logout")]
         public async Task<IActionResult> Logout(string logoutId)
         {
             var vm = await _account.BuildLogoutViewModelAsync(logoutId);
@@ -80,7 +80,7 @@ namespace API.Logic.Account
         /// <summary>
         /// Handle postback from username/password login
         /// </summary>
-        [HttpPost("login", Name=Routes.OpenIdLoginPost)]
+        [HttpPost("login")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginInputModel model)
         {
@@ -130,7 +130,7 @@ namespace API.Logic.Account
         /// <summary>
         /// Handle logout page postback
         /// </summary>
-        [HttpPost("logout", Name=Routes.OpenIdLogoutPost)]
+        [HttpPost("logout")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout(LogoutInputModel model)
         {

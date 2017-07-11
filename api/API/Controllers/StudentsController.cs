@@ -15,6 +15,7 @@ using Newtonsoft.Json;
 namespace API.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     public class StudentsController : Controller
     {
         private readonly IStudentRepository _repo;

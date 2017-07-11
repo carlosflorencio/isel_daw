@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     public class TeachersController : Controller
     {
         private ITeacherRepository _repo;

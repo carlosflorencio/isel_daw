@@ -52,8 +52,8 @@ class CustomForm extends Component {
                             />
                         })
                     }
+                    <Button type='submit' onClick={this.post}>Submit</Button>
                 </Form>
-                <Button type='submit' onClick={this.post}>Submit</Button>
             </div>
         )
     }

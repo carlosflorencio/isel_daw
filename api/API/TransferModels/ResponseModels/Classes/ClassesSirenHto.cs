@@ -159,7 +159,7 @@ namespace API.TransferModels.ResponseModels
             SirenEntityBuilder entity)
         {
             Claim c = Context.HttpContext.User.FindFirst(ClaimTypes.Role);
-            if (c != null && c.Value.Equals(Roles.Admin) || c.Value.Equals(Roles.Teacher))
+            if (c != null && (c.Value.Equals(Roles.Admin) || c.Value.Equals(Roles.Teacher)))
             {
                 entity
                     .WithAction(

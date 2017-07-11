@@ -20,6 +20,7 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc.Cors.Internal;
 using Swashbuckle.AspNetCore.Swagger;
 using IdentityServer4.Services;
+using System.Security.Claims;
 
 namespace API
 {
@@ -63,7 +64,6 @@ namespace API
 
             services.AddIdentityServer()
                 .AddTemporarySigningCredential()
-                //.AddTestUsers(Config.GetUsers())
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryClients(Config.GetClients());
@@ -139,6 +139,8 @@ namespace API
             {
                 Authority = "http://localhost:5000",
                 RequireHttpsMetadata = false,
+                RoleClaimType=ClaimTypes.Role,
+                NameClaimType=ClaimTypes.Name,
 
                 ApiName = "daw_api"
             });

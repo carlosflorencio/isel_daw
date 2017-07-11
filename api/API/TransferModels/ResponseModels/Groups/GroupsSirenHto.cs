@@ -32,7 +32,7 @@ namespace API.TransferModels.ResponseModels
         protected override SirenEntityBuilder AddEntityActions(SirenEntityBuilder entity, Group item)
         {
             Claim c = Context.HttpContext.User.FindFirst(ClaimTypes.Role);
-            if (c != null && c.Value.Equals(Roles.Admin) || c.Value.Equals(Roles.Teacher))
+            if (c != null && (c.Value.Equals(Roles.Admin) || c.Value.Equals(Roles.Teacher)))
             {
                 entity.WithAction(new ActionBuilder()
                         .WithName("delete-group")
