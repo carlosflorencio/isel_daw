@@ -1,4 +1,5 @@
 using System;
+using System.Security.Claims;
 using API.Models;
 using API.Siren;
 using FluentSiren.Builders;
@@ -28,7 +29,8 @@ namespace API.TransferModels.ResponseModels
 
         protected override SirenEntityBuilder AddEntityActions(SirenEntityBuilder entity, Course item)
         {
-            if (Context.HttpContext.User.IsInRole(Roles.Admin))
+            Claim c = Context.HttpContext.User.FindFirst(ClaimTypes.Role);
+            if (c != null && c.Value.Equals(Roles.Admin))
             {
                 entity
                     .WithAction(
@@ -141,9 +143,8 @@ namespace API.TransferModels.ResponseModels
 
         protected override SirenEntityBuilder AddCollectionActions(SirenEntityBuilder entity)
         {
-            Console.WriteLine("----------------------------------------");
-            Console.WriteLine(Context.HttpContext.User.Identity.IsAuthenticated);
-            if (Context.HttpContext.User.IsInRole(Roles.Admin))
+            Claim c = Context.HttpContext.User.FindFirst(ClaimTypes.Role);
+            if (c != null && c.Value.Equals(Roles.Admin))
             {
                 entity
                     .WithAction(new ActionBuilder()

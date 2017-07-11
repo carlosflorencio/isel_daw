@@ -84,7 +84,6 @@ namespace API.Logic.Account
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginInputModel model)
         {
-            Console.WriteLine("Login Post");
             if (ModelState.IsValid)
             {
                 // validate username/password against in-memory store
@@ -104,9 +103,7 @@ namespace API.Logic.Account
 
                     // issue bearer authentication with User
                     await HttpContext.Authentication.SignInAsync(
-                        HttpContext.User.Claims
-                            .Where(cl => cl.Type.Equals(ClaimTypes.Email))
-                            .First().Value,
+                        HttpContext.User.Identity.Name,
                         HttpContext.User.Identity.Name,
                         props,
                         HttpContext.User.Claims.ToArray()

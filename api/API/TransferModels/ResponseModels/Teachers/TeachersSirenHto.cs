@@ -1,4 +1,5 @@
 using System;
+using System.Security.Claims;
 using API.Extensions;
 using API.Models;
 using API.Services;
@@ -46,7 +47,8 @@ namespace API.TransferModels.ResponseModels
 
         protected override SirenEntityBuilder AddEntityActions(SirenEntityBuilder entity, Teacher item)
         {
-            if (Context.HttpContext.User.IsInRole(Roles.Admin))
+            Claim c = Context.HttpContext.User.FindFirst(ClaimTypes.Role);
+            if (c != null && c.Value.Equals(Roles.Admin))
             {
                 entity
                     .WithAction(
@@ -105,7 +107,9 @@ namespace API.TransferModels.ResponseModels
 
         protected override SirenEntityBuilder AddCollectionActions(SirenEntityBuilder entity)
         {
-            return entity
+            Claim c = Context.HttpContext.User.FindFirst(ClaimTypes.Role);
+            if (c != null && c.Value.Equals(Roles.Admin)){
+                entity
                     .WithAction(new ActionBuilder()
                         .WithName("add-teacher")
                         .WithTitle("Add Teacher")
@@ -132,6 +136,9 @@ namespace API.TransferModels.ResponseModels
                             .WithTitle("Admin")
                             .WithName("isAdmin")
                             .WithType("checkbox")));
+            }
+
+            return entity;
         }
 
         protected override SirenEntityBuilder AddCollectionLinks(SirenEntityBuilder entity)

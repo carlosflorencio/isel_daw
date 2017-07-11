@@ -17,7 +17,7 @@ export function createUserManager () {
     post_logout_redirect_uri: `${currentUrl}/auth/signout-oidc`,
     silent_redirect_uri: `${currentUrl}/auth/silent-renew-oidc`,
     response_type: 'token id_token',
-    scope: 'openid profile daw_api',
+    scope: 'openid profile role daw_api',
     automaticSilentRenew: true,
     filterProtocolClaims: true,
     loadUserInfo: true,

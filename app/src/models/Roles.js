@@ -2,10 +2,9 @@
  * Default Roles
  */
 export const GUEST = 'GUEST'
-export const STUDENT = 'STUDENT'
-export const TEACHER = 'TEACHER'
-export const ADMIN = 'ADMIN'
-
+export const STUDENT = 'Student'
+export const TEACHER = 'Teacher'
+export const ADMIN = 'Administrator'
 
 export const defaultRoles = {
   [ADMIN]: [TEACHER, STUDENT, GUEST],

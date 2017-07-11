@@ -1,12 +1,13 @@
 import * as roles from './Roles'
+
 /**
  * User Domain Model
  */
 class User {
-  constructor (id, name, role) {
-    this.id = id
-    this.name = name
-    this.role = role // array
+  //jwt profile
+  constructor (profile) {
+    this.name = profile.sub
+    this.role = profile['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']
   }
 
   hasRole (role) {

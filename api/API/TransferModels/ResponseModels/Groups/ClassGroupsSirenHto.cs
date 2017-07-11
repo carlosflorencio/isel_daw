@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using API.Models;
 using API.Services;
 using API.TransferModels.InputModels;
@@ -30,7 +31,8 @@ namespace API.TransferModels.ResponseModels
 
         protected override SirenEntityBuilder AddCollectionActions(SirenEntityBuilder entity)
         {
-            if (Context.HttpContext.User.IsInRole(Roles.Teacher))
+            Claim c = Context.HttpContext.User.FindFirst(ClaimTypes.Role);
+            if (c != null && c.Value.Equals(Roles.Admin) || c.Value.Equals(Roles.Teacher))
             {
                 entity
                     .WithAction(new ActionBuilder()

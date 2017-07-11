@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Claims;
 using API.Controllers;
 using API.Extensions;
 using API.Models;
@@ -50,7 +51,8 @@ namespace API.TransferModels.ResponseModels
             SirenEntityBuilder entity,
             Student item)
         {
-            if (Context.HttpContext.User.IsInRole(Roles.Admin))
+            Claim c = Context.HttpContext.User.FindFirst(ClaimTypes.Role);
+            if (c != null && c.Value.Equals(Roles.Admin))
             {
                 entity
                     .WithAction(
@@ -106,7 +108,8 @@ namespace API.TransferModels.ResponseModels
         protected override SirenEntityBuilder AddCollectionActions(
             SirenEntityBuilder entity)
         {
-            if (Context.HttpContext.User.IsInRole(Roles.Admin))
+            Claim c = Context.HttpContext.User.FindFirst(ClaimTypes.Role);
+            if (c != null && c.Value.Equals(Roles.Admin))
             {
                 entity
                     .WithAction(new ActionBuilder()

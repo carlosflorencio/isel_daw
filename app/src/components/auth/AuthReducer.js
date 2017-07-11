@@ -1,7 +1,6 @@
 import * as reduxHelpers from '../../helpers/ReduxHelpers'
 import * as oidcHelpers from '../../helpers/OIDCHelpers'
 import User from '../../models/User'
-import * as roles from '../../models/Roles'
 
 /*
  |--------------------------------------------------------------------------
@@ -16,8 +15,6 @@ export const LOGOUT_REQUEST = '´daw/auth/LOGOUT_REQUEST'
 export const LOGOUT_SUCCESS = 'daw/auth/LOGOUT_SUCCESS'
 export const LOGOUT_FAILURE = 'daw/auth/LOGOUT_FAILURE'
 
-//export const LOGOUT_DONE = 'daw/auth/LOGOUT_DONE'
-
 /*
  |--------------------------------------------------------------------------
  | Reducer
@@ -26,7 +23,7 @@ export const LOGOUT_FAILURE = 'daw/auth/LOGOUT_FAILURE'
 const initialState = {
   isSigningIn: false,
   isAuthenticated: false,
-  user: null, //new User(1456, 'pfelix@gmail.com', roles.ADMIN),
+  user: null,
   jwt: null
 }
 
@@ -52,7 +49,7 @@ export default reduxHelpers.createReducer(initialState, {
       ...state,
       isSigningIn: false,
       isAuthenticated: true,
-      user: new User(1456, 'pfelix@gmail.com', roles.ADMIN),
+      user: new User(action.response.profile),
       jwt: action.response
     }
   },

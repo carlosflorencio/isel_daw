@@ -16,10 +16,18 @@ namespace API
         // scopes define the resources in your system
         public static IEnumerable<IdentityResource> GetIdentityResources()
         {
+            var role = new IdentityResource(){
+                Name = "role",
+                DisplayName = "Role",
+                Required = true,
+                UserClaims = new[] { ClaimTypes.Role }
+            };
+
             return new List<IdentityResource>
             {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
+                role
             };
         }
 
@@ -27,7 +35,13 @@ namespace API
         {
             return new List<ApiResource>
             {
-                new ApiResource("daw_api", "DAW API")
+                new ApiResource(
+                    "daw_api",
+                    "DAW API",
+                    new string[]{
+                        ClaimTypes.Role
+                    }
+                )
             };
         }
 
@@ -49,11 +63,13 @@ namespace API
 
                     AllowOfflineAccess = true, // needed for silent renew
                     AllowAccessTokensViaBrowser = true, // needed because is a js app
+                    RequireConsent = false,
 
                     AllowedScopes =
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
+                        "role",
                         "daw_api"
                     }
                 }
