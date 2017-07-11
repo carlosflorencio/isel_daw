@@ -9,7 +9,11 @@ import SirenHelpers from '../../helpers/SirenHelpers'
 import ClassList from '../classes/ClassList'
 import CustomForm from '../shared/CustomForm'
 
-import { CourseEntry } from '../../data/ApiContracts'
+import {
+    CourseEntry,
+    REL_COURSE_CLASSES,
+    ADD_CLASS_COURSE
+} from '../../data/ApiContracts'
 
 class Course extends Component {
     constructor(props) {
@@ -18,20 +22,23 @@ class Course extends Component {
         this.state = {
             isLoading: true,
             course: {},
-            page: params.page || 1,
-            limit: params.limit || 5
+            params:{
+                page: params.page || 1,
+                limit: params.limit || 5
+            }
         }
     }
 
     getData() {
         let uri = this.props.api.requests[CourseEntry]
             .replace('{id}', this.props.match.params.id)
+            
         axios(uri).then(resp => resp.data)
             .then(course => {
                 console.log(course)
                 const teacher = SirenHelpers.getSubEntity(course, 'coordinator')
                 this.setState({ course, teacher, isLoading: false })
-                return SirenHelpers.getLink(course, '/relations#course-classes')
+                return SirenHelpers.getLink(course, REL_COURSE_CLASSES)
             })
             .then(href => axios(href))
             .then(resp => resp.data)
@@ -86,7 +93,7 @@ class Course extends Component {
                         course.actions &&
                         <CustomForm
                             action={
-                                SirenHelpers.getAction(course, 'add-class-to-course')
+                                SirenHelpers.getAction(course, ADD_CLASS_COURSE)
                             }
                         />
                     }

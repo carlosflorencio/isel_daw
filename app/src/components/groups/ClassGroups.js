@@ -4,10 +4,15 @@ import axios from '../../data/axiosConfig'
 import { Segment, Table } from 'semantic-ui-react'
 import { NavLink } from 'react-router-dom'
 
-import { ClassGroupsList } from '../../data/ApiContracts'
 import SirenHelpers from '../../helpers/SirenHelpers'
 import CustomForm from '../shared/CustomForm'
 import EntityActionCell from '../shared/EntityActionCell'
+
+import {
+    ClassGroupsList,
+    DELETE_GROUP, 
+    ADD_GROUP_CLASS
+} from '../../data/ApiContracts'
 
 class ClassGroups extends Component {
     constructor(props) {
@@ -37,15 +42,12 @@ class ClassGroups extends Component {
                 <GroupsList
                     classId={this.props.match.params.id}
                     groups={groups}
-                    actionRel={'delete-group'}
+                    actionRel={DELETE_GROUP}
                 />
                 {
                     groups.actions &&
                     <CustomForm 
-                        action={SirenHelpers.getAction(
-                            groups,
-                            'add-group-to-class'
-                        )}
+                        action={SirenHelpers.getAction(groups,ADD_GROUP_CLASS)}
                     />
                 }
             </Segment>

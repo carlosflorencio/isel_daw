@@ -4,11 +4,14 @@ import axios from '../../data/axiosConfig'
 
 import { Segment, Card, Image } from 'semantic-ui-react'
 
-import SirenHelpers from '../../helpers/SirenHelpers'
-
 import ClassList from '../classes/ClassList'
 
-import { StudentEntry } from '../../data/ApiContracts'
+import {
+    StudentEntry,
+    REL_STUDENT_CLASSES
+} from '../../data/ApiContracts'
+
+import SirenHelpers from '../../helpers/SirenHelpers'
 
 class Student extends Component {
     constructor(props) {
@@ -28,7 +31,7 @@ class Student extends Component {
             .then(student => {
                 console.log(student)
                 this.setState({student})
-                return SirenHelpers.getLink(student, '/relations#student-classes')
+                return SirenHelpers.getLink(student, REL_STUDENT_CLASSES)
             })
             .then(href => axios(href))
             .then(resp => resp.data)

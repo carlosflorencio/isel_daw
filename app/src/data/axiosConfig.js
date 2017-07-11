@@ -18,9 +18,7 @@ export default function (url, config = {}) {
     }
     if(localStorage.getItem(JWT_NAME)){
         initialConfig.headers.Authorization = 'Bearer ' + 
-            JSON.parse(
-                localStorage.getItem(JWT_NAME)
-            )['access_token']
+            JSON.parse(localStorage.getItem(JWT_NAME))['access_token']
     }
 
     return axios.request(initialConfig)

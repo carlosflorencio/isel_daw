@@ -6,9 +6,14 @@ import SirenHelpers from '../../helpers/SirenHelpers'
 
 import { Segment } from 'semantic-ui-react'
 
-import { ClassStudentsList } from '../../data/ApiContracts'
 import StudentsList from './StudentsList'
 import CustomForm from '../shared/CustomForm'
+
+import {
+    ClassStudentsList,
+    REMOVE_CLASS_STUDENT,
+    ADD_CLASS_STUDENT
+} from '../../data/ApiContracts'
 
 class ClassStudents extends Component {
     constructor(props) {
@@ -37,14 +42,14 @@ class ClassStudents extends Component {
             <Segment basic loading={isLoading}>
                 <StudentsList
                     students={students}
-                    actionRel={'remove-student-from-class'}
+                    actionRel={REMOVE_CLASS_STUDENT}
                 />
                 {
                     students.actions &&
                     <CustomForm
                         action={SirenHelpers.getAction(
                             students,
-                            'add-student-to-class'
+                            ADD_CLASS_STUDENT
                         )}
                     />
                 }

@@ -5,8 +5,7 @@ import PageNotFound from '../shared/PageNotFound'
 
 const Auth = () => {
   return (
-    <div>
-      <Switch>
+    <Switch>
         {routes.map((route, i) => (
           <Route
             key={i}
@@ -17,7 +16,6 @@ const Auth = () => {
         ))}
         <Route component={PageNotFound} />}
       </Switch>
-    </div>
   )
 }
 export default Auth

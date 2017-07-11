@@ -4,8 +4,8 @@ import { Route, Switch, NavLink } from 'react-router-dom'
 import { Segment, Menu, Grid } from 'semantic-ui-react'
 import classRoutes from './routes'
 
-import PageNotFound from '../shared/PageNotFound'
 import ClassContainer from './ClassContainer'
+import PageNotFound from '../shared/PageNotFound'
 
 const ClassPage = (props) => {
     const { id } = props.match.params

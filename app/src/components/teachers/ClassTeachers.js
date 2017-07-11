@@ -5,7 +5,11 @@ import axios from '../../data/axiosConfig'
 import {Segment} from 'semantic-ui-react'
 
 import SirenHelpers from '../../helpers/SirenHelpers'
-import { ClassTeachersList } from '../../data/ApiContracts'
+import {
+    ClassTeachersList,
+    REMOVE_CLASS_TEACHER,
+    ADD_CLASS_TEACHER
+} from '../../data/ApiContracts'
 
 import CustomForm from '../shared/CustomForm'
 import TeachersList from './TeachersList'
@@ -37,14 +41,14 @@ class ClassTeachers extends Component {
             <Segment basic loading={isLoading}>
                 <TeachersList 
                     teachers={teachers}
-                    actionRel={'remove-teacher-from-class'}
+                    actionRel={REMOVE_CLASS_TEACHER}
                 />
                 {
                     teachers.actions &&
                     <CustomForm 
                     action={SirenHelpers.getAction(
                         teachers,
-                        'add-teacher-to-class'
+                        ADD_CLASS_TEACHER
                     )}
                 />
                 }
