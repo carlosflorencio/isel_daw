@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import axios from 'axios'
+import axios from '../../data/axiosConfig'
 
 import { Segment, Card, Image } from 'semantic-ui-react'
 
@@ -18,7 +18,7 @@ class Group extends Component {
     componentDidMount() {
         let uri = this.props.api.requests[GroupEntry]
             .replace('{id}', this.props.match.params.id)
-        axios.get(uri)
+        axios(uri)
             .then(resp => resp.data)
             .then(group => {
                 console.log(group)

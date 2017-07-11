@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import axios from 'axios'
+import axios from '../../data/axiosConfig'
 
 import { Segment, Button, Header } from 'semantic-ui-react'
 import { NavLink } from 'react-router-dom'
@@ -26,16 +26,14 @@ class Course extends Component {
     componentDidMount() {
         let uri = this.props.api.requests[CourseEntry]
             .replace('{id}', this.props.match.params.id)
-        axios.get(uri).then(resp => resp.data)
+        axios(uri).then(resp => resp.data)
             .then(course => {
                 console.log(course)
                 const teacher = SirenHelpers.getSubEntity(course, 'coordinator')
                 this.setState({ course, teacher, isLoading: false })
                 return SirenHelpers.getLink(course, '/relations#course-classes')
             })
-            .then(href => axios.get(
-                href,
-                { params: { page: this.state.page, limit: this.state.limit } })
+            .then(href => axios(href)
             ).then(resp => resp.data)
             .then(classes => {
                 console.log(classes)

@@ -189,7 +189,7 @@ namespace API.Controllers
         }
 
         [HttpPost("{id}/students", Name=Routes.ClassParticipantAdd)]
-        [Authorize(Roles = Roles.Teacher)]
+        [Authorize(Roles = Roles.Teacher + "," + Roles.Admin)]
         public async Task<IActionResult> AddStudent(int Id, [FromBody]StudentDTO dto)
         {
             if(!ModelState.IsValid){

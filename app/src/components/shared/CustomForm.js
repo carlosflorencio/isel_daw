@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import axios from 'axios'
+import axios from '../../data/axiosConfig'
 
 import {Form, Button} from 'semantic-ui-react'
 
@@ -27,7 +27,7 @@ class CustomForm extends Component {
             fields.forEach(field => {
                 data[field.name] = field.value
             })
-        axios.post(this.props.action.href, data)
+        axios(this.props.action.href, this.props.action.method, data)
             .then(resp => console.log(resp.data))
     }
 

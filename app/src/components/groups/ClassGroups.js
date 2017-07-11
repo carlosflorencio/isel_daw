@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import axios from 'axios'
+import axios from '../../data/axiosConfig'
 
 import { Segment, Table } from 'semantic-ui-react'
 import { NavLink } from 'react-router-dom'
@@ -22,7 +22,7 @@ class ClassGroups extends Component {
         let uri = this.props.api.requests[ClassGroupsList]
             .replace('{id}', this.props.match.params.id)
 
-        axios.get(uri)
+        axios(uri)
             .then(resp => resp.data)
             .then(groups => {
                 console.log(groups)
@@ -80,9 +80,10 @@ const GroupsList = ({ classId, groups, actionRel }) => {
                                         </NavLink>
                                 </Table.Cell>
                                 <EntityActionCell
-                                        onClick={() => axios(
-                                            SirenHelpers.createAxiosConfig(group, actionRel)
-                                        )}
+                                        onClick={() => {
+                                            let conf = SirenHelpers.createAxiosConfig(group, actionRel)
+                                            axios(conf.url,conf.method)
+                                        }}
                                         action={SirenHelpers.getAction(group, actionRel)}
                                     />
                             </Table.Row>

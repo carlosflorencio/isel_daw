@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import axios from 'axios'
+import axios from '../../data/axiosConfig'
 
 import { Segment, Card, Image } from 'semantic-ui-react'
 
@@ -23,14 +23,14 @@ class Student extends Component {
         const uri = this.props.api.requests[StudentEntry]
             .replace("{number}", this.props.match.params.id)
 
-        axios.get(uri)
+        axios(uri)
             .then(resp =>  resp.data)
             .then(student => {
                 console.log(student)
                 this.setState({student})
                 return SirenHelpers.getLink(student, '/relations#student-classes')
             })
-            .then(href => axios.get(href))
+            .then(href => axios(href))
             .then(resp => resp.data)
             .then(classes => {
                 console.log(classes)

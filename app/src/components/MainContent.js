@@ -11,7 +11,7 @@ import Navbar from './navbar/NavbarContainer'
 import NoServerResponse from './shared/NoServerResponse'
 import Home from './home/HomeContainer'
 import Course from './courses/CourseContainer'
-import CourseList from './courses/CourseListContainer'
+import CoursePage from './courses/CoursePageContainer'
 import PageNotFound from './shared/PageNotFound'
 import Unauthorized from './shared/Unauthorized'
 import privateRoutes from '../routes'
@@ -42,7 +42,7 @@ class MainContent extends Component {
                             <Switch>
                                 <Route exact path='/' component={Home} />
                                 <Route path='/auth' component={Auth} />
-                                <Route exact path='/courses' component={CourseList} />
+                                <Route exact path='/courses' component={CoursePage} />
                                 <Route exact path='/courses/:id' component={Course} />
                                 {privateRoutes.map((route, i) =>
                                     (<PrivateRoute

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import axios from 'axios'
+import axios from '../../data/axiosConfig'
 
 import { Segment } from 'semantic-ui-react'
 
@@ -21,9 +21,20 @@ class CoursesPage extends Component {
         }
     }
 
+    componentDidUpdate(prevProps){
+        if(this.props.session.isAuthenticated ^ prevProps.session.isAuthenticated){
+            let uri = this.props.api.requests[CourseListRequest]
+            axios(uri).then(resp => resp.data)
+                .then(courses => {
+                    console.log(courses)
+                    this.setState({ courses, isLoading:false })
+                })
+        }
+    }
+
     componentDidMount() {
         let uri = this.props.api.requests[CourseListRequest]
-        axios.get(uri).then(resp => resp.data)
+        axios(uri).then(resp => resp.data)
             .then(courses => {
                 console.log(courses)
                 this.setState({ courses, isLoading:false })

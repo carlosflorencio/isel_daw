@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '../data/axiosConfig'
 
 import * as helpers from '../helpers/ReduxHelpers'
 
@@ -50,7 +50,7 @@ export default helpers.createReducer(initialState, {
 export function getHomepage() {
     return {
         types: [LOAD_HOMEPAGE_REQUEST, LOAD_HOMEPAGE_SUCCESS, LOAD_HOMEPAGE_FAILURE],
-        callAPI: () => axios.get().then(resp => resp.data),
+        callAPI: () => axios().then(resp => resp.data),
         shouldCallAPI: state => !state.hasData
     }
 }

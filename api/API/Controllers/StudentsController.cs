@@ -45,7 +45,6 @@ namespace API.Controllers
 
         // GET api/students/39250
         [HttpGet("{number:int}", Name = Routes.StudentEntry)]
-        [Authorize(Roles = Roles.Student)]
         public async Task<IActionResult> Get(int Number) {
             var student = await _repo.GetByNumberAsync(Number);
 

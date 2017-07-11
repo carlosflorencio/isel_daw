@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import axios from 'axios'
+import axios from '../../data/axiosConfig'
 
 import {Segment} from 'semantic-ui-react'
 
@@ -23,7 +23,7 @@ class ClassTeachers extends Component {
         let uri = this.props.api.requests[ClassTeachersList]
             .replace('{id}', this.props.match.params.id)
 
-        axios.get(uri)
+        axios(uri)
             .then(resp => resp.data)
             .then(teachers => {
                 console.log(teachers)

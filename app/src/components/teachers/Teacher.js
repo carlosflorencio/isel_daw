@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import axios from 'axios'
+import axios from '../../data/axiosConfig'
 
 import { Segment, Card, Image } from 'semantic-ui-react'
 
@@ -25,7 +25,7 @@ class Teacher extends Component {
         const uri = this.props.api.requests[TeacherEntry]
             .replace("{number}", this.props.match.params.id)
 
-        axios.get(uri).then(resp => resp.data)
+        axios(uri).then(resp => resp.data)
             .then(teacher => {
                 console.log(teacher)
                 this.setState({ teacher })
@@ -35,9 +35,9 @@ class Teacher extends Component {
                 ]
             })
             .then(hrefs => {
-                axios.get(hrefs[0]).then(resp => resp.data)
+                axios(hrefs[0]).then(resp => resp.data)
                     .then(classes => this.setState({classes}))
-                axios.get(hrefs[1]).then(resp => resp.data)
+                axios(hrefs[1]).then(resp => resp.data)
                     .then(courses => this.setState({courses}))
             })
     }

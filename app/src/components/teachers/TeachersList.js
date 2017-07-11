@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import axios from 'axios'
+import axios from '../../data/axiosConfig'
 
 import { Table } from 'semantic-ui-react'
 import { NavLink } from 'react-router-dom'
@@ -45,9 +45,10 @@ class TeachersList extends Component {
                                         </NavLink>
                                     </Table.Cell>
                                     <EntityActionCell
-                                        onClick={() => axios(
-                                            SirenHelpers.createAxiosConfig(teacher, actionRel)
-                                        )}
+                                        onClick={() => {
+                                            let conf = SirenHelpers.createAxiosConfig(teacher, actionRel)
+                                            axios(conf.url,conf.method)
+                                        }}
                                         action={SirenHelpers.getAction(teacher, actionRel)}
                                     />
                                 </Table.Row>

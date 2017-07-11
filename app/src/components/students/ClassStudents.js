@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import axios from 'axios'
+import axios from '../../data/axiosConfig'
 
 import SirenHelpers from '../../helpers/SirenHelpers'
 
@@ -23,7 +23,7 @@ class ClassStudents extends Component {
         let uri = this.props.api.requests[ClassStudentsList]
             .replace('{id}', this.props.match.params.id)
 
-        axios.get(uri)
+        axios(uri)
             .then(resp => resp.data)
             .then(students => {
                 console.log(students)
