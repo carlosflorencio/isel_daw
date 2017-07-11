@@ -1,8 +1,12 @@
 import axios from 'axios'
 
+const BASE_URL = 'http://localhost:5000'
+
+const JWT_NAME = 'oidc.user:http://localhost:5000:daw-app'
+
 export default function (url, config = {}) {
     const initialConfig = {
-        baseURL: 'http://localhost:5000',
+        baseURL: BASE_URL,
         method: config.method || 'GET',
         url: url,
         timeout: 5000,
@@ -12,10 +16,10 @@ export default function (url, config = {}) {
         params: config.params,
         data: config.data
     }
-    if(localStorage.getItem('oidc.user:http://localhost:5000:daw-app')){
+    if(localStorage.getItem(JWT_NAME)){
         initialConfig.headers.Authorization = 'Bearer ' + 
             JSON.parse(
-                localStorage.getItem('oidc.user:http://localhost:5000:daw-app')
+                localStorage.getItem(JWT_NAME)
             )['access_token']
     }
 

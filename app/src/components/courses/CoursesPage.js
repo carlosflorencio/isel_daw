@@ -16,14 +16,18 @@ class CoursesPage extends Component {
         this.state = {
             isLoading: true,
             courses: {},
-            page: params.page || 1,
-            limit: params.limit || 5
+            params:{
+                page: params.page || 1,
+                limit: params.limit || 5
+            }
         }
+
+        this.getData = this.getData.bind(this)
     }
 
-    getData() {
-        let uri = this.props.api.requests[CourseListRequest]
-        axios(uri).then(resp => resp.data)
+    getData(link) {
+        let uri = link || this.props.api.requests[CourseListRequest]
+        axios(uri, {params: this.state.params}).then(resp => resp.data)
             .then(courses => {
                 console.log(courses)
                 this.setState({ courses, isLoading: false })
@@ -46,7 +50,11 @@ class CoursesPage extends Component {
             <Segment basic className='padding-left-right' loading={isLoading}>
                 {
                     courses.entities &&
-                    <CourseList header={'Courses'} courses={courses} />
+                    <CourseList
+                        header={'Courses'}
+                        courses={courses}
+                        getMoreCourses={this.getData}
+                    />
                 }
                 {
                     courses.actions &&

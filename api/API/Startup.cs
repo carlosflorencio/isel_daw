@@ -149,7 +149,7 @@ namespace API
 
             //app.UseMiddleware<BasicAuthMiddleware>();
             
-            //app.UseMiddleware<ErrorHandlingMiddleware>();
+            app.UseMiddleware<ErrorHandlingMiddleware>();
             app.UseStatusCodePagesWithReExecute("/error/{0}");
 
             app.UseStaticFiles();
