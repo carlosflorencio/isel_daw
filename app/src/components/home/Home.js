@@ -18,8 +18,8 @@ class Home extends Component {
         <Redirect
           to={
             session.user.hasRole(TEACHER)
-              ? 'teachers/' + session.user.id
-              : 'students/' + session.user.id
+              ? 'teachers/' + session.user.number
+              : 'students/' + session.user.number
           }
         />
       )

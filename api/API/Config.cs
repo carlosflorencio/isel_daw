@@ -19,7 +19,12 @@ namespace API
             var user = new IdentityResource(
                 name: "user",
                 displayName: "User",
-                claimTypes: new[] { ClaimTypes.Name, ClaimTypes.Email, ClaimTypes.Role }
+                claimTypes: new[] {
+                    "number",
+                    ClaimTypes.Name, 
+                    ClaimTypes.Email, 
+                    ClaimTypes.Role 
+                }
             );
             return new List<IdentityResource>
             {
@@ -37,6 +42,7 @@ namespace API
                     "daw_api",
                     "DAW API",
                     new string[]{
+                        "number",
                         ClaimTypes.Name,
                         ClaimTypes.Email,
                         ClaimTypes.Role

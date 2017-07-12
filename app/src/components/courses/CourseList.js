@@ -56,11 +56,14 @@ class CourseList extends Component {
               )
             })}
         </Table.Body>
-        <TablePagingFooter
-          getMoreData={this.props.getMoreCourses}
-          prevLink={SirenHelpers.getLink(courses, 'prev')}
-          nextLink={SirenHelpers.getLink(courses, 'next')}
-        />
+        {
+          this.props.getMoreCourses && 
+          <TablePagingFooter
+            getMoreData={this.props.getMoreCourses}
+            prevLink={SirenHelpers.getLink(courses, 'prev')}
+            nextLink={SirenHelpers.getLink(courses, 'next')}
+          />
+        }
       </Table>
     )
   }
@@ -69,7 +72,7 @@ class CourseList extends Component {
 CourseList.propTypes = {
   header: PropTypes.string.isRequired,
   courses: PropTypes.object.isRequired,
-  getMoreCourses: PropTypes.func.isRequired
+  getMoreCourses: PropTypes.func
 }
 
 export default CourseList

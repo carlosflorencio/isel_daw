@@ -6,6 +6,7 @@ import * as roles from './Roles'
 class User {
   //jwt profile
   constructor(profile) {
+    this.number = profile['number']
     this.name =
       profile['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name']
     this.role =
