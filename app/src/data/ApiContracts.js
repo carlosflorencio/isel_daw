@@ -31,7 +31,7 @@ export const ADD_CLASS_STUDENT = 'add-student-to-class'
 export const CourseList = 'CourseList'
 export const CourseEntry = 'CourseEntry'
 // Relations
-export const REL_COURSE_CLASSES = 'relations#course-classes'
+export const REL_COURSE_CLASSES = '/relations#course-classes'
 // Actions
 export const ADD_CLASS_COURSE = 'add-class-to-course'
 
