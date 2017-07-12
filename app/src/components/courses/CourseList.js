@@ -26,14 +26,14 @@ class CourseList extends Component {
   }
 
   render() {
-    const { header, courses } = this.props
+    const { courses } = this.props
     return (
       <Table celled striped selectable color="teal">
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell colSpan="3" textAlign="center">
-              {header}
-            </Table.HeaderCell>
+            <Table.HeaderCell>Acronym</Table.HeaderCell>
+            <Table.HeaderCell>Name</Table.HeaderCell>
+            <Table.HeaderCell>Coordinator</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -45,12 +45,12 @@ class CourseList extends Component {
                     {course.properties['acr']}
                   </Table.Cell>
                   <Table.Cell collapsing>
-                    {course.properties['name']}
+                    <NavLink to={'/courses/' + course.properties['id']}>
+                      {course.properties['name']}
+                    </NavLink>
                   </Table.Cell>
                   <Table.Cell collapsing>
-                    <NavLink to={'/courses/' + course.properties['id']}>
-                      Details
-                    </NavLink>
+                    {course.entities[0].properties.name}
                   </Table.Cell>
                 </Table.Row>
               )

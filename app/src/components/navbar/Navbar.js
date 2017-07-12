@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import logo from '../../assets/img/logo.svg'
 
 import { Menu, Button } from 'semantic-ui-react'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 
 class Navbar extends Component {
   constructor(props) {
@@ -14,9 +13,9 @@ class Navbar extends Component {
   render() {
     const { session, actions } = this.props
     return (
-      <Menu className="no-border-radius" inverted fixed="top">
+      <Menu className="no-border-radius" inverted>
         <Menu.Item>
-          <img src={logo} alt="" />
+          <Link to="/">Daw App</Link>
         </Menu.Item>
         <Menu.Item as={NavLink} to="/courses" content={'Courses'} />
         {session.isAuthenticated &&

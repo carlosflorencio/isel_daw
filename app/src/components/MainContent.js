@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom'
-import { Container } from 'semantic-ui-react'
+import { Container, Loader } from 'semantic-ui-react'
 
 import PrivateRoute from './shared/PrivateRoute'
 
@@ -31,12 +31,20 @@ class MainContent extends Component {
   }
 
   render() {
+    const { isFetching, requests } = this.props.api
+
     return (
-      <Container className="menu-margin" fluid>
-        {this.props.api.hasData &&
-          <Router>
-            <div>
-              <Navbar />
+      <Container fluid>
+        <Router>
+          <div>
+            <Navbar />
+
+            {isFetching && <Loader active inline="centered" />}
+
+            {!isFetching && requests === null && <NoServerResponse />}
+
+            {!isFetching &&
+              requests !== null &&
               <Switch>
                 <Route exact path="/" component={Home} />
                 <Route path="/auth" component={Auth} />
@@ -55,12 +63,9 @@ class MainContent extends Component {
                 )}
                 <Route path="/unauthorized" component={Unauthorized} />
                 <Route component={PageNotFound} />
-              </Switch>
-            </div>
-          </Router>}
-        {!this.props.api.hasData &&
-          this.props.api.failedLoadingData &&
-          <NoServerResponse />}
+              </Switch>}
+          </div>
+        </Router>
       </Container>
     )
   }

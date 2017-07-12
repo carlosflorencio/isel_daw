@@ -62,7 +62,7 @@ export default function callAPIMiddleware({ dispatch, getState }) {
 
     return (
       callAPI()
-        //.then(x => new Promise(resolve => setTimeout(() => resolve(x), 2000))) // delay for testing
+        .then(x => new Promise(resolve => setTimeout(() => resolve(x), 4000))) // delay for testing
         .then(
           response =>
             dispatch(
