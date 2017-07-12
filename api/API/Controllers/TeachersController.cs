@@ -11,21 +11,25 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     public class TeachersController : Controller
     {
         private ITeacherRepository _repo;
 
         private readonly TeachersSirenHto _teachersRep;
-        private readonly ClassesSirenHto _classesRep;
+        private readonly TeacherClassesSirenHto _classesRep;
+        private readonly TeacherCoursesSirenHto _coursesRep;
 
         public TeachersController(
             ITeacherRepository repo,
             TeachersSirenHto teachersRepresentation,
-            ClassesSirenHto classesRepresentation)
+            TeacherClassesSirenHto classesRepresentation,
+            TeacherCoursesSirenHto coursesRepresentation)
         {
             _repo = repo;
             _teachersRep = teachersRepresentation;
             _classesRep = classesRepresentation;
+            _coursesRep = coursesRepresentation;
         }
 
         [HttpGet("", Name=Routes.TeacherList)]
@@ -44,7 +48,12 @@ namespace API.Controllers
             var teacher = await _repo.GetByNumberAsync(Number);
 
             if(teacher == null){
-                return NotFound();
+                return NotFound(new ProblemJson{
+                    Type = "/teacher-not-found",
+                    Status = 404,
+                    Title = "Teacher Not Found",
+                    Detail = "The teacher with the number "+Number+" does not exist or it wasn't found."
+                });
             }
 
             return Ok(_teachersRep.Entity(teacher));
@@ -126,20 +135,46 @@ namespace API.Controllers
 
         [HttpGet("{number}/classes", Name = Routes.TeacherClassList)]
         public async Task<IActionResult> TeacherClasses(
-            int number,
+            int Number,
             [FromQuery] ListQueryStringDto query)
         {
-            Teacher teacher = await _repo.GetByNumberAsync(number);
+            Teacher teacher = await _repo.GetByNumberAsync(Number);
 
             if(teacher == null){
-                 return NotFound();
+                 return NotFound(new ProblemJson{
+                    Type = "/teacher-not-found",
+                    Status = 404,
+                    Title = "Teacher Not Found",
+                    Detail = "The teacher with the number "+Number+" does not exist or it wasn't found."
+                });
             }
 
             PagedList<Class> classes =
-                await _repo.GetPaginatedTeacherClassesAsync(number, query);
+                await _repo.GetPaginatedTeacherClassesAsync(Number, query);
 
-            return Ok(classes);
-            //return Ok(_classesRep.Collection(classes, query));
+            return Ok(_classesRep.WeakCollection(Number, classes, query));
+        }
+
+        [HttpGet("{number}/courses", Name = Routes.TeacherCourseList)]
+        public async Task<IActionResult> TeacherCourses(
+            int Number,
+            [FromQuery] ListQueryStringDto query)
+        {
+            Teacher teacher = await _repo.GetByNumberAsync(Number);
+
+            if(teacher == null){
+                 return NotFound(new ProblemJson{
+                    Type = "/teacher-not-found",
+                    Status = 404,
+                    Title = "Teacher Not Found",
+                    Detail = "The teacher with the number "+Number+" does not exist or it wasn't found."
+                });
+            }
+
+            PagedList<Course> courses =
+                await _repo.GetPaginatedTeacherCourses(Number, query);
+
+            return Ok(_coursesRep.WeakCollection(Number, courses, query));
         }
     }
 }

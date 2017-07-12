@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.Data.Contracts;
 using API.Models;
+using API.Services;
 using API.TransferModels.InputModels;
 using API.TransferModels.ResponseModels;
 using FluentSiren.Builders;
@@ -14,16 +15,17 @@ using Newtonsoft.Json;
 namespace API.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     public class StudentsController : Controller
     {
         private readonly IStudentRepository _repo;
         private readonly StudentsSirenHto _studentsRep;
-        private readonly ClassesSirenHto _classesRep;
+        private readonly StudentClassesSirenHto _classesRep;
 
         public StudentsController(
             IStudentRepository repo,
             StudentsSirenHto studentsRepresentation,
-            ClassesSirenHto classesRepresentation)
+            StudentClassesSirenHto classesRepresentation)
         {
             _repo = repo;
             _studentsRep = studentsRepresentation;
@@ -43,11 +45,16 @@ namespace API.Controllers
 
         // GET api/students/39250
         [HttpGet("{number:int}", Name = Routes.StudentEntry)]
-        public async Task<IActionResult> Get(int number) {
-            var student = await _repo.GetByNumberAsync(number);
+        public async Task<IActionResult> Get(int Number) {
+            var student = await _repo.GetByNumberAsync(Number);
 
             if(student == null){
-                return NotFound();
+                return NotFound(new ProblemJson{
+                    Type = "/student-not-found",
+                    Status = 404,
+                    Title = "Student Not Found",
+                    Detail = "The student with the number "+Number+" does not exist or it wasn't found."
+                });
             }
 
             return Ok(_studentsRep.Entity(student));
@@ -90,7 +97,12 @@ namespace API.Controllers
 
             Student student = await _repo.GetByNumberAsync(Number);
             if(student == null){
-                return NotFound();
+                return NotFound(new ProblemJson{
+                    Type = "/student-not-found",
+                    Status = 404,
+                    Title = "Student Not Found",
+                    Detail = "The student with the number "+Number+" does not exist or it wasn't found."
+                });
             }
 
             //TODO: AutoMapper
@@ -104,7 +116,6 @@ namespace API.Controllers
             }
 
             return Ok(_studentsRep.Entity(student));
-            //return NoContent();
         }
 
         [HttpDelete("{number:int}", Name = Routes.StudentDelete)]
@@ -114,7 +125,12 @@ namespace API.Controllers
             Student student = await _repo.GetByNumberAsync(Number);
 
             if(student == null){
-                return NotFound();
+                return NotFound(new ProblemJson{
+                    Type = "/student-not-found",
+                    Status = 404,
+                    Title = "Student Not Found",
+                    Detail = "The student with the number "+Number+" does not exist or it wasn't found."
+                });
             }
 
             if(await _repo.DeleteAsync(student))
@@ -128,16 +144,22 @@ namespace API.Controllers
 
         // GET: api/students/{number}/classes
         [HttpGet("{number:int}/classes", Name = Routes.StudentClassList)]
-        public async Task<IActionResult> Classes(int number, [FromQuery] ListQueryStringDto query)
+        public async Task<IActionResult> Classes(int Number, [FromQuery] ListQueryStringDto query)
         {
-            Student student = await _repo.GetByNumberAsync(number);
+            Student student = await _repo.GetByNumberAsync(Number);
 
             if(student == null){
-                return NotFound();
+                return NotFound(new ProblemJson{
+                    Type = "/student-not-found",
+                    Status = 404,
+                    Title = "Student Not Found",
+                    Detail = "The student with the number "+Number+" does not exist or it wasn't found."
+                });
             }
 
-            //return Ok(_classesRep.Collection());
-            return StatusCode(501, "Not Implemented");
+            PagedList<Class> classes = await _repo.GetStudentClasses(Number, query);
+
+            return Ok(_classesRep.WeakCollection(Number, classes, query));
         }
     }
 }

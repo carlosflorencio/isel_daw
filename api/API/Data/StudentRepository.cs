@@ -71,5 +71,15 @@ namespace API.Data
                 .SingleOrDefaultAsync();
         }
 
+        public Task<PagedList<Class>> GetStudentClasses(int number, ListQueryStringDto query)
+        {
+            IQueryable<Class> classes = Context.Classes
+                .Where(cl => cl.Participants
+                    .Where(cs => cs.StudentId == number)
+                    .FirstOrDefault() != default(ClassStudent)
+                ).Include(cl => cl.Semester);
+
+            return PagedList<Class>.Create(classes, query.Page, query.Limit);
+        }
     }
 }

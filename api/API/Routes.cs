@@ -28,6 +28,7 @@ namespace API
         public const string TeacherEdit = nameof(TeacherEdit);
         public const string TeacherDelete = nameof(TeacherDelete);
         public const string TeacherClassList = nameof(TeacherClassList);
+        public const string TeacherCourseList = nameof(TeacherCourseList);
 
         // CoursesController
         public const string CourseList = nameof(CourseList);
@@ -35,7 +36,7 @@ namespace API
         public const string CourseCreate = nameof(CourseCreate);
         public const string CourseEdit = nameof(CourseEdit);
         public const string CourseDelete = nameof(CourseDelete);
-        public const string CourseClasses = nameof(CourseClasses);
+        public const string CourseClassList = nameof(CourseClassList);
 
         // ClassesController
         public const string ClassList = nameof(ClassList);
@@ -43,16 +44,25 @@ namespace API
         public const string ClassCreate = nameof(ClassCreate);
         public const string ClassEdit = nameof(ClassEdit);
         public const string ClassDelete = nameof(ClassDelete);
+        public const string ClassTeachersList = nameof(ClassTeachersList);
+        public const string ClassTeacherAdd = nameof(ClassTeacherAdd);
+        public const string ClassTeacherRemove = nameof(ClassTeacherRemove);
+        public const string ClassStudentsList = nameof(ClassStudentsList);
         public const string ClassGroupsList = nameof(ClassGroupsList);
         public const string ClassParticipantsList = nameof(ClassParticipantsList);
         public const string ClassParticipantAdd = nameof(ClassParticipantAdd);
+        public const string ClassParticipantRemove = nameof(ClassParticipantRemove);
         public const string ClassGroupAdd = nameof(ClassGroupAdd);
+        public const string ClassGroupRemove = nameof(ClassGroupRemove);
 
         // SemestersController
         public const string SemesterEntry = nameof(SemesterEntry);
 
         // GroupsController
+        public const string GroupCreate = nameof(GroupCreate);
+        public const string GroupDelete = nameof(GroupDelete);
         public const string GroupStudentsList = nameof(GroupStudentsList);
         public const string GroupEntry = nameof(GroupEntry);
     }
 }
+

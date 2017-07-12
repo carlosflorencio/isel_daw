@@ -4,13 +4,8 @@ import ClassStudents from './ClassStudents'
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        session: state.session
+        api: state.api
     }
 }
-
-// function mapDispatchToProps (dispatch) {
-//   return {
-//   }
-// }
 
 export default connect(mapStateToProps)(ClassStudents)

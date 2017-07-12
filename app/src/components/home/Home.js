@@ -14,17 +14,19 @@ class Home extends Component {
 
     render() {
         const { session } = this.props
-        if(!session.isAuthenticated || session.user.hasRole(GUEST)){
+        if (session.isAuthenticated) {
+            return (
+                <Redirect to={
+                    session.user.hasRole(TEACHER) ?
+                        "teachers/" + session.user.id :
+                        "students/" + session.user.id
+                }
+                />
+            )
+        }
+        if (!session.isAuthenticated || session.user.hasRole(GUEST)) {
             return (<Redirect to="courses" />)
         }
-        return (
-            <Redirect to={ 
-                session.user.hasRole(TEACHER) ?
-                    "/teachers/"+session.user.id :
-                    "students/"+session.user.id
-                }
-            />
-        )
     }
 }
 

@@ -1,48 +1,60 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import axios from '../../data/axiosConfig'
 
-import { Button } from 'semantic-ui-react'
-import { NavLink } from 'react-router-dom'
+import { Segment, Header } from 'semantic-ui-react'
 
-import { ADMIN } from '../../models/Roles'
-
-import ClassesRepository from '../../data/repositories/ClassesRepository'
+import { ClassEntry } from '../../data/ApiContracts'
 
 class Class extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            isLoading: true,
+            cl: {}
         }
     }
 
     componentDidMount() {
-        ClassesRepository.getClass(this.props.match.params.id)
-            .then(c => console.log(c))
+        var uri = this.props.api.requests[ClassEntry]
+            .replace("{id}", this.props.match.params.id)
+
+        axios(uri)
+            .then(resp => resp.data)
+            .then(cl => {
+                console.log(cl)
+                this.setState({ cl, isLoading: false })
+            })
     }
 
     render() {
-        const { session } = this.props
-        const { id } = this.props.match.params
+        const { cl, isLoading } = this.state
         return (
-            <div>
-                <h1>Class {id}</h1>
-                <h2>Teachers of the Class and respective Link</h2>
+            <Segment color='teal' padded loading={isLoading}>
                 {
-                    session.user.hasRole(ADMIN) &&  // Coordinator of the course
-                    (<TeacherForm />)
+                    cl.properties &&
+                    <div>
+                        <Header as='h1' textAlign='left'>
+                            Class {cl.properties.name}
+                        </Header>
+                        <Header as='h2' textAlign='left'>
+                            Max group size: {cl.properties.maxGroupSize}
+                        </Header>
+                        <Header as='h2' textAlign='left'>
+                            Auto Enrollment: {
+                                cl.properties.autoEnrollment ? 'Yes' : 'No'
+                            }
+                        </Header>
+                    </div>
                 }
-                <Button as={NavLink} to={"/classes/" + id + "/groups"}>
-                    Groups of the Class
-                </Button>
-                <Button as={NavLink} to={"/classes/" + id + "/students"}>
-                    Students of the Class
-                </Button>
-            </div>
+            </Segment>
         )
     }
 }
 
-const TeacherForm = () => (
- <h1>Teacher Form Only for the Coordinator of the Course Class</h1>
-)
+Class.propTypes = {
+    api: PropTypes.object.isRequired,
+    session: PropTypes.object.isRequired
+}
 
 export default Class

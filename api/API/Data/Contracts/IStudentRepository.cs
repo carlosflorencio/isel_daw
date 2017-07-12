@@ -9,7 +9,7 @@ using API.TransferModels.InputModels;
 
 namespace API.Data.Contracts
 {
-    public interface IStudentRepository : IGenericRepository<Student>
+    public interface IStudentRepository  : IGenericRepository<Student>
     {
 
         Task<Student> GetByNumberAsync(int number);
@@ -17,6 +17,7 @@ namespace API.Data.Contracts
         Task<PagedList<Student>> GetAllPaginatedAsync(ListQueryStringDto p);
 
         Task<Student> GetByEmailAndPasswordAsync(string email, string password);
-
+        
+        Task<PagedList<Class>> GetStudentClasses(int number, ListQueryStringDto query);
     }
 }

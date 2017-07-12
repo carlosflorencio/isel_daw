@@ -4,6 +4,7 @@ import Course from './Course'
 
 const mapStateToProps = (state, ownProps) => {
     return {
+        api: state.api,
         session: state.session
     }
 }

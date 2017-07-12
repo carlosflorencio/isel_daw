@@ -18,6 +18,9 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Routing;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc.Cors.Internal;
+using Swashbuckle.AspNetCore.Swagger;
+using IdentityServer4.Services;
+using System.Security.Claims;
 
 namespace API
 {
@@ -59,14 +62,15 @@ namespace API
                      });
             });
 
+            services.AddIdentityServer()
+                .AddTemporarySigningCredential()
+                .AddInMemoryIdentityResources(Config.GetIdentityResources())
+                .AddInMemoryApiResources(Config.GetApiResources())
+                .AddInMemoryClients(Config.GetClients());
+
             // MVC
             services.AddMvc(options =>
             {
-                var policy = new AuthorizationPolicyBuilder()
-                    .RequireAuthenticatedUser()
-                    .Build();
-                options.Filters.Add(new AuthorizeFilter(policy));
-
                 // Accept application/vnd.siren+json media type (json format)
                 options.OutputFormatters.Add(new SirenOutputFormatter());
             }).AddJsonOptions(options =>
@@ -88,29 +92,39 @@ namespace API
             services.AddScoped<ITeacherRepository, TeacherRepository>();
             services.AddScoped<IClassRepository, ClassRepository>();
             services.AddScoped<ICourseRepository, CourseRepository>();
+            services.AddScoped<IGroupRepository, GroupsRepository>();
 
             services.AddScoped<StudentsSirenHto>();
+            services.AddScoped<ClassStudentsSirenHto>();
+
             services.AddScoped<TeachersSirenHto>();
+            services.AddScoped<ClassTeachersSirenHto>();
+            
             services.AddScoped<CoursesSirenHto>();
+            services.AddScoped<TeacherCoursesSirenHto>();
+
             services.AddScoped<ClassesSirenHto>();
+            services.AddScoped<CourseClassesSirenHto>();
+            services.AddScoped<TeacherClassesSirenHto>();
+            services.AddScoped<StudentClassesSirenHto>();
+
             services.AddScoped<GroupsSirenHto>();
+            services.AddScoped<ClassGroupsSirenHto>();
+
+            // Register the Swagger generator, defining one or more Swagger documents
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "DAW API" });
+            });
         }
 
         public void Configure(IApplicationBuilder app,
             IHostingEnvironment env,
             ILoggerFactory loggerFactory,
-            DatabaseContext context,
-            IStudentRepository studentRepo, ITeacherRepository teacherRepo)
+            DatabaseContext context)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug(LogLevel.Debug);
-
-            app.UseCors(CorsPolicy);
-
-            app.UseMiddleware<BasicAuthMiddleware>();
-
-            //app.UseMiddleware(typeof(ErrorHandlingMiddleware));
-            app.UseStatusCodePagesWithReExecute("/error/{0}");
 
             // Seed data if there is none
             if (env.IsDevelopment())
@@ -119,7 +133,36 @@ namespace API
                 context.EnsureSeedDataForContext();
             }
 
+            app.UseCors(CorsPolicy);
+
+            app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
+            {
+                Authority = "http://localhost:5000",
+                RequireHttpsMetadata = false,
+                RoleClaimType=ClaimTypes.Role,
+                NameClaimType=ClaimTypes.Name,
+
+                ApiName = "daw_api"
+            });
+
+            app.UseIdentityServer();
+
+            //app.UseMiddleware<BasicAuthMiddleware>();
+            
+            app.UseMiddleware<ErrorHandlingMiddleware>();
+            app.UseStatusCodePagesWithReExecute("/error/{0}");
+
+            app.UseStaticFiles();
             app.UseMvcWithDefaultRoute();
+
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS etc.), specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "DAW API");
+            });
         }
     }
 }

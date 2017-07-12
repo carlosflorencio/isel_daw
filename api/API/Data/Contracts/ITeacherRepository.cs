@@ -18,7 +18,9 @@ namespace API.Data.Contracts
 
         Task<Teacher> GetByEmailAndPasswordAsync(string email, string password);
 
-        Task<PagedList<Class>> GetPaginatedTeacherClassesAsync(int number, ListQueryStringDto p);
+        Task<PagedList<Class>> GetPaginatedTeacherClassesAsync(int number, ListQueryStringDto query);
+        
+        Task<PagedList<Course>> GetPaginatedTeacherCourses(int number, ListQueryStringDto query);
     }
     
 }

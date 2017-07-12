@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 const PrivateRoute = ({ component: Component, session, minRole, ...rest }) => {
   console.log(session)
-  let redirectPath = '/login'
+  let redirectPath = '/'
   let hasPermission = false
 
   if (session.isAuthenticated) {

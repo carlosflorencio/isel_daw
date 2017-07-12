@@ -6,12 +6,13 @@ namespace API.Models
 {
     public class Group
     {
-        // Composite key, defined in DatabaseContext
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        
+        public int Number { get; set; }
 
         public int ClassId { get; set; }
 
+        [ForeignKey("ClassId")]
         public Class Class { get; set; }
 
         public List<GroupStudent> Students { get; set; }
@@ -24,10 +25,8 @@ namespace API.Models
     */
     public class GroupStudent
     {
-        public int ClassId { get; set; }
-        public Class Class { get; set; }
-
         public int GroupId { get; set; }
+        [ForeignKey("GroupId")]
         public Group Group { get; set; }
 
         public int StudentNumber { get; set; }

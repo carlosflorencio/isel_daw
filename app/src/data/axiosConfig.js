@@ -1,14 +1,25 @@
 import axios from 'axios'
 
-/**
- * Axios default config for every request
- * Loaded in index.js
- *
- * More info:
- * https://github.com/mzabriskie/axios
- */
-axios.defaults.baseURL = 'http://localhost:5000'
-axios.defaults.timeout = 5000
-axios.defaults.responseType = 'application/vnd.siren+json'
-axios.defaults.headers.common['Authorization'] = 'Basic ' + localStorage.getItem('jwt')
-//axios.defaults.headers.post['Content-Type'] = 'application/json'
+const BASE_URL = 'http://localhost:5000'
+
+const JWT_NAME = 'oidc.user:http://localhost:5000:daw-app'
+
+export default function (url, config = {}) {
+    const initialConfig = {
+        baseURL: BASE_URL,
+        method: config.method || 'GET',
+        url: url,
+        timeout: 5000,
+        responseType: 'application/vnd.siren+json',
+        headers: {
+        },
+        params: config.params,
+        data: config.data
+    }
+    if(localStorage.getItem(JWT_NAME)){
+        initialConfig.headers.Authorization = 'Bearer ' + 
+            JSON.parse(localStorage.getItem(JWT_NAME))['access_token']
+    }
+
+    return axios.request(initialConfig)
+}

@@ -1,46 +1,78 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { ADMIN } from '../../models/Roles'
+import {Table} from 'semantic-ui-react'
+import {NavLink} from 'react-router-dom'
+import TablePagingFooter from '../shared/TablePagingFooter'
 
-import CoursesRepository from '../../data/repositories/CoursesRepository'
+import SirenHelpers from '../../helpers/SirenHelpers'
 
 class CourseList extends Component {
     constructor(props) {
         super(props)
-        let params = new URLSearchParams(props.location.search);
         this.state = {
-            page: params.page || 1,
-            limit: params.limit || 5
+            prevLink:SirenHelpers.getLink(props.courses, 'prev'),
+            nextLink:SirenHelpers.getLink(props.courses, 'next')
         }
     }
 
-    componentDidMount() {
-        CoursesRepository.getCourses(this.state.page, this.state.limit)
-            .then(courses => console.log(courses))
+    componentWillUpdate(nextProps){
+        if(nextProps.courses !== this.props.courses){
+            this.setState({
+                prevLink: SirenHelpers.getLink(nextProps.courses, 'prev'),
+                nextLink: SirenHelpers.getLink(nextProps.courses, 'next')
+            })
+        }
     }
 
     render() {
-        const { session } = this.props
+        const { header, courses } = this.props
         return (
-            <div>
-                <h1>Paginated List of Courses</h1>
-                {
-                    session.isAuthenticated &&
-                    session.user.hasRole(ADMIN) &&  // Coordinator of the course
-                    (<CourseForm />)
-                }
-            </div>
+            <Table celled striped selectable color='teal'>
+                    <Table.Header>
+                        <Table.Row>
+                            <Table.HeaderCell colSpan='3' textAlign='center'>
+                                {header}
+                            </Table.HeaderCell>
+                        </Table.Row>
+                    </Table.Header>
+                    <Table.Body>
+                        {
+                            courses.entities &&
+                            courses.entities.map(course => {
+                                return (
+                                    <Table.Row key={course.properties['id']}>
+                                        <Table.Cell collapsing >
+                                            {course.properties['acr']}
+                                        </Table.Cell>
+                                        <Table.Cell collapsing>
+                                            {course.properties['name']}
+                                        </Table.Cell>
+                                        <Table.Cell collapsing>
+                                            <NavLink
+                                                to={'/courses/' + course.properties['id']}>
+                                                Details
+                                            </NavLink>
+                                        </Table.Cell>
+                                    </Table.Row>
+                                )
+                            })
+                        }
+                    </Table.Body>
+                    <TablePagingFooter 
+                        getMoreData={this.props.getMoreCourses}
+                        prevLink={SirenHelpers.getLink(courses, 'prev')}
+                        nextLink={SirenHelpers.getLink(courses, 'next')}
+                    />
+                </Table>
         )
     }
 }
 
-const CourseForm = () => (
- <h1>Course Form Only for the Coordinator of the Course</h1>
-)
-
 CourseList.propTypes = {
-    session: PropTypes.object.isRequired
+    header: PropTypes.string.isRequired,
+    courses: PropTypes.object.isRequired,
+    getMoreCourses: PropTypes.func.isRequired
 }
 
 export default CourseList
