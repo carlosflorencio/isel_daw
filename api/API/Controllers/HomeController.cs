@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
 using static API.TransferModels.ResponseModels.HomeJsonHome;
+using Microsoft.AspNetCore.Mvc.Abstractions;
 
 namespace API.Controllers
 {
@@ -30,20 +31,13 @@ namespace API.Controllers
         public IActionResult Index()
         {
             var origin = HttpContext.Request.Scheme + "://" + HttpContext.Request.Host;
-            var routes = _provider.ActionDescriptors.Items
-                .Where(x => (x as ControllerActionDescriptor)       // Needs Improvement
-                    .MethodInfo
-                    .GetCustomAttributes<HttpGetAttribute>()
-                    .FirstOrDefault() != default(HttpGetAttribute) &&
-                    x.AttributeRouteInfo.Name != null
-                ).Select(x => {
-                    return new HomeEntity
-                    {
-                        Name = x.AttributeRouteInfo.Name,
-                        Url = origin + "/" +
-                            Regex.Replace(x.AttributeRouteInfo.Template, @":+[a-z]+", "")
-                    };
-                }).ToList();
+
+            // Convert all Get Actions from Controllers to a list of endpoints
+            var routes = _provider.ActionDescriptors
+                .Items
+                .Where(actionIsValidRoute)
+                .Select(r => parseRoute(r, origin))
+                .ToList();
 
             return Ok(HomeJsonHome.Home(routes));
         }
@@ -63,5 +57,29 @@ namespace API.Controllers
             // Handle error here
             return StatusCode(code, problem);
         }
+
+        /*
+        |-----------------------------------------------------------------------
+        | Parse Routes
+        |-----------------------------------------------------------------------
+        */
+        private bool actionIsValidRoute(ActionDescriptor ac)
+        {
+            return (ac as ControllerActionDescriptor)?.MethodInfo
+                   .GetCustomAttributes<HttpGetAttribute>()
+                   .FirstOrDefault() != default(HttpGetAttribute) &&
+                   ac.AttributeRouteInfo.Name != null;
+        }
+
+        private HomeEntity parseRoute(ActionDescriptor x, string origin)
+        {
+            var path = x.AttributeRouteInfo.Template.ToLower();
+            return new HomeEntity
+            {
+                Name = x.AttributeRouteInfo.Name,
+                Url = origin + "/" + Regex.Replace(path, @":[a-z]+", "")
+            };
+        }
     }
+
 }
