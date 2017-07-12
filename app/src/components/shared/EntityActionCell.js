@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react'
 
-import { Table, Button } from "semantic-ui-react";
+import { Table, Button } from 'semantic-ui-react'
 
 const EntityActionCell = ({ action, onClick }) => {
   return (
@@ -11,7 +11,7 @@ const EntityActionCell = ({ action, onClick }) => {
         {action.title}
       </Button>
     </Table.Cell>
-  );
-};
+  )
+}
 
-export default EntityActionCell;
+export default EntityActionCell

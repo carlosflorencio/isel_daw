@@ -1,14 +1,14 @@
-import React from "react";
+import React from 'react'
 
-import { Route, Switch, NavLink } from "react-router-dom";
-import { Segment, Menu, Grid } from "semantic-ui-react";
-import classRoutes from "./routes";
+import { Route, Switch, NavLink } from 'react-router-dom'
+import { Segment, Menu, Grid } from 'semantic-ui-react'
+import classRoutes from './routes'
 
-import ClassContainer from "./ClassContainer";
-import PageNotFound from "../shared/PageNotFound";
+import ClassContainer from './ClassContainer'
+import PageNotFound from '../shared/PageNotFound'
 
 const ClassPage = props => {
-  const { id } = props.match.params;
+  const { id } = props.match.params
   return (
     <Segment basic>
       <Grid stackable textAlign="center">
@@ -37,23 +37,23 @@ const ClassPage = props => {
         </Grid.Row>
       </Grid>
     </Segment>
-  );
-};
+  )
+}
 
 const ClassMenu = ({ id }) =>
   <Menu vertical color="teal">
-    <Menu.Item as={NavLink} to={"/classes/" + id + "/info"} name="info">
+    <Menu.Item as={NavLink} to={'/classes/' + id + '/info'} name="info">
       Class Details
     </Menu.Item>
-    <Menu.Item as={NavLink} to={"/classes/" + id + "/teachers"} name="teachers">
+    <Menu.Item as={NavLink} to={'/classes/' + id + '/teachers'} name="teachers">
       Teachers
     </Menu.Item>
-    <Menu.Item as={NavLink} to={"/classes/" + id + "/students"} name="students">
+    <Menu.Item as={NavLink} to={'/classes/' + id + '/students'} name="students">
       Students
     </Menu.Item>
-    <Menu.Item as={NavLink} to={"/classes/" + id + "/groups"} name="groups">
+    <Menu.Item as={NavLink} to={'/classes/' + id + '/groups'} name="groups">
       Groups
     </Menu.Item>
-  </Menu>;
+  </Menu>
 
-export default ClassPage;
+export default ClassPage

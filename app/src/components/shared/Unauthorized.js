@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React, { Component } from 'react'
 
 class Unauthorized extends Component {
   constructor(props) {
-    super(props);
-    this.state = {};
+    super(props)
+    this.state = {}
   }
 
   render() {
@@ -11,8 +11,8 @@ class Unauthorized extends Component {
       <div>
         <h1>Unauthorized</h1>
       </div>
-    );
+    )
   }
 }
 
-export default Unauthorized;
+export default Unauthorized

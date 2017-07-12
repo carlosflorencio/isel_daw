@@ -1,33 +1,33 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
-import { Container } from "semantic-ui-react";
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { Route, BrowserRouter as Router, Switch } from 'react-router-dom'
+import { Container } from 'semantic-ui-react'
 
-import PrivateRoute from "./shared/PrivateRoute";
+import PrivateRoute from './shared/PrivateRoute'
 
-import Auth from "./auth/Auth";
-import Navbar from "./navbar/NavbarContainer";
-import NoServerResponse from "./shared/NoServerResponse";
-import Home from "./home/HomeContainer";
-import Course from "./courses/CourseContainer";
-import CoursePage from "./courses/CoursePageContainer";
-import PageNotFound from "./shared/PageNotFound";
-import Unauthorized from "./shared/Unauthorized";
-import privateRoutes from "../routes";
+import Auth from './auth/Auth'
+import Navbar from './navbar/NavbarContainer'
+import NoServerResponse from './shared/NoServerResponse'
+import Home from './home/HomeContainer'
+import Course from './courses/CourseContainer'
+import CoursePage from './courses/CoursePageContainer'
+import PageNotFound from './shared/PageNotFound'
+import Unauthorized from './shared/Unauthorized'
+import privateRoutes from '../routes'
 
-import { getHomepage } from "./ApiReducer";
-import { updateLoginStatus } from "./auth/AuthReducer";
+import { getHomepage } from './ApiReducer'
+import { updateLoginStatus } from './auth/AuthReducer'
 
 class MainContent extends Component {
   constructor(props) {
-    super(props);
-    this.state = {};
+    super(props)
+    this.state = {}
   }
 
   componentDidMount() {
-    this.props.actions.getHomepage();
-    this.props.actions.updateLoginStatus();
+    this.props.actions.getHomepage()
+    this.props.actions.updateLoginStatus()
   }
 
   render() {
@@ -62,7 +62,7 @@ class MainContent extends Component {
           this.props.api.failedLoadingData &&
           <NoServerResponse />}
       </Container>
-    );
+    )
   }
 }
 
@@ -70,13 +70,13 @@ const mapStateToProps = (state, ownProps) => {
   return {
     api: state.api,
     session: state.session
-  };
-};
+  }
+}
 
 const mapDispatchToProps = dispatch => {
   return {
     actions: bindActionCreators({ getHomepage, updateLoginStatus }, dispatch)
-  };
-};
+  }
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(MainContent);
+export default connect(mapStateToProps, mapDispatchToProps)(MainContent)

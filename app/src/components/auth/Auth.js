@@ -1,7 +1,7 @@
-import React from "react";
-import { Route, Switch } from "react-router-dom";
-import routes from "./routes";
-import PageNotFound from "../shared/PageNotFound";
+import React from 'react'
+import { Route, Switch } from 'react-router-dom'
+import routes from './routes'
+import PageNotFound from '../shared/PageNotFound'
 
 const Auth = () => {
   return (
@@ -16,6 +16,6 @@ const Auth = () => {
       )}
       <Route component={PageNotFound} />}
     </Switch>
-  );
-};
-export default Auth;
+  )
+}
+export default Auth

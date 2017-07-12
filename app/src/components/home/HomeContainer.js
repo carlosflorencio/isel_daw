@@ -1,12 +1,12 @@
-import { connect } from "react-redux";
+import { connect } from 'react-redux'
 
-import Home from "./Home";
+import Home from './Home'
 
 const mapStateToProps = (state, ownProps) => {
   return {
     session: state.session
-  };
-};
+  }
+}
 
 // function mapDispatchToProps (dispatch) {
 //   return {
@@ -14,4 +14,4 @@ const mapStateToProps = (state, ownProps) => {
 //   }
 // }
 
-export default connect(mapStateToProps)(Home);
+export default connect(mapStateToProps)(Home)

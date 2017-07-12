@@ -1,21 +1,21 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import axios from "../../data/axiosConfig";
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import axios from '../../data/axiosConfig'
 
-import { Table } from "semantic-ui-react";
-import { NavLink } from "react-router-dom";
+import { Table } from 'semantic-ui-react'
+import { NavLink } from 'react-router-dom'
 
-import EntityActionCell from "../shared/EntityActionCell";
-import SirenHelpers from "../../helpers/SirenHelpers";
+import EntityActionCell from '../shared/EntityActionCell'
+import SirenHelpers from '../../helpers/SirenHelpers'
 
 class TeachersList extends Component {
   constructor(props) {
-    super(props);
-    this.state = {};
+    super(props)
+    this.state = {}
   }
 
   render() {
-    const { teachers, actionRel } = this.props;
+    const { teachers, actionRel } = this.props
     return (
       <Table celled striped selectable color="teal">
         <Table.Header>
@@ -29,15 +29,15 @@ class TeachersList extends Component {
           {teachers.entities &&
             teachers.entities.map(teacher => {
               return (
-                <Table.Row key={teacher.properties["number"]}>
+                <Table.Row key={teacher.properties['number']}>
                   <Table.Cell collapsing>
-                    {teacher.properties["name"]}
+                    {teacher.properties['name']}
                   </Table.Cell>
                   <Table.Cell collapsing>
-                    {teacher.properties["email"]}
+                    {teacher.properties['email']}
                   </Table.Cell>
                   <Table.Cell collapsing>
-                    <NavLink to={"/teachers/" + teacher.properties["number"]}>
+                    <NavLink to={'/teachers/' + teacher.properties['number']}>
                       Details
                     </NavLink>
                   </Table.Cell>
@@ -46,22 +46,22 @@ class TeachersList extends Component {
                       let conf = SirenHelpers.createAxiosConfig(
                         teacher,
                         actionRel
-                      );
-                      axios(conf.url, { method: conf.method });
+                      )
+                      axios(conf.url, { method: conf.method })
                     }}
                     action={SirenHelpers.getAction(teacher, actionRel)}
                   />
                 </Table.Row>
-              );
+              )
             })}
         </Table.Body>
       </Table>
-    );
+    )
   }
 }
 
 TeachersList.propTypes = {
   teachers: PropTypes.object.isRequired
-};
+}
 
-export default TeachersList;
+export default TeachersList

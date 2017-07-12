@@ -1,5 +1,5 @@
-import React from "react";
-import { Menu, Table } from "semantic-ui-react";
+import React from 'react'
+import { Menu, Table } from 'semantic-ui-react'
 
 export default ({ getMoreData, prevLink, nextLink }) => {
   return (
@@ -22,5 +22,5 @@ export default ({ getMoreData, prevLink, nextLink }) => {
         </Table.HeaderCell>
       </Table.Row>
     </Table.Footer>
-  );
-};
+  )
+}
