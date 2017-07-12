@@ -47,6 +47,7 @@ namespace API
                 opt => opt.UseNpgsql(Configuration["Data:PostgreConnection:ConnectionString"])
             );
 
+            // Configure Cors
             services.AddCors(options =>
             {
                 options.AddPolicy(CorsPolicy,
@@ -62,6 +63,10 @@ namespace API
                      });
             });
 
+            // lowercase urls for consistency
+            services.AddRouting(options => options.LowercaseUrls = true);
+
+            // Identity Server
             services.AddIdentityServer()
                 .AddTemporarySigningCredential()
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
@@ -84,6 +89,12 @@ namespace API
             // needed to inject IUrlHelper
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
+            // Register the Swagger generator, defining one or more Swagger documents
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "DAW API" });
+            });
+
             // Custom Services
             // AddTransient -> services are created each time they are requested.
             // AddScoped    -> services are created once per request.
@@ -99,7 +110,7 @@ namespace API
 
             services.AddScoped<TeachersSirenHto>();
             services.AddScoped<ClassTeachersSirenHto>();
-            
+
             services.AddScoped<CoursesSirenHto>();
             services.AddScoped<TeacherCoursesSirenHto>();
 
@@ -110,12 +121,6 @@ namespace API
 
             services.AddScoped<GroupsSirenHto>();
             services.AddScoped<ClassGroupsSirenHto>();
-
-            // Register the Swagger generator, defining one or more Swagger documents
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new Info { Title = "DAW API" });
-            });
         }
 
         public void Configure(IApplicationBuilder app,
@@ -148,7 +153,7 @@ namespace API
             app.UseIdentityServer();
 
             //app.UseMiddleware<BasicAuthMiddleware>();
-            
+
             app.UseMiddleware<ErrorHandlingMiddleware>();
             app.UseStatusCodePagesWithReExecute("/error/{0}");
 

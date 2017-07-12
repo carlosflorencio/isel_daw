@@ -1,5 +1,5 @@
-﻿@using API.Logic.Consent
-@model API.Logic.Consent.ConsentViewModel
+﻿@using API.Controllers.Consent
+@model ConsentViewModel
 
 <div class="page-consent">
     <div class="row page-header">
@@ -23,7 +23,7 @@
                 <input type="hidden" asp-for="ReturnUrl" />
 
                 <div>Uncheck the permissions you do not wish to grant.</div>
-                
+
                 @if (Model.IdentityScopes.Any())
                 {
                     <div class="panel panel-default consent-buttons">

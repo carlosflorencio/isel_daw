@@ -3,7 +3,7 @@ import rootReducer from './rootReducer'
 
 import apiCallMiddleware from './middlewares/apiCallMiddleware'
 
-function configureStore (initialState) {
+function configureStore(initialState) {
   return createStore(
     rootReducer,
     initialState,
