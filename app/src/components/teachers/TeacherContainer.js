@@ -1,12 +1,12 @@
-import { connect } from 'react-redux'
+import { connect } from "react-redux";
 
-import Teacher from './Teacher'
+import Teacher from "./Teacher";
 
 const mapStateToProps = (state, ownProps) => {
-    return {
-        api: state.api,
-        session: state.session
-    }
-}
+  return {
+    api: state.api,
+    session: state.session
+  };
+};
 
-export default connect(mapStateToProps)(Teacher)
+export default connect(mapStateToProps)(Teacher);

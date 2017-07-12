@@ -1,12 +1,12 @@
-import { connect } from 'react-redux'
+import { connect } from "react-redux";
 
-import Course from './Course'
+import Course from "./Course";
 
 const mapStateToProps = (state, ownProps) => {
-    return {
-        api: state.api,
-        session: state.session
-    }
-}
+  return {
+    api: state.api,
+    session: state.session
+  };
+};
 
-export default connect(mapStateToProps)(Course)
+export default connect(mapStateToProps)(Course);

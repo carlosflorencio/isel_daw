@@ -1,12 +1,12 @@
-import React, { Component } from 'react'
-import './assets/css/App.css'
+import React, { Component } from "react";
+import "./assets/css/App.css";
 
-import { Provider } from 'react-redux'
-import configureStore from './redux/store'
+import { Provider } from "react-redux";
+import configureStore from "./redux/store";
 
-import MainContent from './components/MainContent'
+import MainContent from "./components/MainContent";
 
-const store = configureStore()
+const store = configureStore();
 
 class App extends Component {
   render() {
@@ -14,8 +14,8 @@ class App extends Component {
       <Provider store={store}>
         <MainContent />
       </Provider>
-    )
+    );
   }
 }
 
-export default App
+export default App;
