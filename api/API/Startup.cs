@@ -63,6 +63,9 @@ namespace API
                      });
             });
 
+            // lowercase urls for consistency
+            services.AddRouting(options => options.LowercaseUrls = true);
+
             // Identity Server
             services.AddIdentityServer()
                 .AddTemporarySigningCredential()

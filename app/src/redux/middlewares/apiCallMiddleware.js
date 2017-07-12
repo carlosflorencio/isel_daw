@@ -13,6 +13,13 @@
  *  }
  * }
  *
+ * State passed to the reducer:
+ * {
+ *   type: LOAD_POSTS_SUCCESS,
+ *   userId: 2,
+ *   response: callAPIresponse
+ * }
+ *
  * More info:
  * http://redux.js.org/docs/recipes/ReducingBoilerplate.html#userinfojs
  *
@@ -55,7 +62,7 @@ export default function callAPIMiddleware({ dispatch, getState }) {
 
     return (
       callAPI()
-        // .then(x => new Promise(resolve => setTimeout(() => resolve(x), 2000))) // delay for testing
+        //.then(x => new Promise(resolve => setTimeout(() => resolve(x), 2000))) // delay for testing
         .then(
           response =>
             dispatch(
