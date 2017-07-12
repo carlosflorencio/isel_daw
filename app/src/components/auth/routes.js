@@ -8,25 +8,25 @@ export default [
   {
     path: BASE + '/signin-oidc',
     exact: true,
-    render: props => (
+    render: props =>
       <OIDCCallback
-        callback={() => oidcHelpers.createUserManager().signinPopupCallback()} />
-    )
+        callback={() => oidcHelpers.createUserManager().signinPopupCallback()}
+      />
   },
   {
     path: BASE + '/signout-oidc',
     exact: true,
-    render: props => (
+    render: props =>
       <OIDCCallback
-        callback={() => oidcHelpers.createUserManager().signoutPopupCallback()} />
-    )
+        callback={() => oidcHelpers.createUserManager().signoutPopupCallback()}
+      />
   },
   {
     path: BASE + '/silent-renew-oidc',
     exact: true,
-    render: props => (
+    render: props =>
       <OIDCCallback
-        callback={() => oidcHelpers.createUserManager().signinSilentCallback()} />
-    )
+        callback={() => oidcHelpers.createUserManager().signinSilentCallback()}
+      />
   }
 ]

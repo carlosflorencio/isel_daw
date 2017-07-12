@@ -6,14 +6,14 @@ import { requestLogin, requestLogout } from '../auth/AuthReducer'
 import Navbar from './Navbar'
 
 const mapStateToProps = (state, ownProps) => {
-    return {
-        session: state.session
-    }
+  return {
+    session: state.session
+  }
 }
 
-function mapDispatchToProps (dispatch) {
+function mapDispatchToProps(dispatch) {
   return {
-      actions: bindActionCreators({ requestLogin, requestLogout }, dispatch)
+    actions: bindActionCreators({ requestLogin, requestLogout }, dispatch)
   }
 }
 

@@ -22,7 +22,7 @@ const PrivateRoute = ({ component: Component, session, minRole, ...rest }) => {
         hasPermission
           ? <Component {...props} />
           : <Redirect
-            to={{ pathname: redirectPath, state: { from: props.location } }}
+              to={{ pathname: redirectPath, state: { from: props.location } }}
             />}
     />
   )

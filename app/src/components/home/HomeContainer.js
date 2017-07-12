@@ -1,16 +1,16 @@
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 
 import Home from './Home'
 
 const mapStateToProps = (state, ownProps) => {
-    return {
-        session: state.session
-    }
+  return {
+    session: state.session
+  }
 }
 
 // function mapDispatchToProps (dispatch) {
 //   return {
-    
+
 //   }
 // }
 

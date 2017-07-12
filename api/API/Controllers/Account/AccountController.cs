@@ -166,6 +166,7 @@ namespace API.Controllers.Account
             {
 
                 var claims = new List<Claim> {
+                    new Claim("number", std.Number.ToString(), ClaimValueTypes.String),
                     new Claim(ClaimTypes.Name, std.Name, ClaimValueTypes.String),
                     new Claim(ClaimTypes.Email, std.Email, ClaimValueTypes.String),
                     new Claim(ClaimTypes.Role, Roles.Student, ClaimValueTypes.String),
@@ -181,6 +182,11 @@ namespace API.Controllers.Account
             if (teacher != null)
             {
                 var claims = new List<Claim> {
+                    new Claim(
+                        "number",
+                        teacher.Number.ToString(),
+                        ClaimValueTypes.String
+                    ),
                     new Claim(
                         ClaimTypes.Name, 
                         teacher.Name, 

@@ -18,5 +18,8 @@ Specs: Siren & Json Home
 - EF Core 1.1
 - Postgres DB
 
+## Swagger endpoint
+- `/swagger`
+
 ## Todo
 - Implement Siren & Json Home

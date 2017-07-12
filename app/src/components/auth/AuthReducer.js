@@ -70,22 +70,23 @@ export function requestLogin() {
   const userManager = oidcHelpers.createUserManager()
   return {
     types: [LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE],
-    callAPI: () => userManager.getUser().then(user => {
-      if (user) {
-        console.log('user! no popup needed', user)
-        return user
-      }
-      console.log('no user! launching popup')
-
-      return userManager.signinPopup().then(user => {
-        console.log('Popup done!', user)
+    callAPI: () =>
+      userManager.getUser().then(user => {
         if (user) {
+          console.log('user! no popup needed', user)
           return user
         }
+        console.log('no user! launching popup')
 
-        throw new Error('user not logged')
+        return userManager.signinPopup().then(user => {
+          console.log('Popup done!', user)
+          if (user) {
+            return user
+          }
+
+          throw new Error('user not logged')
+        })
       })
-    })
   }
 }
 
@@ -97,12 +98,13 @@ export function updateLoginStatus() {
 
   return {
     types: [LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE],
-    callAPI: () => userManager.getUser().then(user => {
-      if (user) {
-        return user
-      }
-      throw new Error('user not logged')
-    })
+    callAPI: () =>
+      userManager.getUser().then(user => {
+        if (user) {
+          return user
+        }
+        throw new Error('user not logged')
+      })
   }
 }
 
@@ -114,12 +116,11 @@ export function requestLogout() {
 
   return {
     types: [LOGOUT_REQUEST, LOGOUT_SUCCESS, LOGOUT_FAILURE],
-    callAPI: () => userManager.getUser().then(user => {
-      if(!user)
-        return;
+    callAPI: () =>
+      userManager.getUser().then(user => {
+        if (!user) return
 
-      return userManager.signoutPopup().then(_ => true)
-    })
+        return userManager.signoutPopup().then(_ => true)
+      })
   }
 }
-

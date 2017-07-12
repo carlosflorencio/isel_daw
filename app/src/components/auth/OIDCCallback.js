@@ -2,14 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 class OIDCCallback extends React.Component {
-  componentDidMount () {
+  componentDidMount() {
     this.props.callback() // invoke the callback
   }
 
-  render () {
-    return (
-      <h5>Wait for redirection.</h5>
-    )
+  render() {
+    return <h5>Wait for redirection.</h5>
   }
 }
 
