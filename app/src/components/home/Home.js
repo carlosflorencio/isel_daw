@@ -24,9 +24,8 @@ class Home extends Component {
         />
       )
     }
-    if (!session.isAuthenticated || session.user.hasRole(GUEST)) {
-      return <Redirect to="courses" />
-    }
+    
+    return <Redirect to="courses" />
   }
 }
 

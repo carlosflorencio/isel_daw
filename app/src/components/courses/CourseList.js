@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { Table } from 'semantic-ui-react'
+import { Table, Menu } from 'semantic-ui-react'
 import { NavLink } from 'react-router-dom'
 import TablePagingFooter from '../shared/TablePagingFooter'
 
@@ -23,6 +23,18 @@ class CourseList extends Component {
         nextLink: SirenHelpers.getLink(nextProps.courses, 'next')
       })
     }
+  }
+
+  getLink(sirenLink){
+    if(!sirenLink){
+      return
+    }
+
+    let params = new URLSearchParams(sirenLink.split("?")[1])
+    let page = params.get('page')
+    let limit = params.get('limit')
+
+    return '/courses?page='+page+'&limit='+limit
   }
 
   render() {
@@ -57,11 +69,10 @@ class CourseList extends Component {
             })}
         </Table.Body>
         {
-          this.props.getMoreCourses && 
+          (this.state.prevLink || this.state.nextLink) && 
           <TablePagingFooter
-            getMoreData={this.props.getMoreCourses}
-            prevLink={SirenHelpers.getLink(courses, 'prev')}
-            nextLink={SirenHelpers.getLink(courses, 'next')}
+            prevLink={this.getLink(this.state.prevLink)}
+            nextLink={this.getLink(this.state.nextLink)}
           />
         }
       </Table>
@@ -71,8 +82,7 @@ class CourseList extends Component {
 
 CourseList.propTypes = {
   header: PropTypes.string.isRequired,
-  courses: PropTypes.object.isRequired,
-  getMoreCourses: PropTypes.func
+  courses: PropTypes.object.isRequired
 }
 
 export default CourseList
