@@ -46,13 +46,7 @@ namespace API.Controllers
         [HttpGet("/error/{code}", Name = Routes.Error)]
         public IActionResult Error(int code)
         {
-            var problem = new ProblemJson()
-            {
-                Type = "type",
-                Status = code,
-                Title = "My title",
-                Detail = "My details!"
-            };
+            var problem = ProblemJson.Create(code);
 
             // Handle error here
             return StatusCode(code, problem);

@@ -78,6 +78,7 @@ namespace API.TransferModels.ResponseModels
                             .WithHref(Url.ToTeacher(Routes.TeacherDelete, item.Number))
                     );
             }
+            this.AddCollectionActions(entity);
 
             return entity;
         }

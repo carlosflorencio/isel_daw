@@ -82,6 +82,7 @@ namespace API.TransferModels.ResponseModels
                             .WithHref(Url.ToStudent(Routes.StudentDelete, item.Number))
                     );
             }
+            this.AddCollectionActions(entity);
 
             return entity;
         }

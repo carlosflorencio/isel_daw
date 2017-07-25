@@ -147,12 +147,12 @@ namespace API
                 RoleClaimType=ClaimTypes.Role,
                 NameClaimType=ClaimTypes.Name,
 
+                AutomaticChallenge = false,
+
                 ApiName = "daw_api"
             });
 
             app.UseIdentityServer();
-
-            //app.UseMiddleware<BasicAuthMiddleware>();
 
             app.UseMiddleware<ErrorHandlingMiddleware>();
             app.UseStatusCodePagesWithReExecute("/error/{0}");
