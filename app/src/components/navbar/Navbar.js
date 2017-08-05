@@ -17,7 +17,7 @@ class Navbar extends Component {
         <Menu.Item>
           <Link to="/">Daw App</Link>
         </Menu.Item>
-        <Menu.Item as={NavLink} to="/courses" content={'Courses'} />
+        <Menu.Item as={NavLink} to="/courses" content='Courses' />
         {session.isAuthenticated &&
           <Menu.Menu position="right">
             <Menu.Item name="user" content={session.user.name} />

@@ -32,6 +32,7 @@ class MainContent extends Component {
 
   render() {
     const { isFetching, requests } = this.props.api
+    const { isSigningIn } = this.props.session
 
     return (
       <Container fluid>
@@ -39,11 +40,11 @@ class MainContent extends Component {
           <div>
             <Navbar />
 
-            {isFetching && <Loader active inline="centered" />}
+            {(isFetching || isSigningIn) && <Loader active inline="centered" />}
 
             {!isFetching && requests === null && <NoServerResponse />}
 
-            {!isFetching &&
+            {!isFetching && !isSigningIn &&
               requests !== null &&
               <Switch>
                 <Route exact path="/" component={Home} />

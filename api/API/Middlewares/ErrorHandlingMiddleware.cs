@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using API.TransferModels.ResponseModels;
 
 namespace API.Middlewares
 {
@@ -35,8 +36,11 @@ namespace API.Middlewares
         {
             var code = HttpStatusCode.InternalServerError;
 
-            var result = JsonConvert.SerializeObject(new { error = exception.Message });
-            context.Response.ContentType = "application/json";
+            var result = JsonConvert.SerializeObject(
+                ProblemJson.Create((int)code, exception.Message)
+            );
+
+            context.Response.ContentType = ProblemJson.MediaType;
             context.Response.StatusCode = (int)code;
             return context.Response.WriteAsync(result);
         }

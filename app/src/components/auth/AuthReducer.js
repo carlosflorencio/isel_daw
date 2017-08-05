@@ -28,13 +28,7 @@ const initialState = {
 }
 
 function logoutState(state, action) {
-  return {
-    ...state,
-    isSigningIn: false,
-    isAuthenticated: false,
-    user: null,
-    jwt: null
-  }
+  return initialState
 }
 
 export default reduxHelpers.createReducer(initialState, {
